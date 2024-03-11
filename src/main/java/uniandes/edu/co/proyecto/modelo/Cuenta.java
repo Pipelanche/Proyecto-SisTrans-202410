@@ -15,7 +15,7 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
 @Entity
-public class Cuenta {
+public class Cuenta extends Producto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +29,7 @@ public class Cuenta {
     private Producto producto;
 
     @Enumerated(EnumType.STRING)
-    private TipoCuenta tipo;
+    private TipoCuenta tipoCuenta;
 
     @Enumerated(EnumType.STRING)
     private EstadoCuenta estado;
@@ -47,43 +47,71 @@ public class Cuenta {
         activa, cerrada, desactivada
     }
 
-    public Object getTipo() {
-        return tipo;
+    public Cuenta() {}
+
+    public Cuenta(String numero, Producto producto, TipoCuenta tipoCuenta, EstadoCuenta estado, Double saldo, Date fechaUltimaTransaccion) {
+        this.numero = numero;
+        this.producto = producto;
+        this.tipoCuenta = tipoCuenta;
+        this.estado = estado;
+        this.saldo = saldo;
+        this.fechaUltimaTransaccion = fechaUltimaTransaccion;
     }
 
-    public void setTipo(Object tipo2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setTipo'");
+    public Long getId() {
+        return id; 
+        }
+
+    public String getNumero() {
+        return numero; 
     }
 
-    public Object getEstado() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getEstado'");
+    public Producto getProducto() {
+        return producto; 
     }
 
-    public void setEstado(Object estado2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setEstado'");
+    public TipoCuenta getTipoCuenta() {
+        return tipoCuenta; 
     }
 
-    public Object getSaldo() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getSaldo'");
+    public EstadoCuenta getEstado() {
+        return estado; 
     }
 
-    public void setSaldo(Object saldo2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setSaldo'");
+    public Double getSaldo() {
+        return saldo; 
     }
 
-    public Object getFechaUltimaTransaccion() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getFechaUltimaTransaccion'");
+    public Date getFechaUltimaTransaccion() {
+        return fechaUltimaTransaccion; 
     }
 
-    public void setFechaUltimaTransaccion(Object fechaUltimaTransaccion2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setFechaUltimaTransaccion'");
+    public void setId(Long id) {
+        this.id = id; 
     }
+
+    public void setNumero(String numero) {
+        this.numero = numero; 
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto; 
+    }
+
+    public void setTipoCuenta(TipoCuenta tipoCuenta) {
+        this.tipoCuenta = tipoCuenta; 
+    }
+
+    public void setEstado(EstadoCuenta estado) {
+        this.estado = estado; 
+    }
+
+    public void setSaldo(Double saldo) {
+        this.saldo = saldo; 
+    }
+
+    public void setFechaUltimaTransaccion(Date fechaUltimaTransaccion) {
+         this.fechaUltimaTransaccion = fechaUltimaTransaccion; 
+        }
 
 }

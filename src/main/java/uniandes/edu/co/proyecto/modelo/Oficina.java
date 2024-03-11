@@ -28,64 +28,74 @@ public class Oficina {
     })
     private Usuario gerente;
 
-    public Object getNombre() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getNombre'");
+    public Oficina() {}
+
+    public Oficina(String nombre, String direccion, Integer cantidadPuntosDeAtencion, String horaAbre, String horaCierre, Usuario gerente) {
+        this.nombre = nombre;
+        this.direccion = direccion;
+        this.cantidadPuntosDeAtencion = cantidadPuntosDeAtencion;
+        this.horaAbre = horaAbre;
+        this.horaCierre = horaCierre;
+        this.gerente = gerente;
     }
 
-    public void setNombre(Object nombre2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setNombre'");
+    
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public Object getDireccion() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getDireccion'");
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    public void setDireccion(Object direccion2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setDireccion'");
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
     }
 
-    public Object getCantidadPuntosDeAtencion() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getCantidadPuntosDeAtencion'");
+    public void setCantidadPuntosDeAtencion(Integer cantidadPuntosDeAtencion) {
+        this.cantidadPuntosDeAtencion = cantidadPuntosDeAtencion;
     }
 
-    public void setCantidadPuntosDeAtencion(Object cantidadPuntosDeAtencion2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setCantidadPuntosDeAtencion'");
+    public void setHoraAbre(String horaAbre) {
+        this.horaAbre = horaAbre;
     }
 
-    public Object getHoraAbre() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getHoraAbre'");
+    public void setHoraCierre(String horaCierre) {
+        this.horaCierre = horaCierre;
     }
 
-    public void setHoraAbre(Object horaAbre2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setHoraAbre'");
+    public void setGerente(Usuario gerente) {
+        this.gerente = gerente;
     }
 
-    public Object getHoraCierre() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getHoraCierre'");
+
+    public Long getId() {
+        return id;
     }
 
-    public void setHoraCierre(Object horaCierre2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setHoraCierre'");
+    public String getNombre() {
+        return nombre;
     }
 
-    public Object getGerente() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getGerente'");
+    public String getDireccion() {
+        return direccion;
     }
 
-    public void setGerente(Object gerente2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setGerente'");
+    public Integer getCantidadPuntosDeAtencion() {
+        return cantidadPuntosDeAtencion;
     }
+
+    public String getHoraAbre() {
+        return horaAbre;
+    }
+
+    public String getHoraCierre() {
+        return horaCierre;
+    }
+
+    public Usuario getGerente() {
+        return gerente;
+    }
+
 
 }

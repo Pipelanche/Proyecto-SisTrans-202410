@@ -8,7 +8,7 @@ import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 
 @Entity
-public class PuntoFisico {
+public class PuntoFisico extends PuntoDeAtencion{
 
     @Id
     private Long id;
@@ -24,16 +24,14 @@ public class PuntoFisico {
     @JoinColumn(name = "oficina", referencedColumnName = "id")
     private Oficina oficina;
 
-    public Object getLocalizacionGeografica() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getLocalizacionGeografica'");
+    public String getLocalizacionGeografica() {
+        return localizacionGeografica;
     }
 
-    public void setLocalizacionGeografica(Object localizacionGeografica2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setLocalizacionGeografica'");
+    public void setLocalizacionGeografica(String localizacionGeografica) {
+        this.localizacionGeografica = localizacionGeografica;
     }
-
+    //estos no estoy seguro que hacer con ellos.
     public Object getOficina() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getOficina'");

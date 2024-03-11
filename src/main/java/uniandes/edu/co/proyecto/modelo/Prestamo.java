@@ -10,7 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 
 @Entity
-public class Prestamo {
+public class Prestamo extends Producto{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +24,7 @@ public class Prestamo {
     private TipoProducto tipoProducto;
 
     @Enumerated(EnumType.STRING)
-    private EstadoPrestamo estado;
+    private EstadoPrestamo estadoPrestamo;
 
     private Double monto;
     private Double interes;
@@ -40,74 +40,90 @@ public class Prestamo {
         solicitado, aprobado, rechazado, pagado
     }
 
-    public Object getTipoProducto() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getTipoProducto'");
+    
+    public Prestamo() {}
+
+    public Prestamo(Producto producto, TipoProducto tipoProducto, EstadoPrestamo estadoPrestamo, Double monto, Double interes, Integer cantidadCuotas, Integer diaPagoDeCuotas, Double valorCuota) {
+        this.producto = producto;
+        this.tipoProducto = tipoProducto;
+        this.estadoPrestamo = estadoPrestamo;
+        this.monto = monto;
+        this.interes = interes;
+        this.cantidadCuotas = cantidadCuotas;
+        this.diaPagoDeCuotas = diaPagoDeCuotas;
+        this.valorCuota = valorCuota;
     }
 
-    public void setTipoProducto(Object tipoProducto2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setTipoProducto'");
+    public Long getId() {
+        return id;
     }
 
-    public Object getEstado() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getEstado'");
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setEstado(Object estado2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setEstado'");
+    public Producto getProducto() {
+        return producto;
     }
 
-    public Object getMonto() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getMonto'");
+    public void setProducto(Producto producto) {
+        this.producto = producto;
     }
 
-    public void setMonto(Object monto2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setMonto'");
+    public TipoProducto getTipoProducto() {
+        return tipoProducto;
     }
 
-    public Object getInteres() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getInteres'");
+    public void setTipoProducto(TipoProducto tipoProducto) {
+        this.tipoProducto = tipoProducto;
     }
 
-    public void setInteres(Object interes2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setInteres'");
+    public EstadoPrestamo getEstadoPrestamo() {
+        return estadoPrestamo;
     }
 
-    public Object getCantidadCuotas() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getCantidadCuotas'");
+    public void setEstadoPrestamo(EstadoPrestamo estadoPrestamo) {
+        this.estadoPrestamo = estadoPrestamo;
     }
 
-    public void setCantidadCuotas(Object cantidadCuotas2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setCantidadCuotas'");
+    public Double getMonto() {
+        return monto;
     }
 
-    public Object getDiaPagoDeCuotas() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getDiaPagoDeCuotas'");
+    public void setMonto(Double monto) {
+        this.monto = monto;
     }
 
-    public void setDiaPagoDeCuotas(Object diaPagoDeCuotas2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setDiaPagoDeCuotas'");
+    public Double getInteres() {
+        return interes;
     }
 
-    public Object getValorCuota() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getValorCuota'");
+    public void setInteres(Double interes) {
+        this.interes = interes;
     }
 
-    public void setValorCuota(Object valorCuota2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setValorCuota'");
+    public Integer getCantidadCuotas() {
+        return cantidadCuotas;
+    }
+
+    public void setCantidadCuotas(Integer cantidadCuotas) {
+        this.cantidadCuotas = cantidadCuotas;
+    }
+
+    public Integer getDiaPagoDeCuotas() {
+        return diaPagoDeCuotas;
+    }
+
+    public void setDiaPagoDeCuotas(Integer diaPagoDeCuotas) {
+        this.diaPagoDeCuotas = diaPagoDeCuotas;
+    }
+
+    public Double getValorCuota() {
+        return valorCuota;
+    }
+
+    public void setValorCuota(Double valorCuota) {
+        this.valorCuota = valorCuota;
     }
 
 }

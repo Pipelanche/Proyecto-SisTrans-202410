@@ -42,54 +42,62 @@ public class Operacion {
         pago_cuota_ordinaria, pago_cuota_extraordinaria, cerrar_prestamo, actualizar_prestamo
     }
 
-    public Object getTipo() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getTipo'");
+    public Operacion() {}
+
+    public Operacion(TipoOperacion tipo, Double monto, Date fechaHora, PuntoDeAtencion puntoDeAtencion, Producto producto) {
+        this.tipo = tipo;
+        this.monto = monto;
+        this.fechaHora = fechaHora;
+        this.puntoDeAtencion = puntoDeAtencion;
+        this.producto = producto;
     }
 
-    public void setTipo(Object tipo2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setTipo'");
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public Object getMonto() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getMonto'");
+    public void setTipo(TipoOperacion tipo) {
+        this.tipo = tipo;
     }
 
-    public void setMonto(Object monto2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setMonto'");
+    public void setMonto(Double monto) {
+        this.monto = monto;
     }
 
-    public Object getFechaHora() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getFechaHora'");
+    public void setFechaHora(Date fechaHora) {
+        this.fechaHora = fechaHora;
     }
 
-    public void setFechaHora(Object fechaHora2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setFechaHora'");
+    public void setPuntoDeAtencion(PuntoDeAtencion puntoDeAtencion) {
+        this.puntoDeAtencion = puntoDeAtencion;
     }
 
-    public Object getPuntoDeAtencion() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getPuntoDeAtencion'");
+    public void setProducto(Producto producto) {
+        this.producto = producto;
     }
 
-    public void setPuntoDeAtencion(Object puntoDeAtencion2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setPuntoDeAtencion'");
+    public Long getId() {
+        return id;
     }
 
-    public Object getProducto() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getProducto'");
+    public TipoOperacion getTipo() {
+        return tipo;
     }
 
-    public void setProducto(Object producto2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setProducto'");
+    public Double getMonto() {
+        return monto;
     }
 
+    public Date getFechaHora() {
+        return fechaHora;
+    }
+
+    public PuntoDeAtencion getPuntoDeAtencion() {
+        return puntoDeAtencion;
+    }
+
+    public Producto getProducto() {
+        return producto;
+    }
+    
 }

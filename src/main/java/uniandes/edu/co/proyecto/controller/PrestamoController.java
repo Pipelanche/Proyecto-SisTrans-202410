@@ -37,7 +37,7 @@ public class PrestamoController {
         return prestamoRepository.findById(id)
                 .map(prestamo -> {
                     prestamo.setTipoProducto(prestamoDetails.getTipoProducto());
-                    prestamo.setEstado(prestamoDetails.getEstado());
+                    prestamo.setEstadoPrestamo(prestamoDetails.getEstadoPrestamo());
                     prestamo.setMonto(prestamoDetails.getMonto());
                     prestamo.setInteres(prestamoDetails.getInteres());
                     prestamo.setCantidadCuotas(prestamoDetails.getCantidadCuotas());

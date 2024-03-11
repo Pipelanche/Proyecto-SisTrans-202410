@@ -7,8 +7,7 @@ public class UbicacionPK implements Serializable {
     private String clienteTipoDeDocumento;
     private String clienteNumeroDeDocumento;
 
-    public UbicacionPK() {
-    }
+    public UbicacionPK() {}
 
     public UbicacionPK(String clienteTipoDeDocumento, String clienteNumeroDeDocumento) {
         this.clienteTipoDeDocumento = clienteTipoDeDocumento;
