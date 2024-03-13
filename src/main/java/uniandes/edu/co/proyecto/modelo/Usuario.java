@@ -34,7 +34,7 @@ public class Usuario {
     }
 
     public enum Rol {
-        cliente, cajero, gerente_oficina, gerente_general
+        cliente, cajero, gerente_oficina, gerente_general, administrador
     }
 
     public Usuario() {}

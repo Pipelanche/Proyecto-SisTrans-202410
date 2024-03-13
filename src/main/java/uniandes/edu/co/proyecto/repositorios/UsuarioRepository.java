@@ -37,7 +37,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, UsuarioPK> {
     // RFM1 - Crear Usuario
     @Modifying
     //@Transactional revisar no sirve el import
-
+    // Administrador debe hacer este req para (gerente_general, gerente_oficina y cajero) y gerente_oficina hace el de cliente. REVIEW QUERY
     @Query(value = "INSERT INTO usuarios (tipo_de_documento, numero_de_documento, nombre, nacionalidad, direccion_fisica, correo, telefono, login, palabra_clave, tipo_persona, rol) VALUES (:tipoDeDocumento, :numeroDeDocumento, :nombre, :nacionalidad, :direccionFisica, :correo, :telefono, :login, :palabraClave, :tipoPersona, :rol)", nativeQuery = true)
     void crearUsuario(@Param("tipoDeDocumento") String tipoDeDocumento, @Param("numeroDeDocumento") String numeroDeDocumento, @Param("nombre") String nombre,
      @Param("nacionalidad") String nacionalidad, @Param("direccionFisica") String direccionFisica, @Param("correo") String correo, @Param("telefono") String telefono,
