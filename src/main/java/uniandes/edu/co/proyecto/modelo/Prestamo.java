@@ -39,7 +39,7 @@ public class Prestamo extends Producto{
     }
 
     public enum EstadoPrestamo {
-        solicitado, aprobado, rechazado, pagado
+        solicitado, aprobado, rechazado, pagado, cerrado
     }
 
     
