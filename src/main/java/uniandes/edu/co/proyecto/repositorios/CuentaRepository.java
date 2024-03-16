@@ -20,7 +20,7 @@ public interface CuentaRepository extends JpaRepository<Cuenta, Long> {
 
 
     //RFM3 - Crear Cuenta
-    //revisar porque cuenta es una herencia de producto, algo no cuadra
+    
     @Modifying
     @Transactional
     @Query(value = "INSERT INTO cuenta (tipo_cuenta, estado, saldo, fecha_ultima_transaccion, producto_id) VALUES (:tipoCuenta, 'activa', :saldo, CURRENT_DATE, :productoId)", nativeQuery = true)
