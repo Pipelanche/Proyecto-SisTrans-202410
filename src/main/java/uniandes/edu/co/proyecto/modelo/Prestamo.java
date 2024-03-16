@@ -31,6 +31,8 @@ public class Prestamo extends Producto{
     private Integer cantidadCuotas;
     private Integer diaPagoDeCuotas;
     private Double valorCuota;
+    private Double saldoPendiente;
+
 
     public enum TipoProducto {
         vivienda, estudio, automovil, libre_inversion
@@ -43,7 +45,7 @@ public class Prestamo extends Producto{
     
     public Prestamo() {}
 
-    public Prestamo(Producto producto, TipoProducto tipoProducto, EstadoPrestamo estadoPrestamo, Double monto, Double interes, Integer cantidadCuotas, Integer diaPagoDeCuotas, Double valorCuota) {
+    public Prestamo(Producto producto, TipoProducto tipoProducto, EstadoPrestamo estadoPrestamo, Double monto, Double interes, Integer cantidadCuotas, Integer diaPagoDeCuotas, Double valorCuota, Double saldoPendiente) {
         this.producto = producto;
         this.tipoProducto = tipoProducto;
         this.estadoPrestamo = estadoPrestamo;
@@ -52,6 +54,7 @@ public class Prestamo extends Producto{
         this.cantidadCuotas = cantidadCuotas;
         this.diaPagoDeCuotas = diaPagoDeCuotas;
         this.valorCuota = valorCuota;
+        this.saldoPendiente = saldoPendiente;
     }
 
     public Long getId() {
@@ -124,6 +127,14 @@ public class Prestamo extends Producto{
 
     public void setValorCuota(Double valorCuota) {
         this.valorCuota = valorCuota;
+    }
+
+    public Double getSaldoPendiente() {
+        return saldoPendiente;
+    }
+
+    public void setSaldoPendiente(Double saldoPendiente) {
+        this.saldoPendiente = saldoPendiente;
     }
 
 }

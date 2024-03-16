@@ -1,6 +1,7 @@
 package uniandes.edu.co.proyecto.controller;
 
 import uniandes.edu.co.proyecto.modelo.Prestamo;
+import uniandes.edu.co.proyecto.modelo.Prestamo.EstadoPrestamo;
 import uniandes.edu.co.proyecto.repositorios.PrestamoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -55,4 +56,22 @@ public class PrestamoController {
                     return ResponseEntity.ok().build();
                 }).orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+    @PutMapping("/{id}/cerrar")
+    public ResponseEntity<?> cerrarPrestamo(@PathVariable Long id) {
+        Prestamo prestamo = prestamoRepository.findById(id).orElse(null);
+        if (prestamo == null) {
+            return ResponseEntity.notFound().build();
+        }
+        if (!prestamo.getEstadoPrestamo().equals(EstadoPrestamo.pagado)) {
+            return ResponseEntity.badRequest().body("El préstamo no está en estado pagado y no puede cerrarse.");
+        }
+        if (prestamo.getSaldoPendiente() > 0) {
+            return ResponseEntity.badRequest().body("El préstamo tiene un saldo pendiente y no puede cerrarse.");
+        }
+    
+        prestamoRepository.cerrarPrestamoSiSaldoEsCero(id);
+        return ResponseEntity.ok().build();
+}
+
 }

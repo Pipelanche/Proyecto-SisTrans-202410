@@ -22,7 +22,16 @@ public interface PrestamoRepository extends JpaRepository<Prestamo, Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE prestamos SET saldo_pendiente = saldo_pendiente - :montoPago WHERE id = :prestamoId", nativeQuery = true)
+    @Query(value = "UPDATE prestamos SET saldoPendiente = saldoPendiente - :montoPago WHERE id = :prestamoId", nativeQuery = true)
     void actualizarSaldoPendiente(@Param("prestamoId") Long prestamoId, @Param("montoPago") Double montoPago);
+
+
+    // RFM6 - Actualizar prestamo a cerrado
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE Prestamo p SET p.estadoPrestamo = 'cerrado' WHERE p.id = :prestamoId AND p.saldoPendiente = 0", nativeQuery = true)
+    void cerrarPrestamoSiSaldoEsCero(@Param("prestamoId") Long prestamoId);
+
+
 
 }
