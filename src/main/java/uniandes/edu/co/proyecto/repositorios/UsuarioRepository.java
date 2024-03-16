@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-//import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, UsuarioPK> {
@@ -36,13 +36,12 @@ public interface UsuarioRepository extends JpaRepository<Usuario, UsuarioPK> {
 
     // RFM1 - Crear Usuario
     @Modifying
-    //@Transactional revisar no sirve el import
-    // Administrador debe hacer este req para (gerente_general, gerente_oficina y cajero) y gerente_oficina hace el de cliente. REVIEW QUERY
+    @Transactional
     @Query(value = "INSERT INTO usuarios (tipo_de_documento, numero_de_documento, nombre, nacionalidad, direccion_fisica, correo, telefono, login, palabra_clave, tipo_persona, rol) VALUES (:tipoDeDocumento, :numeroDeDocumento, :nombre, :nacionalidad, :direccionFisica, :correo, :telefono, :login, :palabraClave, :tipoPersona, :rol)", nativeQuery = true)
     void crearUsuario(@Param("tipoDeDocumento") String tipoDeDocumento, @Param("numeroDeDocumento") String numeroDeDocumento, @Param("nombre") String nombre,
-     @Param("nacionalidad") String nacionalidad, @Param("direccionFisica") String direccionFisica, @Param("correo") String correo, @Param("telefono") String telefono,
-      @Param("login") String login, @Param("palabraClave") String palabraClave, @Param("tipoPersona") String tipoPersona, @Param("rol") String rol);
-    //crud crear, revisar
+    @Param("nacionalidad") String nacionalidad, @Param("direccionFisica") String direccionFisica, @Param("correo") String correo, @Param("telefono") String telefono,
+    @Param("login") String login, @Param("palabraClave") String palabraClave, @Param("tipoPersona") String tipoPersona, @Param("rol") String rol);
+    
 
     // RFC2 - Consultar un Cliente
     @Query("SELECT u, c, p FROM Usuario u LEFT JOIN u.productos p LEFT JOIN p.cuentas c WHERE u.tipoDeDocumento = :tipoDeDocumento AND u.numeroDeDocumento = :numeroDeDocumento")

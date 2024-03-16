@@ -7,22 +7,22 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import java.util.Date;
 
 @Repository
 public interface PrestamoRepository extends JpaRepository<Prestamo, Long> {
 
-    @Query(value = "SELECT * FROM prestamos WHERE id = :id", nativeQuery = true)
-    Prestamo buscarPrestamoPorId(@Param("id") long id);
+
+    // RFM5 - Crear Prestamo 
+    //revisar, la logica de esto aun no siento que este bien.
+    @Modifying
+    @Transactional
+    @Query(value = "INSERT INTO operaciones_prestamo (prestamo_id, fecha_operacion, monto_pago, tipo_operacion) VALUES (:prestamoId, :fechaOperacion, :montoPago, :tipoOperacion)", nativeQuery = true)
+    void registrarOperacionSobrePrestamo(@Param("prestamoId") Long prestamoId, @Param("fechaOperacion") Date fechaOperacion, @Param("montoPago") Double montoPago, @Param("tipoOperacion") String tipoOperacion);
 
     @Modifying
     @Transactional
-    @Query(value = "DELETE FROM prestamos WHERE id = :id", nativeQuery = true)
-    void eliminarPrestamoPorId(@Param("id") long id);
+    @Query(value = "UPDATE prestamos SET saldo_pendiente = saldo_pendiente - :montoPago WHERE id = :prestamoId", nativeQuery = true)
+    void actualizarSaldoPendiente(@Param("prestamoId") Long prestamoId, @Param("montoPago") Double montoPago);
 
-    @Modifying
-    @Transactional
-    @Query(value = "UPDATE prestamos SET monto = :monto, interes = :interes WHERE id = :id", nativeQuery = true)
-    void actualizarPrestamo(@Param("id") long id, @Param("monto") Double monto, @Param("interes") Double interes);
-
-    //crud basico para prueba, se puede cambiar si no es necesario
 }
