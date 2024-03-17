@@ -1,6 +1,8 @@
 package uniandes.edu.co.proyecto.controller;
 
+import uniandes.edu.co.proyecto.modelo.Oficina;
 import uniandes.edu.co.proyecto.modelo.PuntoFisico;
+import uniandes.edu.co.proyecto.repositorios.OficinaRepository;
 import uniandes.edu.co.proyecto.repositorios.PuntoFisicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,9 @@ public class PuntoFisicoController {
 
     @Autowired
     private PuntoFisicoRepository puntoFisicoRepository;
+
+    @Autowired
+    private OficinaRepository oficinaRepository;
 
     @GetMapping
     public List<PuntoFisico> getAllPuntosFisicos() {
@@ -49,5 +54,18 @@ public class PuntoFisicoController {
                     puntoFisicoRepository.delete(puntoFisico);
                     return ResponseEntity.ok().build();
                 }).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    //punto fisico req2
+    @PostMapping("/fisico")
+    public ResponseEntity<?> createPuntoFisico(@RequestBody PuntoFisico puntoFisico, @RequestParam Long oficinaId) {
+        Oficina oficina = oficinaRepository.findById(oficinaId)
+                        .orElse(null);
+        if (oficina == null) {
+            return ResponseEntity.badRequest().body("Ninguna oficina tiene el id: " + oficinaId);
+        }
+        puntoFisico.setOficina(oficina);
+        PuntoFisico savedPuntoFisico = puntoFisicoRepository.save(puntoFisico);
+        return ResponseEntity.ok(savedPuntoFisico);
     }
 }

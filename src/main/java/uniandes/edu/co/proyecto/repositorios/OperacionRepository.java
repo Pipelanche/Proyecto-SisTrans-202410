@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -16,5 +17,11 @@ public interface OperacionRepository extends JpaRepository<Operacion, Long> {
     @Query("SELECT o FROM Operacion o WHERE o.cuenta.numero = :numeroCuenta AND o.fechaHora BETWEEN :fechaInicioMes AND :fechaFinMes")
     List<Operacion> findOperacionesByCuentaAndMes(Long numeroCuenta, LocalDateTime fechaInicioMes, LocalDateTime fechaFinMes);
 
-    
+    //Count para requerimento 2 (crear oficina)
+    @Query("SELECT COUNT(o) FROM Operacion o WHERE o.puntoDeAtencion.id = :puntoDeAtencionId")
+    Long countByPuntoDeAtencionId(@Param("puntoDeAtencionId") Long puntoDeAtencionId);
+
+    default boolean hasOperations(Long puntoDeAtencionId) {
+        return countByPuntoDeAtencionId(puntoDeAtencionId) > 0;
+    }
 }

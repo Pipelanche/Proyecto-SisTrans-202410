@@ -27,10 +27,6 @@ public class OficinaController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping
-    public Oficina createOficina(@RequestBody Oficina oficina) {
-        return oficinaRepository.save(oficina);
-    }
 
     @PutMapping("/{id}")
     public ResponseEntity<Oficina> updateOficina(@PathVariable Long id, @RequestBody Oficina oficinaDetails) {
@@ -54,4 +50,13 @@ public class OficinaController {
                     return ResponseEntity.ok().build();
                 }).orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+    @PostMapping
+    public ResponseEntity<Oficina> createOficina(@RequestBody Oficina oficina) {
+        oficina.setHoraAbre("08:00"); 
+        oficina.setHoraCierre("17:00");
+        Oficina savedOficina = oficinaRepository.save(oficina);
+        //puede que toque crear el punto de atencion de una aca tambien
+        return ResponseEntity.ok(savedOficina);
+}
 }
