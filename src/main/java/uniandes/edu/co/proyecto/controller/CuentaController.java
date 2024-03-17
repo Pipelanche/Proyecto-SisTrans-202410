@@ -5,7 +5,7 @@ import uniandes.edu.co.proyecto.repositorios.CuentaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -28,9 +28,13 @@ public class CuentaController {
     }
 
     @PostMapping
-    public Cuenta createCuenta(@RequestBody Cuenta cuenta) {
-        return cuentaRepository.save(cuenta);
+    public ResponseEntity<Cuenta> createCuenta(@RequestBody Cuenta cuenta) {
+        cuenta.setEstado(Cuenta.EstadoCuenta.activa); 
+        cuenta.setFechaUltimaTransaccion(new Date()); 
+        Cuenta savedCuenta = cuentaRepository.save(cuenta);
+        return ResponseEntity.ok(savedCuenta);
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<Cuenta> updateCuenta(@PathVariable Long id, @RequestBody Cuenta cuentaDetails) {

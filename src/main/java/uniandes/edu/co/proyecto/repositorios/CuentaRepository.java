@@ -23,8 +23,8 @@ public interface CuentaRepository extends JpaRepository<Cuenta, Long> {
     
     @Modifying
     @Transactional
-    @Query(value = "INSERT INTO cuenta (tipo_cuenta, estado, saldo, fecha_ultima_transaccion, producto_id) VALUES (:tipoCuenta, 'activa', :saldo, CURRENT_DATE, :productoId)", nativeQuery = true)
-    void crearCuenta(@Param("tipoCuenta") String tipoCuenta, @Param("saldo") Double saldo, @Param("productoId") Long productoId);
+    @Query(value = "INSERT INTO producto (tipo_producto, cliente_id, tipo_cuenta, estado, saldo, fecha_ultima_transaccion) " + "VALUES ('CUENTA', :clienteId, :tipoCuenta, 'activa', :saldo, CURRENT_TIMESTAMP)", nativeQuery = true)
+    void insertCuenta(@Param("clienteId") Long clienteId, @Param("tipoCuenta") String tipoCuenta, @Param("saldo") Double saldo);
 
     // RFC1 - Consultar las cuentas en BancAndes
     @Query("SELECT c FROM Cuenta c JOIN c.producto p JOIN p.usuario u WHERE c.tipo = :tipo AND c.saldo BETWEEN :saldoMin AND :saldoMax AND c.fechaUltimaTransaccion BETWEEN :fechaInicio AND :fechaFin")
