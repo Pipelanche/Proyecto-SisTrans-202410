@@ -1,11 +1,16 @@
 package uniandes.edu.co.proyecto.controller;
 
+import uniandes.edu.co.proyecto.modelo.Cuenta;
+import uniandes.edu.co.proyecto.modelo.Cuenta.EstadoCuenta;
 import uniandes.edu.co.proyecto.modelo.Operacion;
+import uniandes.edu.co.proyecto.modelo.Operacion.TipoOperacion;
+import uniandes.edu.co.proyecto.repositorios.CuentaRepository;
 import uniandes.edu.co.proyecto.repositorios.OperacionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.transaction.annotation.Transactional;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -14,6 +19,9 @@ public class OperacionController {
 
     @Autowired
     private OperacionRepository operacionRepository;
+
+    @Autowired
+    private CuentaRepository cuentaRepository;
 
     @GetMapping
     public List<Operacion> getAllOperaciones() {
@@ -53,4 +61,68 @@ public class OperacionController {
                     return ResponseEntity.ok().build();
                 }).orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+
+    //transacciones...  
+    @PostMapping("/consignar/{numeroCuenta}")
+    @Transactional
+    public ResponseEntity<?> consignar(@PathVariable String numeroCuenta, @RequestParam Double monto) {
+        Cuenta cuenta = cuentaRepository.findByNumero(numeroCuenta);
+        if (cuenta == null || cuenta.getEstado() != EstadoCuenta.activa) {
+            return ResponseEntity.badRequest().body("La cuenta no existe.");
+        }
+        cuenta.setSaldo(cuenta.getSaldo() + monto); 
+        cuentaRepository.save(cuenta);
+
+        Operacion operacion = new Operacion(TipoOperacion.consignacion_cuenta, monto, new Date(), null, cuenta);
+        operacionRepository.save(operacion);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/retirar/{numeroCuenta}")
+    @Transactional
+    public ResponseEntity<?> retirar(@PathVariable String numeroCuenta, @RequestParam Double monto) {
+        Cuenta cuenta = cuentaRepository.findByNumero(numeroCuenta);
+        if (cuenta == null || cuenta.getEstado() != EstadoCuenta.activa || cuenta.getSaldo() < monto) {
+            return ResponseEntity.badRequest().body("Fondos insuficientes o cuenta desactivada.");
+        }
+        cuenta.setSaldo(cuenta.getSaldo() - monto); 
+        cuentaRepository.save(cuenta);
+
+        Operacion operacion = new Operacion(TipoOperacion.retiro_cuenta, monto, new Date(), null, cuenta);
+        operacionRepository.save(operacion);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/transferir/{numeroCuentaOrigen}/{numeroCuentaDestino}")
+    @Transactional
+    public ResponseEntity<?> transferir(@PathVariable String numeroCuentaOrigen, @PathVariable String numeroCuentaDestino, @RequestParam Double monto) {
+    Cuenta salida = cuentaRepository.findByNumero(numeroCuentaOrigen);
+    Cuenta destino = cuentaRepository.findByNumero(numeroCuentaDestino);
+    
+    if (salida == null || destino == null) {
+        return ResponseEntity.badRequest().body("Una o ambas cuentas no existen.");
+    }
+    if (salida.getEstado() != EstadoCuenta.activa || destino.getEstado() != EstadoCuenta.activa) {
+        return ResponseEntity.badRequest().body("Una o ambas cuentas no se encuentran activas.");
+    }
+    if (salida.getSaldo() < monto) {
+        return ResponseEntity.badRequest().body("Fondos insfucientees en la cuenta de salida.");
+    }
+    salida.setSaldo(salida.getSaldo() - monto);
+    destino.setSaldo(destino.getSaldo() + monto);
+    
+    Operacion operacionSource = new Operacion(TipoOperacion.retiro_cuenta, monto, new Date(), null, salida);
+    Operacion operacionDestination = new Operacion(TipoOperacion.consignacion_cuenta, monto, new Date(), null, destino);
+    operacionRepository.save(operacionSource);
+    operacionRepository.save(operacionDestination);
+
+    cuentaRepository.save(salida);
+    cuentaRepository.save(destino);
+
+    return ResponseEntity.ok().build();
+    }
+
 }
