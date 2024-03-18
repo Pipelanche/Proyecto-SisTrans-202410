@@ -84,26 +84,30 @@ public class CuentaController {
 
     @PutMapping("/{numeroCuenta}/cambiarEstado")
     @Transactional
-        public ResponseEntity<?> cambiarEstadoCuenta(@PathVariable String numeroCuenta, @RequestParam EstadoCuenta nuevoEstado) {
+    public ResponseEntity<?> cambiarEstadoCuenta(@PathVariable String numeroCuenta, @RequestParam EstadoCuenta nuevoEstado) {
         Cuenta cuenta = cuentaRepository.findByNumero(numeroCuenta);
     
         if (cuenta == null) {
             return ResponseEntity.badRequest().body("Cuenta no encontrada.");
         }
     
-        if (nuevoEstado == EstadoCuenta.cerrada) {
-            if (cuenta.getSaldo() != 0 || cuenta.getEstado() != EstadoCuenta.activa) {
-                return ResponseEntity.badRequest().body("La cuenta no puede ser cerrada debido a su saldo o estado actual.");
-            }
-        } else if (nuevoEstado == EstadoCuenta.desactivada && cuenta.getEstado() != EstadoCuenta.activa) {
-            return ResponseEntity.badRequest().body("La cuenta solo puede ser desactivada si está activa.");
+    
+        if (nuevoEstado == EstadoCuenta.cerrada && cuenta.getSaldo() != 0) {
+            return ResponseEntity.badRequest().body("La cuenta debe tener saldo cero para ser cerrada.");
+        }
+        if (nuevoEstado == EstadoCuenta.desactivada && cuenta.getEstado() != EstadoCuenta.activa) {
+            return ResponseEntity.badRequest().body("La cuenta solo puede ser desactivada si esta activa.");
+        }
+        if (cuenta.getEstado() != EstadoCuenta.activa && nuevoEstado != EstadoCuenta.activa) {
+            return ResponseEntity.badRequest().body("La cuenta ya esta desactivada o cerrada.");
         }
         cuenta.setEstado(nuevoEstado);
-        cuentaRepository.save(cuenta);
-    
-        Operacion operacion = new Operacion(nuevoEstado == EstadoCuenta.cerrada ? TipoOperacion.cerrar_cuenta : TipoOperacion.desactivar_cuenta, 0.0, new Date(), null, cuenta);
+        Cuenta updatedCuenta = cuentaRepository.save(cuenta);
+
+        Operacion operacion = new Operacion(nuevoEstado == EstadoCuenta.cerrada ? TipoOperacion.cerrar_cuenta : TipoOperacion.desactivar_cuenta, 0.0, new Date(), null, updatedCuenta);
         operacionRepository.save(operacion);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body("Estado de la cuenta actualizado correctamente.");
     }
+
 }
