@@ -59,5 +59,14 @@ public class PuntoDeAtencionController {
         puntoDeAtencionRepository.delete(puntoDeAtencion);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/digital")
+    public ResponseEntity<?> createPuntoDeAtencionDigital(@RequestBody PuntoDeAtencion puntoDeAtencion) {
+        if (puntoDeAtencion.getTipo() != PuntoDeAtencion.TipoPuntoDeAtencion.digital) {
+            return ResponseEntity.badRequest().body("Solo los puntos digitales pueden crearse sin oficina.");
+        }
+        PuntoDeAtencion savedPuntoDeAtencion = puntoDeAtencionRepository.save(puntoDeAtencion);
+        return ResponseEntity.ok(savedPuntoDeAtencion);
+    }
 }
 

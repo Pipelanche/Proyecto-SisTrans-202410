@@ -1,6 +1,7 @@
 package uniandes.edu.co.proyecto.controller;
 
 import uniandes.edu.co.proyecto.modelo.Oficina;
+import uniandes.edu.co.proyecto.modelo.PuntoDeAtencion;
 import uniandes.edu.co.proyecto.modelo.PuntoFisico;
 import uniandes.edu.co.proyecto.repositorios.OficinaRepository;
 import uniandes.edu.co.proyecto.repositorios.PuntoFisicoRepository;
@@ -59,13 +60,18 @@ public class PuntoFisicoController {
     //punto fisico req2
     @PostMapping("/fisico")
     public ResponseEntity<?> createPuntoFisico(@RequestBody PuntoFisico puntoFisico, @RequestParam Long oficinaId) {
-        Oficina oficina = oficinaRepository.findById(oficinaId)
-                        .orElse(null);
-        if (oficina == null) {
-            return ResponseEntity.badRequest().body("Ninguna oficina tiene el id: " + oficinaId);
+        if (puntoFisico.getTipo() == PuntoDeAtencion.TipoPuntoDeAtencion.digital) {
+            return ResponseEntity.badRequest().body("Puntos digitales no se relacionan con una oficina");
         }
+
+        Oficina oficina = oficinaRepository.findById(oficinaId).orElse(null);
+        if (oficina == null) {
+            return ResponseEntity.badRequest().body("Ninguna oficina se encontro con el id: " + oficinaId);
+        }
+
         puntoFisico.setOficina(oficina);
         PuntoFisico savedPuntoFisico = puntoFisicoRepository.save(puntoFisico);
         return ResponseEntity.ok(savedPuntoFisico);
     }
+
 }
