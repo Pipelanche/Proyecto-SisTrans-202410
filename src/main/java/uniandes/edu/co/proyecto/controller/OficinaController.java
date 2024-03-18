@@ -1,7 +1,10 @@
 package uniandes.edu.co.proyecto.controller;
 
 import uniandes.edu.co.proyecto.modelo.Oficina;
+import uniandes.edu.co.proyecto.modelo.Usuario;
 import uniandes.edu.co.proyecto.repositorios.OficinaRepository;
+import uniandes.edu.co.proyecto.repositorios.UsuarioRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +17,9 @@ public class OficinaController {
 
     @Autowired
     private OficinaRepository oficinaRepository;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     @GetMapping
     public List<Oficina> getAllOficinas() {
@@ -52,11 +58,28 @@ public class OficinaController {
     }
 
     @PostMapping
-    public ResponseEntity<Oficina> createOficina(@RequestBody Oficina oficina) {
-        oficina.setHoraAbre("08:00"); 
+    public ResponseEntity<?> createOficina(@RequestBody Oficina oficina) {
+        oficina.setHoraAbre("08:00");
         oficina.setHoraCierre("17:00");
+
+        if (oficina.getGerente() == null || oficina.getGerente().getTipoDeDocumento() == null || oficina.getGerente().getNumeroDeDocumento() == null) {
+            return ResponseEntity.badRequest().body("Informacion del gerente incompleta.");
+        }
+        String tipoDeDocumento = oficina.getGerente().getTipoDeDocumento();
+        String numeroDeDocumento = oficina.getGerente().getNumeroDeDocumento();
+
+        Usuario gerenteUsuario = usuarioRepository.findByTipoDeDocumentoAndNumeroDeDocumento(tipoDeDocumento, numeroDeDocumento);
+        if (gerenteUsuario == null) {
+            return ResponseEntity.badRequest().body("El gerente especificado no existe en el sistema.");
+        }
+        if (gerenteUsuario.getRol() != Usuario.Rol.gerente_oficina) {
+            return ResponseEntity.badRequest().body("El usuario especificado no es un gerente de oficina.");
+        }
+        oficina.setGerente(gerenteUsuario); 
         Oficina savedOficina = oficinaRepository.save(oficina);
-        //puede que toque crear el punto de atencion de una aca tambien
         return ResponseEntity.ok(savedOficina);
+    }
+
+
 }
-}
+
