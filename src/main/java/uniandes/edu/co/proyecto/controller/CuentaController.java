@@ -4,12 +4,16 @@ import uniandes.edu.co.proyecto.modelo.Cuenta;
 import uniandes.edu.co.proyecto.modelo.Cuenta.EstadoCuenta;
 import uniandes.edu.co.proyecto.modelo.Operacion;
 import uniandes.edu.co.proyecto.modelo.Operacion.TipoOperacion;
+import uniandes.edu.co.proyecto.modelo.Usuario;
 import uniandes.edu.co.proyecto.repositorios.CuentaRepository;
 import uniandes.edu.co.proyecto.repositorios.OperacionRepository;
+import uniandes.edu.co.proyecto.repositorios.UsuarioRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.Date;
 import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +28,9 @@ public class CuentaController {
     @Autowired
     private OperacionRepository operacionRepository;
 
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
     @GetMapping
     public List<Cuenta> getAllCuentas() {
         return cuentaRepository.findAll();
@@ -37,13 +44,22 @@ public class CuentaController {
     }
 
     @PostMapping
-    public ResponseEntity<Cuenta> createCuenta(@RequestBody Cuenta cuenta) {
-        cuenta.setEstado(Cuenta.EstadoCuenta.activa); 
-        cuenta.setFechaUltimaTransaccion(new Date()); 
+    public ResponseEntity<?> createCuenta(@RequestBody Cuenta cuenta, @RequestParam String tipoDeDocumentoGerente, @RequestParam String numeroDeDocumentoGerente) {
+        Usuario gerente = usuarioRepository.findByTipoDeDocumentoAndNumeroDeDocumento(tipoDeDocumentoGerente, numeroDeDocumentoGerente);
+    
+   
+        if (gerente == null || !gerente.getRol().equals(Usuario.Rol.gerente_oficina)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Para crear una cuenta el usuario debe ser un gerente de oficina.");
+        }
+        cuenta.setEstado(Cuenta.EstadoCuenta.activa);
+        cuenta.setFechaUltimaTransaccion(new Date());
+
         Cuenta savedCuenta = cuentaRepository.save(cuenta);
+        Operacion operacion = new Operacion(Operacion.TipoOperacion.abrir_cuenta, 0.0, new Date(), null, savedCuenta);
+        operacionRepository.save(operacion);
+
         return ResponseEntity.ok(savedCuenta);
     }
-
 
     @PutMapping("/{id}")
     public ResponseEntity<Cuenta> updateCuenta(@PathVariable Long id, @RequestBody Cuenta cuentaDetails) {

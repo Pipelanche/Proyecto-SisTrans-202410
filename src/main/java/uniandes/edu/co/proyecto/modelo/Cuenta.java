@@ -7,6 +7,7 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
@@ -16,6 +17,7 @@ public class Cuenta extends Producto {
 
     
     @Column(unique = true)
+    @GeneratedValue 
     private String numero;
 
     @Enumerated(EnumType.STRING)
