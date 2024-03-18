@@ -14,6 +14,10 @@ import java.util.List;
 @RequestMapping("/usuarios")
 public class UsuarioController {
 
+    public String index() {
+        return "usuarios";
+    }
+
     @Autowired
     private UsuarioRepository usuarioRepository;
 
