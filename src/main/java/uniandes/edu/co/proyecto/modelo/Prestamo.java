@@ -8,7 +8,7 @@ import jakarta.persistence.Enumerated;
 
 @Entity
 @DiscriminatorValue("PRESTAMO")
-public class Prestamo extends Producto{
+public class Prestamo extends Producto {
 
     @Enumerated(EnumType.STRING)
     private TipoPrestamo tipoPrestamo;
