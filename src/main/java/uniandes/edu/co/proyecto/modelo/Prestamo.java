@@ -4,17 +4,14 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.Table;
 
 
 @Entity
-@Table(name = "prestamos")
 @DiscriminatorValue("PRESTAMO")
 public class Prestamo extends Producto{
 
-
     @Enumerated(EnumType.STRING)
-    private TipoProducto tipoProducto;
+    private TipoPrestamo tipoPrestamo;
 
     @Enumerated(EnumType.STRING)
     private EstadoPrestamo estadoPrestamo;
@@ -26,8 +23,7 @@ public class Prestamo extends Producto{
     private Double valorCuota;
     private Double saldoPendiente;
 
-
-    public enum TipoProducto {
+    public enum TipoPrestamo {
         vivienda, estudio, automovil, libre_inversion
     }
 
@@ -35,11 +31,8 @@ public class Prestamo extends Producto{
         solicitado, aprobado, rechazado, pagado, cerrado
     }
 
-    
-    public Prestamo() {}
-
-    public Prestamo( TipoProducto tipoProducto, EstadoPrestamo estadoPrestamo, Double monto, Double interes, Integer cantidadCuotas, Integer diaPagoDeCuotas, Double valorCuota, Double saldoPendiente) {
-        this.tipoProducto = tipoProducto;
+    public Prestamo( TipoPrestamo tipoPrestamo, EstadoPrestamo estadoPrestamo, Double monto, Double interes, Integer cantidadCuotas, Integer diaPagoDeCuotas, Double valorCuota, Double saldoPendiente) {
+        this.tipoPrestamo = tipoPrestamo;
         this.estadoPrestamo = estadoPrestamo;
         this.monto = monto;
         this.interes = interes;
@@ -49,12 +42,12 @@ public class Prestamo extends Producto{
         this.saldoPendiente = saldoPendiente;
     }
 
-    public TipoProducto getTipoProducto() {
-        return tipoProducto;
+    public TipoPrestamo getTipoPrestamo() {
+        return tipoPrestamo;
     }
 
-    public void setTipoProducto(TipoProducto tipoProducto) {
-        this.tipoProducto = tipoProducto;
+    public void setTipoPrestamo(TipoPrestamo tipoPrestamo) {
+        this.tipoPrestamo = tipoPrestamo;
     }
 
     public EstadoPrestamo getEstadoPrestamo() {

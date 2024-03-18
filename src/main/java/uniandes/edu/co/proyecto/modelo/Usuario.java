@@ -1,10 +1,13 @@
 package uniandes.edu.co.proyecto.modelo;
 
+import java.util.Set;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
+import jakarta.persistence.OneToMany;
 
 @Entity
 @IdClass(UsuarioPK.class)
@@ -52,6 +55,9 @@ public class Usuario {
         this.tipoPersona = tipoPersona;
         this.rol = rol;
     }
+
+    @OneToMany(mappedBy = "cliente")
+    private Set<Producto> productos;
 
 
     public String getTipoDeDocumento() {

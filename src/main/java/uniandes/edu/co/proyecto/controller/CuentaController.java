@@ -49,7 +49,7 @@ public class CuentaController {
     public ResponseEntity<Cuenta> updateCuenta(@PathVariable Long id, @RequestBody Cuenta cuentaDetails) {
         return cuentaRepository.findById(id)
                 .map(cuenta -> {
-                    cuenta.setTipo(cuentaDetails.getTipo());
+                    cuenta.setTipoCuenta(cuentaDetails.getTipoCuenta());
                     cuenta.setEstado(cuentaDetails.getEstado());
                     cuenta.setSaldo(cuentaDetails.getSaldo());
                     cuenta.setFechaUltimaTransaccion(cuentaDetails.getFechaUltimaTransaccion());

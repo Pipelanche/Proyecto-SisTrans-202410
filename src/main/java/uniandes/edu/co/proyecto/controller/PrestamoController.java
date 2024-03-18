@@ -48,7 +48,7 @@ public class PrestamoController {
     public ResponseEntity<Prestamo> updatePrestamo(@PathVariable Long id, @RequestBody Prestamo prestamoDetails) {
         return prestamoRepository.findById(id)
                 .map(prestamo -> {
-                    prestamo.setTipoProducto(prestamoDetails.getTipoProducto());
+                    prestamo.setTipoPrestamo(prestamoDetails.getTipoPrestamo());
                     prestamo.setEstadoPrestamo(prestamoDetails.getEstadoPrestamo());
                     prestamo.setMonto(prestamoDetails.getMonto());
                     prestamo.setInteres(prestamoDetails.getInteres());

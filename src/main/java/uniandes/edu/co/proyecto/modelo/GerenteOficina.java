@@ -1,10 +1,10 @@
 package uniandes.edu.co.proyecto.modelo;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -12,37 +12,15 @@ import jakarta.persistence.Table;
 @IdClass(UsuarioPK.class)
 public class GerenteOficina extends Usuario {
 
-    @Id
-    private String tipoDeDocumento;
-    @Id
-    private String numeroDeDocumento;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "oficina_id")
+    private Oficina oficina;
 
-    @OneToOne
-    @JoinColumn(name = "tipoDeDocumento", referencedColumnName = "tipoDeDocumento", insertable = false, updatable = false)
-    @JoinColumn(name = "numeroDeDocumento", referencedColumnName = "numeroDeDocumento", insertable = false, updatable = false)
-    private Usuario usuario;
-
-    public String getTipoDeDocumento() {
-        return tipoDeDocumento;
+    public Oficina getOficina() {
+        return oficina;
     }
 
-    public void setTipoDeDocumento(String tipoDeDocumento) {
-        this.tipoDeDocumento = tipoDeDocumento;
-    }
-
-    public String getNumeroDeDocumento() {
-        return numeroDeDocumento;
-    }
-
-    public void setNumeroDeDocumento(String numeroDeDocumento) {
-        this.numeroDeDocumento = numeroDeDocumento;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setOficina(Oficina oficina) {
+        this.oficina = oficina;
     }
 }

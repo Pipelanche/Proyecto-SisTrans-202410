@@ -47,8 +47,6 @@ public class Cuenta extends Producto {
         this.fechaUltimaTransaccion = fechaUltimaTransaccion;
     }
 
-    
-
     public String getNumero() {
         return numero; 
     }

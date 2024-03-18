@@ -42,6 +42,7 @@ public interface CuentaRepository extends JpaRepository<Cuenta, Long> {
     int deactivateCuenta(@Param("numero") String numero);
 
     // RFC1 - Consultar las cuentas en BancAndes
-    @Query("SELECT c FROM Cuenta c JOIN c.producto p JOIN p.usuario u WHERE c.tipoCuenta = :tipo AND c.saldo BETWEEN :saldoMin AND :saldoMax AND c.fechaUltimaTransaccion BETWEEN :fechaInicio AND :fechaFin")
-    List<Cuenta> findByTipoAndSaldoRangeAndFechaMovimiento(String tipo, BigDecimal saldoMin, BigDecimal saldoMax, LocalDate fechaInicio, LocalDate fechaFin);
+    @Query("SELECT c FROM Cuenta c WHERE c.tipoCuenta = :tipo AND c.saldo BETWEEN :saldoMin AND :saldoMax AND c.fechaUltimaTransaccion BETWEEN :fechaInicio AND :fechaFin")
+    List<Cuenta> findByTipoAndSaldoRangeAndFechaMovimiento(@Param("tipo") String tipo, @Param("saldoMin") BigDecimal saldoMin, @Param("saldoMax") BigDecimal saldoMax, @Param("fechaInicio") LocalDate fechaInicio, @Param("fechaFin") LocalDate fechaFin);
+    
 }
