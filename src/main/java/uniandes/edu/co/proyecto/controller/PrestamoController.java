@@ -74,17 +74,20 @@ public class PrestamoController {
         if (prestamo == null) {
             return ResponseEntity.notFound().build();
         }
-        if (prestamo.getSaldoPendiente() > 0) {
-            return ResponseEntity.badRequest().body("El préstamo tiene un saldo pendiente y no puede cerrarse.");
+    
+        if (prestamo.getSaldoPendiente() != 0) {
+            return ResponseEntity.badRequest().body("El prestamo tiene un saldo pendiente y no puede ser cerrado.");
         }
-        prestamo.setEstadoPrestamo(EstadoPrestamo.cerrado); 
+    
+        prestamo.setEstadoPrestamo(EstadoPrestamo.cerrado);
         prestamoRepository.save(prestamo);
 
-        Operacion operacion = new Operacion(Operacion.TipoOperacion.cerrar_prestamo, 0.0, new Date(), null, prestamo);
+        Operacion operacion = new Operacion(TipoOperacion.cerrar_prestamo, 0.0, new Date(), null, prestamo);
         operacionRepository.save(operacion);
-
-        return ResponseEntity.ok().build();
+    
+        return ResponseEntity.ok().body("El prestamo ha sido cerrado exitosamente.");
     }
+
 
 }
 
