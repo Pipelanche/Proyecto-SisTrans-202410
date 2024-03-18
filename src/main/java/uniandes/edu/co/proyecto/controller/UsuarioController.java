@@ -4,6 +4,7 @@ import uniandes.edu.co.proyecto.modelo.Usuario;
 import uniandes.edu.co.proyecto.modelo.UsuarioPK;
 import uniandes.edu.co.proyecto.repositorios.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,8 +31,10 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public Usuario createUsuario(@RequestBody Usuario usuario) {
-        return usuarioRepository.save(usuario);
+    public ResponseEntity<Usuario> createUsuario(@RequestBody Usuario usuario) {
+        
+        Usuario savedUsuario = usuarioRepository.save(usuario);
+        return new ResponseEntity<>(savedUsuario, HttpStatus.CREATED);
     }
 
     @PutMapping("/{tipoDeDocumento}/{numeroDeDocumento}")
