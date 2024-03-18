@@ -10,7 +10,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "gerentes_oficina")
 @IdClass(UsuarioPK.class)
-public class GerenteOficina extends Usuario{
+public class GerenteOficina extends Usuario {
 
     @Id
     private String tipoDeDocumento;

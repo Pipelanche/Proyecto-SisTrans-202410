@@ -41,7 +41,15 @@ public class UsuarioController {
         UsuarioPK usuarioId = new UsuarioPK(tipoDeDocumento, numeroDeDocumento);
         return usuarioRepository.findById(usuarioId)
                 .map(usuario -> {
-                    // Update fields here
+                    usuario.setNombre(usuarioDetails.getNombre());
+                    usuario.setNacionalidad(usuarioDetails.getNacionalidad());
+                    usuario.setDireccionFisica(usuarioDetails.getDireccionFisica());
+                    usuario.setCorreo(usuarioDetails.getCorreo());
+                    usuario.setTelefono(usuarioDetails.getTelefono());
+                    usuario.setLogin(usuarioDetails.getLogin());
+                    usuario.setPalabraClave(usuarioDetails.getPalabraClave());
+                    usuario.setTipoPersona(usuarioDetails.getTipoPersona());
+                    usuario.setRol(usuarioDetails.getRol());
                     return ResponseEntity.ok(usuarioRepository.save(usuario));
                 }).orElseGet(() -> ResponseEntity.notFound().build());
     }

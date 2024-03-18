@@ -4,9 +4,11 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.Table;
 
 
 @Entity
+@Table(name = "prestamos")
 @DiscriminatorValue("PRESTAMO")
 public class Prestamo extends Producto{
 

@@ -11,10 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface OficinaRepository extends JpaRepository<Oficina, Long> {
-    
-// RFM2 - Crear oficina
-@Modifying
-@Transactional 
-@Query(value = "INSERT INTO oficinas (nombre, direccion, numero_puntos_atencion, gerente_id) VALUES (:nombre, :direccion, :numeroPuntosAtencion, (SELECT id FROM usuarios WHERE tipo_de_documento = :gerenteTipoDeDocumento AND numero_de_documento = :gerenteNumeroDeDocumento))", nativeQuery = true)
-void crearOficina(@Param("nombre") String nombre, @Param("direccion") String direccion, @Param("numeroPuntosAtencion") Integer numeroPuntosAtencion, @Param("gerenteTipoDeDocumento") String gerenteTipoDeDocumento, @Param("gerenteNumeroDeDocumento") String gerenteNumeroDeDocumento);
+        
+    // RFM2 - Crear oficina
+    @Modifying
+    @Transactional 
+    @Query(value = "INSERT INTO oficinas (nombre, direccion, numero_puntos_atencion, gerente_id) VALUES (:nombre, :direccion, :numeroPuntosAtencion, (SELECT id FROM usuarios WHERE tipo_de_documento = :gerenteTipoDeDocumento AND numero_de_documento = :gerenteNumeroDeDocumento))", nativeQuery = true)
+    void crearOficina(@Param("nombre") String nombre, @Param("direccion") String direccion, @Param("numeroPuntosAtencion") Integer numeroPuntosAtencion, @Param("gerenteTipoDeDocumento") String gerenteTipoDeDocumento, @Param("gerenteNumeroDeDocumento") String gerenteNumeroDeDocumento);
 }

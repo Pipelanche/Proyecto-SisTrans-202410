@@ -69,7 +69,7 @@ public class OperacionController {
     public ResponseEntity<?> consignar(@PathVariable String numeroCuenta, @RequestParam Double monto) {
         Cuenta cuenta = cuentaRepository.findByNumero(numeroCuenta);
         if (cuenta == null || cuenta.getEstado() != EstadoCuenta.activa) {
-            return ResponseEntity.badRequest().body("La cuenta no existe.");
+            return ResponseEntity.badRequest().body("La cuenta no existe o no está activa.");
         }
         cuenta.setSaldo(cuenta.getSaldo() + monto); 
         cuentaRepository.save(cuenta);

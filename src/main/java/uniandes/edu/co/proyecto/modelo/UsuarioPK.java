@@ -4,15 +4,15 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public class UsuarioPK implements Serializable {
-    private String clienteTipoDeDocumento;
-    private String clienteNumeroDeDocumento;
+    private String tipoDeDocumento;
+    private String numeroDeDocumento;
 
     public UsuarioPK() {
     }
 
-    public UsuarioPK(String clienteTipoDeDocumento, String clienteNumeroDeDocumento) {
-        this.clienteTipoDeDocumento = clienteTipoDeDocumento;
-        this.clienteNumeroDeDocumento = clienteNumeroDeDocumento;
+    public UsuarioPK(String tipoDeDocumento, String numeroDeDocumento) {
+        this.tipoDeDocumento = tipoDeDocumento;
+        this.numeroDeDocumento = numeroDeDocumento;
     }
 
     @Override
@@ -20,12 +20,12 @@ public class UsuarioPK implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UsuarioPK that = (UsuarioPK) o;
-        return Objects.equals(clienteTipoDeDocumento, that.clienteTipoDeDocumento) &&
-               Objects.equals(clienteNumeroDeDocumento, that.clienteNumeroDeDocumento);
+        return Objects.equals(tipoDeDocumento, that.tipoDeDocumento) &&
+               Objects.equals(numeroDeDocumento, that.numeroDeDocumento);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(clienteTipoDeDocumento, clienteNumeroDeDocumento);
+        return Objects.hash(tipoDeDocumento, numeroDeDocumento);
     }
 }
