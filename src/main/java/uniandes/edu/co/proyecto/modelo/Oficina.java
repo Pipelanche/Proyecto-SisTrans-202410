@@ -30,7 +30,7 @@ public class Oficina {
     })
     private Usuario gerente;
 
-    public Oficina() {}
+    public Oficina() {;}
 
     public Oficina(String nombre, String direccion, Integer cantidadPuntosDeAtencion, String horaAbre, String horaCierre, Usuario gerente) {
         this.nombre = nombre;
