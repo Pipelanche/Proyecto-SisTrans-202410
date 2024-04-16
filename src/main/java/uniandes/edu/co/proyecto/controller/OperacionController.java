@@ -87,20 +87,25 @@ public class OperacionController {
     @PostMapping("/consignar/{numeroCuenta}/{puntoDeAtencionId}")
     @Transactional
     public ResponseEntity<?> consignar(@PathVariable String numeroCuenta, @PathVariable Long puntoDeAtencionId, @RequestParam Double monto) {
-    
+        if (monto <= 0) {
+            return ResponseEntity.badRequest().body("El monto debe ser mayor que cero.");
+        }
+
         PuntoDeAtencion puntoDeAtencion = puntoDeAtencionRepository.findById(puntoDeAtencionId).orElse(null);
         if (puntoDeAtencion == null) {
             return ResponseEntity.badRequest().body("El punto de atencion no existe.");
         }
         if (!isOperationAllowed(puntoDeAtencion.getTipo(), TipoOperacion.consignacion_cuenta)) {
-            return ResponseEntity.badRequest().body("La operacion no está permitida en este tipo de punto de atencion.");
+            return ResponseEntity.badRequest().body("La operacion no esta permitida en este tipo de punto de atencion.");
         }
 
         Cuenta cuenta = cuentaRepository.findByNumero(numeroCuenta);
         if (cuenta == null || cuenta.getEstado() != EstadoCuenta.activa) {
-            return ResponseEntity.badRequest().body("La cuenta no existe o no está activa.");
+            return ResponseEntity.badRequest().body("La cuenta no existe o no esta activa.");
         }
-        cuenta.setSaldo(cuenta.getSaldo() + monto); 
+
+        cuenta.setSaldo(cuenta.getSaldo() + monto);
+        cuenta.setFechaUltimaTransaccion(new Date());
         cuentaRepository.save(cuenta);
 
         Operacion operacion = new Operacion(TipoOperacion.consignacion_cuenta, monto, new Date(), puntoDeAtencion, cuenta);
@@ -108,6 +113,7 @@ public class OperacionController {
 
         return ResponseEntity.ok().build();
     }
+
 
     @PostMapping("/retirar/{numeroCuenta}/{puntoDeAtencionId}")
     @Transactional
@@ -117,7 +123,7 @@ public class OperacionController {
             return ResponseEntity.badRequest().body("El punto de atencion no existe.");
         }
         if (!isOperationAllowed(puntoDeAtencion.getTipo(), TipoOperacion.retiro_cuenta)) {
-            return ResponseEntity.badRequest().body("La operacion de retiro no está permitida en este tipo de punto de atencion.");
+            return ResponseEntity.badRequest().body("La operacion de retiro no esta permitida en este tipo de punto de atencion.");
         }
 
         Cuenta cuenta = cuentaRepository.findByNumero(numeroCuenta);
@@ -141,7 +147,7 @@ public class OperacionController {
             return ResponseEntity.badRequest().body("El punto de atencion no existe.");
         }
         if (!isOperationAllowed(puntoDeAtencion.getTipo(), TipoOperacion.transferencia_cuenta)) {
-            return ResponseEntity.badRequest().body("La operacion de transferencia no está permitida en este tipo de punto de atencion.");
+            return ResponseEntity.badRequest().body("La operacion de transferencia no esta permitida en este tipo de punto de atencion.");
         }
 
         Cuenta cuentaOrigen = cuentaRepository.findByNumero(numeroCuentaOrigen);
