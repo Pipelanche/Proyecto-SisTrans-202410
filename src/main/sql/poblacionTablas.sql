@@ -32,37 +32,39 @@ INSERT INTO Ubicaciones (clienteTipoDeDocumento, clienteNumeroDeDocumento, ciuda
 VALUES ('CC', '1000000004', 'Barranquilla', 'Atlántico', '080001');
 
 
+create sequence idProductos start with 1 increment by 1;
 -- Producto tipo cuenta para Alejandro Gomez (cliente) id: 1
-INSERT INTO Productos (tipo, clienteTipoDeDocumento, clienteNumeroDeDocumento)
+INSERT INTO Productos (idProductos.nextval, tipo, clienteTipoDeDocumento, clienteNumeroDeDocumento)
 VALUES ('cuenta', 'CC', '1000000001');
 -- Producto tipo prestamo para Carla Espinosa (cajero) id: 2
-INSERT INTO Productos (tipo, clienteTipoDeDocumento, clienteNumeroDeDocumento)
+INSERT INTO Productos (idProductos.nextval, tipo, clienteTipoDeDocumento, clienteNumeroDeDocumento)
 VALUES ('prestamo', 'CC', '1000000002');
 -- Producto tipo cdt para Luis Morales (gerente de oficina) id: 3
-INSERT INTO Productos (tipo, clienteTipoDeDocumento, clienteNumeroDeDocumento)
+INSERT INTO Productos (idProductos.nextval, tipo, clienteTipoDeDocumento, clienteNumeroDeDocumento)
 VALUES ('cdt', 'CC', '1000000003'); 
 -- Producto tipo cuenta para Sofia Castro (gerente general) id: 4
-INSERT INTO Productos (tipo, clienteTipoDeDocumento, clienteNumeroDeDocumento)
+INSERT INTO Productos (idProductos.nextval, tipo, clienteTipoDeDocumento, clienteNumeroDeDocumento)
 VALUES ('cuenta', 'CC', '1000000004');
 -- Producto tipo prestamo para Alejandro Gomez (cliente) id: 5
-INSERT INTO Productos (tipo, clienteTipoDeDocumento, clienteNumeroDeDocumento)
+INSERT INTO Productos (idProductos.nextval, tipo, clienteTipoDeDocumento, clienteNumeroDeDocumento)
 VALUES ('prestamo', 'CC', '1000000001');
 -- Producto tipo cdt para Carla Espinosa (cajero) id: 6
-INSERT INTO Productos (tipo, clienteTipoDeDocumento, clienteNumeroDeDocumento)
+INSERT INTO Productos (idProductos.nextval, tipo, clienteTipoDeDocumento, clienteNumeroDeDocumento)
 VALUES ('cdt', 'CC', '1000000002');
 -- Producto tipo prestamo y cdt para Sofia Castro (gerente general) id: 7 y 8
-INSERT INTO Productos (tipo, clienteTipoDeDocumento, clienteNumeroDeDocumento)
+INSERT INTO Productos (idProductos.nextval, tipo, clienteTipoDeDocumento, clienteNumeroDeDocumento)
 VALUES ('prestamo', 'CC', '1000000004');
-INSERT INTO Productos (tipo, clienteTipoDeDocumento, clienteNumeroDeDocumento)
+INSERT INTO Productos (idProductos.nextval, tipo, clienteTipoDeDocumento, clienteNumeroDeDocumento)
 VALUES ('cdt', 'CC', '1000000004');
 
 
+create sequence numeroCuentas start with 4000000 increment by 1;
 -- Cuenta de tipo 'ahorros' para el producto asignado a Alejandro Gomez
-INSERT INTO Cuentas (id, tipo, estado, saldo, fechaUltimaTransaccion)
-VALUES (1, 'ahorros', 'activa', 10000.00, '2023-01-10');
+INSERT INTO Cuentas (numeroCuentas.nextval, id, tipo, estado, saldo, fechaUltimaTransaccion)
+VALUES (1, 'ahorros', 'activa', 10000.00, TO_DATE('2023-01-10','YYYY-MM-DD'));
 -- Cuenta de tipo 'corriente' para el segundo producto asignado a Sofia Castro
-INSERT INTO Cuentas (id, tipo, estado, saldo, fechaUltimaTransaccion)
-VALUES (4, 'corriente', 'activa', 5000.00, '2023-01-15');
+INSERT INTO Cuentas (numeroCuentas.nextval, id, tipo, estado, saldo, fechaUltimaTransaccion)
+VALUES (4, 'corriente', 'activa', 5000.00, TO_DATE('2023-01-15','YYYY-MM-DD'));
 
 
 -- Préstamo de tipo 'estudio' para el producto asignado a Carla Espinosa
@@ -76,12 +78,13 @@ INSERT INTO Prestamos (id, tipoProducto, estado, monto, interes, cantidadCuotas,
 VALUES (7, 'libre_inversion', 'aprobado', 30000.00, 4.0, 36, 10, 860.00);
 
 
+create sequence idPuntosDeAtencion start with 1 increment by 1;
 -- Población de PuntosDeAtencion 
-INSERT INTO PuntosDeAtencion (tipo)
+INSERT INTO PuntosDeAtencion (idPuntosDeAtencion.nextval, tipo)
 VALUES ('atencion_personalizada');
-INSERT INTO PuntosDeAtencion (tipo)
+INSERT INTO PuntosDeAtencion (idPuntosDeAtencion.nextval, tipo)
 VALUES ('cajero_automatico');
-INSERT INTO PuntosDeAtencion (tipo)
+INSERT INTO PuntosDeAtencion (idPuntosDeAtencion.nextval, tipo)
 VALUES ('digital');
 
 
@@ -93,32 +96,34 @@ INSERT INTO PuntosFisicos (id, localizacionGeografica, oficina)
 VALUES (2, '-75.85161650827347, -69.33133482461028', 1);
 
 
+create sequence idOficinas start with 1 increment by 1;
 -- Población de Oficinas
-INSERT INTO Oficinas (nombre, direccion, cantidadPuntosDeAtencion, horaAbre, horaCierre, gerenteTipoDeDocumento, gerenteNumeroDeDocumento)
-VALUES ('Oficina Central', 'Avenida Principal 100, Ciudad Nueva', 1, '08:00', '18:00', 'CC', '1000000003');
+INSERT INTO Oficinas (idOficinas.nextval, nombre, direccion, cantidadPuntosDeAtencion, horaAbre, horaCierre, gerenteTipoDeDocumento, gerenteNumeroDeDocumento)
+VALUES ('Oficina Central', 'Avenida Principal 100, Ciudad Nueva', 1, INTERVAL '09:00:00' HOUR TO SECOND, INTERVAL '18:00:00' HOUR TO SECOND, 'CC', '1000000003');
 
 
+create sequence idOperaciones start with 1 increment by 1;
 -- Operación 'abrir_cuenta' para Alejandro Gomez 
-INSERT INTO Operaciones (tipo, monto, fechaHora, puntoDeAtencion, producto)
-VALUES ('abrir_cuenta', 10000.00, '2023-01-10 09:00:00', 1, 1);
+INSERT INTO Operaciones (idOperaciones.nextval, tipo, monto, fechaHora, puntoDeAtencion, producto)
+VALUES ('abrir_cuenta', 10000.00, TO_DATE('2023-01-10 09:00:00', 'YYYY-MM-DD HH24:MI:SS'), 1, 1);
 -- Operación 'solicitar_prestamo' para Carla Espinosa 
-INSERT INTO Operaciones (tipo, monto, fechaHora, puntoDeAtencion, producto)
-VALUES ('solicitar_prestamo', 20000.00, '2023-01-11 10:00:00', 1, 2);
+INSERT INTO Operaciones (idOperaciones.nextval, tipo, monto, fechaHora, puntoDeAtencion, producto)
+VALUES ('solicitar_prestamo', 20000.00, TO_DATE('2023-01-11 10:00:00', 'YYYY-MM-DD HH24:MI:SS'), 1, 2);
 -- Operación 'aprobar_prestamo' para el mismo préstamo de Carla Espinosa
-INSERT INTO Operaciones (tipo, monto, fechaHora, puntoDeAtencion, producto)
-VALUES ('aprobar_prestamo', 20000.00, '2023-01-12 11:00:00', 1, 2);
+INSERT INTO Operaciones (idOperaciones.nextval, tipo, monto, fechaHora, puntoDeAtencion, producto)
+VALUES ('aprobar_prestamo', 20000.00, TO_DATE('2023-01-12 11:00:00', 'YYYY-MM-DD HH24:MI:SS'), 1, 2);
 -- Operación 'consignacion_cuenta' para la cuenta de Alejandro Gomez
-INSERT INTO Operaciones (tipo, monto, fechaHora, puntoDeAtencion, producto)
-VALUES ('consignacion_cuenta', 5000.00, '2023-01-13 12:00:00', 1, 1);
+INSERT INTO Operaciones (idOperaciones.nextval, tipo, monto, fechaHora, puntoDeAtencion, producto)
+VALUES ('consignacion_cuenta', 5000.00, TO_DATE('2023-01-13 12:00:00', 'YYYY-MM-DD HH24:MI:SS'), 1, 1);
 -- Operación 'abrir_cuenta' para Sofia Castro
-INSERT INTO Operaciones (tipo, monto, fechaHora, puntoDeAtencion, producto)
-VALUES ('abrir_cuenta', 5000.00, '2023-01-15 14:00:00', 1, 4);
+INSERT INTO Operaciones (idOperaciones.nextval, tipo, monto, fechaHora, puntoDeAtencion, producto)
+VALUES ('abrir_cuenta', 5000.00, TO_DATE('2023-01-15 14:00:00', 'YYYY-MM-DD HH24:MI:SS'), 1, 4);
 -- Operación 'solicitar_prestamo' para Sofia Castro
-INSERT INTO Operaciones (tipo, monto, fechaHora, puntoDeAtencion, producto)
-VALUES ('solicitar_prestamo', 30000.00, '2023-01-16 15:00:00', 1, 7);
+INSERT INTO Operaciones (idOperaciones.nextval, tipo, monto, fechaHora, puntoDeAtencion, producto)
+VALUES ('solicitar_prestamo', 30000.00, TO_DATE('2023-01-16 15:00:00', 'YYYY-MM-DD HH24:MI:SS'), 1, 7);
 -- Operación 'aprobar_prestamo' para el mismo préstamo de Sofia Castro
-INSERT INTO Operaciones (tipo, monto, fechaHora, puntoDeAtencion, producto)
-VALUES ('aprobar_prestamo', 30000.00, '2023-01-17 16:00:00', 1, 7);
+INSERT INTO Operaciones (idOperaciones.nextval, tipo, monto, fechaHora, puntoDeAtencion, producto)
+VALUES ('aprobar_prestamo', 30000.00, TO_DATE('2023-01-17 16:00:00', 'YYYY-MM-DD HH24:MI:SS'), 1, 7);
 -- Operación 'pago_cuota_ordinaria' para el préstamo de Carla Espinosa
-INSERT INTO Operaciones (tipo, monto, fechaHora, puntoDeAtencion, producto)
-VALUES ('pago_cuota_ordinaria', 850.00, '2023-02-15 13:00:00', 3, 2);
+INSERT INTO Operaciones (idOperaciones.nextval, tipo, monto, fechaHora, puntoDeAtencion, producto)
+VALUES ('pago_cuota_ordinaria', 850.00, TO_DATE('2023-02-15 13:00:00', 'YYYY-MM-DD HH24:MI:SS'), 3, 2);
