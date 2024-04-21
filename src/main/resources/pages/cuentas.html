@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuentas</title>
+    <link rel="stylesheet" href="css/cuentas.css">
+</head>
+<body>
+    <h1>Cuentas</h1>
+    <div id="cuentaForm">
+        <input type="text" id="numero" placeholder="Numero">
+        <input type="text" id="tipoCuenta" placeholder="Tipo de Cuenta">
+        <input type="text" id="estado" placeholder="Estado de Cuenta">
+        <input type="number" id="saldo" placeholder="Saldo">
+        <input type="text" id="fechaUltimaTransaccion" placeholder="Fecha de la Ultima Transacción">
+        <button onclick="createCuenta()">Crear Cuenta</button>
+    </div>
+    <div id="cuentasList"></div>
+    <script src="js/cuentas.js"></script>
+</body>
+</html>

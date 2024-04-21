@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oficinas</title>
+    <link rel="stylesheet" href="css/oficinas.css">
+</head>
+<body>
+    <h1>Oficinas</h1>
+    <div id="oficinaForm">
+        <input type="text" id="nombre" placeholder="Nombre">
+        <input type="text" id="direccion" placeholder="Direccion">
+        <input type="number" id="cantidadPuntosDeAtencion" placeholder="Cantidad de Puntos de Atención">
+        <input type="text" id="horaAbre" placeholder="Hora de Apertura">
+        <input type="text" id="horaCierre" placeholder="Hora de Cierre">
+        <button onclick="createOficina()">Crear Oficina</button>
+    </div>
+    <div id="oficinasList"></div>
+    <script src="js/oficinas.js"></script>
+</body>
+</html>
