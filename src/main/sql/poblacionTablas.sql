@@ -32,7 +32,7 @@ INSERT INTO Ubicaciones (clienteTipoDeDocumento, clienteNumeroDeDocumento, ciuda
 VALUES ('CC', '1000000004', 'Barranquilla', 'Atlántico', '080001');
 
 
-create sequence idProductos start with 1 increment by 1;
+CREATE SEQUENCE idProductos START WITH 1 increment BY 1;
 -- Producto tipo cuenta para Alejandro Gomez (cliente) id: 1
 INSERT INTO Productos (id, tipo, clienteTipoDeDocumento, clienteNumeroDeDocumento)
 VALUES (idProductos.nextval, 'cuenta', 'CC', '1000000001');
@@ -58,7 +58,7 @@ INSERT INTO Productos (id, tipo, clienteTipoDeDocumento, clienteNumeroDeDocument
 VALUES (idProductos.nextval, 'cdt', 'CC', '1000000004');
 
 
-create sequence numeroCuentas start with 4000000 increment by 1;
+CREATE SEQUENCE numeroCuentas START WITH 4000000 increment BY 1;
 -- Cuenta de tipo 'ahorros' para el producto asignado a Alejandro Gomez
 INSERT INTO Cuentas (numero, id, tipo, estado, saldo, fechaUltimaTransaccion)
 VALUES (numeroCuentas.nextval, 1, 'ahorros', 'activa', 10000.00, TO_DATE('2023-01-10','YYYY-MM-DD'));
@@ -78,7 +78,7 @@ INSERT INTO Prestamos (id, tipoProducto, estado, monto, interes, cantidadCuotas,
 VALUES (7, 'libre_inversion', 'aprobado', 30000.00, 4.0, 36, 10, 860.00);
 
 
-create sequence idPuntosDeAtencion start with 1 increment by 1;
+CREATE SEQUENCE idPuntosDeAtencion START WITH 1 increment BY 1;
 -- Población de PuntosDeAtencion 
 INSERT INTO PuntosDeAtencion (id, tipo)
 VALUES (idPuntosDeAtencion.nextval, 'atencion_personalizada');
@@ -86,6 +86,12 @@ INSERT INTO PuntosDeAtencion (id, tipo)
 VALUES (idPuntosDeAtencion.nextval, 'cajero_automatico');
 INSERT INTO PuntosDeAtencion (id, tipo)
 VALUES (idPuntosDeAtencion.nextval, 'digital');
+
+
+CREATE SEQUENCE idOficinas START WITH 1 increment BY 1;
+-- Población de Oficinas
+INSERT INTO Oficinas (id, nombre, direccion, cantidadPuntosDeAtencion, horaAbre, horaCierre, gerenteTipoDeDocumento, gerenteNumeroDeDocumento)
+VALUES (idOficinas.nextval, 'Oficina Central', 'Avenida Principal 100, Ciudad Nueva', 1, INTERVAL '09:00:00' HOUR TO SECOND, INTERVAL '18:00:00' HOUR TO SECOND, 'CC', '1000000003');
 
 
 -- Punto Físico para Atención Personalizada 
@@ -96,13 +102,8 @@ INSERT INTO PuntosFisicos (id, localizacionGeografica, oficina)
 VALUES (2, '-75.85161650827347, -69.33133482461028', 1);
 
 
-create sequence idOficinas start with 1 increment by 1;
--- Población de Oficinas
-INSERT INTO Oficinas (id, nombre, direccion, cantidadPuntosDeAtencion, horaAbre, horaCierre, gerenteTipoDeDocumento, gerenteNumeroDeDocumento)
-VALUES (idOficinas.nextval, 'Oficina Central', 'Avenida Principal 100, Ciudad Nueva', 1, INTERVAL '09:00:00' HOUR TO SECOND, INTERVAL '18:00:00' HOUR TO SECOND, 'CC', '1000000003');
 
-
-create sequence idOperaciones start with 1 increment by 1;
+CREATE SEQUENCE idOperaciones START WITH 1 increment BY 1;
 -- Operación 'abrir_cuenta' para Alejandro Gomez 
 INSERT INTO Operaciones (id, tipo, monto, fechaHora, puntoDeAtencion, producto)
 VALUES (idOperaciones.nextval, 'abrir_cuenta', 10000.00, TO_DATE('2023-01-10 09:00:00', 'YYYY-MM-DD HH24:MI:SS'), 1, 1);
