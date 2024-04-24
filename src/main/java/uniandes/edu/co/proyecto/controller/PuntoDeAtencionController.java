@@ -5,11 +5,14 @@ import uniandes.edu.co.proyecto.repositorios.OperacionRepository;
 import uniandes.edu.co.proyecto.repositorios.PuntoDeAtencionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/puntosDeAtencion")
 public class PuntoDeAtencionController {
 
@@ -23,6 +26,13 @@ public class PuntoDeAtencionController {
     public List<PuntoDeAtencion> getAllPuntosDeAtencion() {
         return puntoDeAtencionRepository.findAll();
     }
+
+    @GetMapping("/puntoDeAtencion")
+    public String puntosDeAtencion(Model model) {
+        model.addAttribute("puntosDeAtencion", puntoDeAtencionRepository.darPuntos());
+        return "puntosDeAtencion";
+    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<PuntoDeAtencion> getPuntoDeAtencionById(@PathVariable Long id) {

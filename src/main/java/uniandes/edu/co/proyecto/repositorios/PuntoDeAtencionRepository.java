@@ -1,6 +1,9 @@
 package uniandes.edu.co.proyecto.repositorios;
 
 import uniandes.edu.co.proyecto.modelo.PuntoDeAtencion;
+
+import java.util.Collection;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -10,6 +13,9 @@ import org.springframework.data.repository.query.Param;
 
 @Repository
 public interface PuntoDeAtencionRepository extends JpaRepository<PuntoDeAtencion, Long> {
+
+    @Query(value = "SELECT tipo FROM puntosdeatencion", nativeQuery = true)
+    Collection<PuntoDeAtencion> darPuntos();
 
     @Modifying
     @Transactional

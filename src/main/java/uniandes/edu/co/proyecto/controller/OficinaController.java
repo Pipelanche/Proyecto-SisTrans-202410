@@ -7,6 +7,7 @@ import uniandes.edu.co.proyecto.repositorios.UsuarioRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +25,21 @@ public class OficinaController {
     @GetMapping
     public List<Oficina> getAllOficinas() {
         return oficinaRepository.findAll();
+    }
+
+    @GetMapping("oficina/new")
+    public String oficinaForm(Model model) {
+        model.addAttribute("oficina", new Oficina());
+        model.addAttribute("usuario", new Usuario());
+        return "oficinaNueva";
+    }
+    @PostMapping("oficina/new/save")
+    public String oficinaGuardar(@ModelAttribute Oficina oficina, @ModelAttribute Usuario usuario) {
+        if (!usuarioRepository.findByTipoDeDocumentoAndNumeroDeDocumento(usuario.getTipoDeDocumento(), usuario.getNumeroDeDocumento()).getRol().name().equals("gerente_oficina")) {
+            return "redirect:/oficinas/oficina/new";
+        }
+        oficinaRepository.crearOficina(oficina.getNombre(), oficina.getDireccion(), oficina.getCantidadPuntosDeAtencion(),  usuario.getTipoDeDocumento(), usuario.getNumeroDeDocumento());
+        return "redirect:/administrador";
     }
 
     @GetMapping("/{id}")

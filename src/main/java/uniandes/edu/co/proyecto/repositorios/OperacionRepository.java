@@ -36,7 +36,7 @@ public interface OperacionRepository extends JpaRepository<Operacion, Long> {
 
     // RFC4 – Consulta de operaciones realizadas sobre una cuenta - SERIALIZABLE
     // RFC5 – Consulta de operaciones realizadas sobre una cuenta – READ COMMITTED
-    @Query("SELECT o FROM Operacion o WHERE o.cuenta.numero = :numeroCuenta AND o.fechaHora BETWEEN :fechaInicio AND :fechaFin AND o.tipo IN ('consignacion_cuenta', 'retiro_cuenta', 'transferencia_cuenta')")
+/*     @Query("SELECT o FROM Operacion o WHERE o.cuenta.numero = :numeroCuenta AND o.fechaHora BETWEEN :fechaInicio AND :fechaFin AND o.tipo IN ('consignacion_cuenta', 'retiro_cuenta', 'transferencia_cuenta')")
     List<Operacion> findByCuentaAndFecha(@Param("numeroCuenta") int numeroCuenta, @Param("fechaInicio") Date fechaInicio, @Param("fechaFin") Date fechaFin);
-
+ */
 }

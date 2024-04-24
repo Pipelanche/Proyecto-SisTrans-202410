@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Inicio - gerente</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+    <div class="container mx-auto w-25">
+    <h1>Bienvenido gerente</h1>
+    <div>
+        <a th:href="@{/usuarios/cliente/new}" class="btn btn-primary d-block mb-2">Gestionar Usuarios</a>
+        <a th:href="@{/cuentas/new}" class="btn btn-primary d-block mb-2">Gestionar Cuentas</a>
+
+        <a th:href="@{/prestamos/prestamo}" class="btn btn-primary d-block mb-2">Cerrar prestamo</a>
+    </div>
+    </div>
+</body>
+</html>

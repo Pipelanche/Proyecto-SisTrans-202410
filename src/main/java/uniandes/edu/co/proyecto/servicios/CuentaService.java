@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 public class CuentaService {
-
+/* 
     private OperacionRepository operacionRepository;
 
     public CuentaService(OperacionRepository operacionRepository) {
@@ -37,5 +37,5 @@ public class CuentaService {
             System.out.println("No se pudo completar la consulta: " + e.getMessage());
             throw new RuntimeException("Consulta fallida.");
         }
-    }
+    } */
 }

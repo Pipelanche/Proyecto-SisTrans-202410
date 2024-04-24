@@ -6,17 +6,43 @@ import uniandes.edu.co.proyecto.repositorios.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+
+@Controller
 @RequestMapping("/usuarios")
 public class UsuarioController {
 
     public String index() {
         return "usuarios";
     }
+
+    @GetMapping("cliente/new")
+    public String clienteForm(Model model) {
+        model.addAttribute("usuario", new Usuario());
+        return "clienteNuevo";
+    }
+    @PostMapping("cliente/new/save")
+    public String clienteGuardar(@ModelAttribute Usuario usuario) {
+        usuarioRepository.crearUsuario(usuario.getTipoDeDocumento(), usuario.getNumeroDeDocumento(), usuario.getNombre(), usuario.getNacionalidad(), usuario.getDireccionFisica(), usuario.getCorreo(), usuario.getTelefono(), usuario.getLogin(), usuario.getPalabraClave(), usuario.getTipoPersona().name(), "cliente");
+        return "redirect:/gerente";
+    }
+
+    @GetMapping("usuario/new")
+    public String usuarioForm(Model model) {
+        model.addAttribute("usuario", new Usuario());
+        return "usuarioNuevo";
+    }
+    @PostMapping("usuario/new/save")
+    public String usuarioGuardar(@ModelAttribute Usuario usuario) {
+        usuarioRepository.crearUsuario(usuario.getTipoDeDocumento(), usuario.getNumeroDeDocumento(), usuario.getNombre(), usuario.getNacionalidad(), usuario.getDireccionFisica(), usuario.getCorreo(), usuario.getTelefono(), usuario.getLogin(), usuario.getPalabraClave(), usuario.getTipoPersona().name(), usuario.getRol().name());
+        return "redirect:/administrador";
+    }
+
 
     @Autowired
     private UsuarioRepository usuarioRepository;

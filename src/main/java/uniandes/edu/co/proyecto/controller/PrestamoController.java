@@ -8,11 +8,13 @@ import uniandes.edu.co.proyecto.repositorios.OperacionRepository;
 import uniandes.edu.co.proyecto.repositorios.PrestamoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/prestamos")
 public class PrestamoController {
 
@@ -25,6 +27,12 @@ public class PrestamoController {
     @GetMapping
     public List<Prestamo> getAllPrestamos() {
         return prestamoRepository.findAll();
+    }
+    
+    @GetMapping("/prestamo")
+    public String getPrestamos(Model model) {
+        model.addAttribute("prestamos", prestamoRepository.darPrestamos());
+        return "prestamos";
     }
 
     @GetMapping("/{id}")

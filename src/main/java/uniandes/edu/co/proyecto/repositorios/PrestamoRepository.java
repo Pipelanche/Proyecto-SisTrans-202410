@@ -1,6 +1,9 @@
 package uniandes.edu.co.proyecto.repositorios;
 
 import uniandes.edu.co.proyecto.modelo.Prestamo;
+
+import java.util.Collection;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -11,8 +14,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PrestamoRepository extends JpaRepository<Prestamo, Long> {
 
+    @Query(value = "SELECT * FROM prestamos", nativeQuery = true)
+    Collection<Prestamo> darPrestamos();
 
     // RFM5 - Crear Prestamo 
+    
     
     @Modifying
     @Transactional

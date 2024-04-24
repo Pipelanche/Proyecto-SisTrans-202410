@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Inicio - admin</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+    <div class="container mx-auto w-25">
+    <h1>Bienvenido administrador</h1>
+    <div>
+        <a th:href="@{/usuarios/usuario/new}" class="btn btn-primary d-block mb-2">Gestionar Usuarios</a>
+        <a th:href="@{/cuentas/new}" class="btn btn-primary d-block mb-2">Gestionar Cuentas</a>
+        <a th:href="@{/oficinas/oficina/new}" class="btn btn-primary d-block mb-2">Gestionar Oficinas</a>
+        <a th:href="@{/puntosDeAtencion/puntoDeAtencion}" class="btn btn-primary d-block mb-2">Gestionar puntos de atención</a>
+    </div>
+    </div>
+</body>
+</html>

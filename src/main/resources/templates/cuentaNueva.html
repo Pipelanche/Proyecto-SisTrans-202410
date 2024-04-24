@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuentas</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+    <div class="container border border-2 w-25">
+        <h1>Cuentas</h1>
+        <form th:action="@{/cuentas/new/save}" method="post">
+            <label class="col-form-label" >Numero:</label>
+            <input class="form-control" type="text" id="numero" name="numero" placeholder="numero" required th:value="${cuenta.numero}" />
+
+            <label class="col-form-label" >Tipo de cuenta:</label>
+            <input class="form-control" type="text" id="tipoCuenta" name="tipoCuenta" placeholder="Tipo de cuenta" required th:value="${cuenta.tipoCuenta}"/>
+
+            <label class="col-form-label" >Estado de cuenta:</label>
+            <input class="form-control" type="text" id="estado" name="estado" placeholder="estado" required th:value="${cuenta.estado}"/>
+
+            <label class="col-form-label" >Saldo:</label>
+            <input class="form-control" type="text" id="saldo" placeholder="saldo" name="saldo" required th:value="${cuenta.saldo}"/>
+
+            <label class="col-form-label" >Fecha de la Ultima Transacción:</label>
+            <input class="form-control" type="date" id="fechaUltimaTransaccion" namd="fechaUltimaTransaccion" placeholder="fecha Ultima Transaccion" required th:value="${cuenta.fechaUltimaTransaccion}"/>
+
+            <input type="submit" value="Guardar" class="btn btn-primary">
+        </form>
+    </div>
+</body>
+</html>

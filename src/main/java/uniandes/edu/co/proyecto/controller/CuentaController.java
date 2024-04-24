@@ -12,13 +12,15 @@ import uniandes.edu.co.proyecto.repositorios.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 
-@RestController
+@Controller
 @RequestMapping("/cuentas")
 public class CuentaController {
 
@@ -41,6 +43,17 @@ public class CuentaController {
         return cuentaRepository.findById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/new")
+    public String cuentaForm(Model model) {
+        model.addAttribute("cuenta", new Cuenta());
+        return "cuentaNueva";
+    }
+    @PostMapping("/new/save")
+    public String cuentaGuardar(@ModelAttribute Cuenta cuenta) {
+        cuentaRepository.insertCuenta((Long) 2321312L, cuenta.getTipoCuenta().name(), cuenta.getSaldo());
+        return "redirect:/";
     }
 
     @PostMapping

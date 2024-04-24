@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Inicio - BancoApp</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+    <div class="container mx-auto w-25">
+    <h1>Bienvenido a BancoApp</h1>
+    <div>
+        <h4>Seleccione su usuario: </h4>
+        <a th:href="@{/gerente}" class="btn btn-primary d-block mb-2">Gerente</a>
+        <a th:href="@{/administrador}" class="btn btn-primary d-block mb-2">Administrador</a>
+        <a th:href="@{/cliente}" class="btn btn-primary d-block mb-2">Cliente</a>
+        <a th:href="@{/cajero}" class="btn btn-primary d-block mb-2">Cajero</a>
+    </div>
+    </div>
+</body>
+</html>

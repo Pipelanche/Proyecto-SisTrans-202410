@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuario Management</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+    
+    <div class="container border border-2 w-25">
+        <h1>Usuarios</h1>
+        <form th:action="@{/usuarios/cliente/new/save}" method="post">
+
+
+
+
+
+
+
+
+        <label class="col-form-label" >Tipo documento:</label>
+        <input class="form-control" type="text" id="tipoDeDocumento" name="tipoDeDocumento" placeholder="Tipo de Documento" required th:value="${usuario.tipoDeDocumento}" />
+
+        <label class="col-form-label" >Numero documento:</label>
+        <input class="form-control" type="text" id="numeroDeDocumento" name="numeroDeDocumento" placeholder="Número de Documento" required th:value="${usuario.numeroDeDocumento}"/>
+
+        <label class="col-form-label" >Nombre:</label>
+        <input class="form-control" type="text" id="nombre" name="nombre" placeholder="Nombre" required th:value="${usuario.nombre}"/>
+
+        <label class="col-form-label" >Nacionalidad:</label>
+        <input class="form-control" type="text" id="nacionalidad" name="nacionalidad" placeholder="Nacionalidad" required th:value="${usuario.nacionalidad}"/>
+
+        <label class="col-form-label" >Dirección fisica:</label>
+        <input class="form-control" type="text" id="direccionFisica" name="direccionFisica" placeholder="Direccion Física" required th:value="${usuario.direccionFisica}"/>
+
+        <label class="col-form-label" >Correo:</label>
+        <input class="form-control" type="text" id="correo" name="correo" placeholder="Correo" required th:value="${usuario.correo}"/>
+
+        <label class="col-form-label" >Telefono:</label>
+        <input class="form-control" type="text" id="telefono" name="telefono" placeholder="Teléfono" required th:value="${usuario.telefono}"/>
+
+        <label class="col-form-label" >Login:</label>
+        <input class="form-control" type="text" id="login" name="login" placeholder="Login" required th:value="${usuario.login}" />
+
+        <label class="col-form-label" >Palabra clave:</label>
+        <input class="form-control" type="text" id="palabraClave" name="palabraClave" placeholder="Palabra Clave" required th:value="${usuario.palabraClave}"/>
+
+        <label class="col-form-label" >Tipo persona:</label>
+        <select class="form-control" id="tipoPersona" name="tipoPersona" required>
+            <option value="natural" th:selected="${usuario.tipoPersona eq 'natural'}">natural</option>
+            <option value="juridica" th:selected="${usuario.tipoPersona eq 'juridica'}">juridica</option>
+        </select>
+
+        <input type="submit" value="Guardar" class="btn btn-primary">
+        </form>
+    </div>
+</body>
+</html>
