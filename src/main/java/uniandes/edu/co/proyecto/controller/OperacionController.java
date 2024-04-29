@@ -121,22 +121,19 @@ public class OperacionController {
                 }).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-
-
-
-
-    //revisar operaciones correctas en cada cual con el enum de operacion...
-    private boolean isOperationAllowed(TipoPuntoDeAtencion puntoDeAtencionTipo, TipoOperacion operacionTipo) {
-        
-        switch(puntoDeAtencionTipo) {
+    private boolean isOperationAllowed(TipoPuntoDeAtencion tipoPunto, TipoOperacion tipoOperacion) {
+        switch (tipoPunto) {
             case atencion_personalizada:
-                return true; 
+                return true; //todos sirven.
             case cajero_automatico:
-                
-                return operacionTipo == TipoOperacion.consignacion_cuenta || operacionTipo == TipoOperacion.retiro_cuenta;
+            
+                return EnumSet.of(TipoOperacion.consignacion_cuenta, TipoOperacion.retiro_cuenta).contains(tipoOperacion);
             case digital:
                 
-                return operacionTipo != TipoOperacion.consignacion_cuenta && operacionTipo != TipoOperacion.retiro_cuenta;
+                return EnumSet.of(TipoOperacion.transferencia_cuenta, TipoOperacion.abrir_cuenta, TipoOperacion.desactivar_cuenta,
+                                  TipoOperacion.actualizar_cuenta, TipoOperacion.solicitar_prestamo, TipoOperacion.aprobar_prestamo,
+                                  TipoOperacion.rechazar_prestamo, TipoOperacion.pago_cuota_ordinaria, 
+                                  TipoOperacion.pago_cuota_extraordinaria).contains(tipoOperacion);
             default:
                 return false;
         }

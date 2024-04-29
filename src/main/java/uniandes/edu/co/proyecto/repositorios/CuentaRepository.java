@@ -62,5 +62,29 @@ public interface CuentaRepository extends JpaRepository<Cuenta, Long> {
     @Query(value = "SELECT * FROM Cuentas WHERE Cuentas.tipo = :tipo AND Cuentas.saldo BETWEEN :saldoMin AND :saldoMax AND Cuentas.fechaUltimaTransaccion BETWEEN :fechaInicio AND :fechaFin", nativeQuery = true)
     List<Cuenta> findByTipoAndSaldoRangeAndFechaMovimiento(@Param("tipo") String tipo, @Param("saldoMin") BigDecimal saldoMin, @Param("saldoMax") BigDecimal saldoMax, @Param("fechaInicio") LocalDate fechaInicio, @Param("fechaFin") LocalDate fechaFin);
     
+
+    //Transacciones 
+
+    @Modifying
+    @Transactional
+    @Query(value = "INSERT INTO operaciones (tipo, monto, fecha_hora, cuenta_id) VALUES ('CONSIGNACION', :monto, NOW(), :cuentaId); " +
+                   "UPDATE cuentas SET saldo = saldo + :monto, fecha_ultima_transaccion = NOW() WHERE id = :cuentaId;", nativeQuery = true)
+    void consignarEnCuenta(@Param("cuentaId") Long cuentaId, @Param("monto") Double monto);
+
+    @Modifying
+    @Transactional
+    @Query(value = "INSERT INTO operaciones (tipo, monto, fecha_hora, cuenta_id) VALUES ('RETIRO', :monto, NOW(), :cuentaId); " +
+                   "UPDATE cuentas SET saldo = saldo - :monto, fecha_ultima_transaccion = NOW() WHERE id = :cuentaId AND saldo >= :monto;", nativeQuery = true)
+    void retirarDeCuenta(@Param("cuentaId") Long cuentaId, @Param("monto") Double monto);
+
+    @Modifying
+    @Transactional
+    @Query(value = "INSERT INTO operaciones (tipo, monto, fecha_hora, cuenta_id) VALUES ('TRANSFERENCIA', -1 * :monto, NOW(), :cuentaOrigenId); " +
+                   "UPDATE cuentas SET saldo = saldo - :monto WHERE id = :cuentaOrigenId AND saldo >= :monto; " +
+                   "INSERT INTO operaciones (tipo, monto, fecha_hora, cuenta_id) VALUES ('CONSIGNACION', :monto, NOW(), :cuentaDestinoId); " +
+                   "UPDATE cuentas SET saldo = saldo + :monto WHERE id = :cuentaDestinoId;", nativeQuery = true)
+    void transferirEntreCuentas(@Param("cuentaOrigenId") Long cuentaOrigenId, 
+                                @Param("cuentaDestinoId") Long cuentaDestinoId, 
+                                @Param("monto") Double monto);
 }
 
