@@ -4,8 +4,10 @@ import uniandes.edu.co.proyecto.modelo.Cuenta;
 import uniandes.edu.co.proyecto.modelo.Cuenta.EstadoCuenta;
 import uniandes.edu.co.proyecto.modelo.Operacion;
 import uniandes.edu.co.proyecto.modelo.Operacion.TipoOperacion;
+import uniandes.edu.co.proyecto.modelo.Prestamo;
 import uniandes.edu.co.proyecto.modelo.PuntoDeAtencion;
 import uniandes.edu.co.proyecto.modelo.PuntoDeAtencion.TipoPuntoDeAtencion;
+import uniandes.edu.co.proyecto.modelo.Usuario;
 import uniandes.edu.co.proyecto.repositorios.CuentaRepository;
 import uniandes.edu.co.proyecto.repositorios.OperacionRepository;
 import uniandes.edu.co.proyecto.repositorios.PuntoDeAtencionRepository;
@@ -14,7 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.Date;
+import org.springframework.ui.Model;
+
+import java.util.Calendar;
+import java.sql.Date;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -46,6 +51,40 @@ public class OperacionController {
     @GetMapping
     public List<Operacion> getAllOperaciones() {
         return operacionRepository.findAll();
+    }
+
+    
+
+    @GetMapping("/extracto")
+    public String cuentaForm(Model model) {
+        Object[] datos = new Object[3];
+        model.addAttribute("datos", datos);
+        return "rfc3";
+    }
+    @PostMapping("/extracto/ver")
+    public String cuentaGuardar(@ModelAttribute Object[] datos, Model model) {
+        System.out.println(datos[0]);
+        System.out.println(datos[1]);
+        Long cuentaId = Long.parseLong(datos[0].toString());
+        Date fecha = (Date) datos[1];
+
+        Cuenta cuenta = cuentaRepository.darCuentaPorId(cuentaId);
+        if (cuenta == null) {
+            return "redirect:/";
+        }
+
+        Calendar calendario = Calendar.getInstance();
+        calendario.setTime(fecha);
+        
+        calendario.set(Calendar.DAY_OF_MONTH, 1);
+        Date primerDiaDelMes = new Date(calendario.getTimeInMillis());
+        
+        calendario.set(Calendar.DAY_OF_MONTH, calendario.getActualMaximum(Calendar.DAY_OF_MONTH));
+        Date ultimoDiaDelMes = new Date(calendario.getTimeInMillis());
+
+        model.addAttribute("operaciones", operacionRepository.findOperacionesByProductoAndMes(cuenta.getId(), primerDiaDelMes, ultimoDiaDelMes));
+        
+        return "redirect:/";
     }
 
     @GetMapping("/{id}")

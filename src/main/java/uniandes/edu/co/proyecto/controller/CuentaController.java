@@ -50,6 +50,37 @@ public class CuentaController {
         return "cuentas";
     }
 
+    @GetMapping("/consignacion")
+    public String consignacionForm(Model model) {
+        model.addAttribute("operacion", new Operacion());
+        model.addAttribute("producto", new Producto());
+        model.addAttribute("datos", new Object[2]);
+        return "pagoCuota";
+    }
+
+    @GetMapping("/consignacion/save")
+    public String hacerConsignacion(@ModelAttribute Operacion operacion, @ModelAttribute Producto producto, @ModelAttribute Object[] datos) {
+        Long oficina = Long.parseLong(datos[0].toString());
+        Date date  = new Date(System.currentTimeMillis());
+        // operacionRepository.insertOperacion(operacion.getTipo().name(), operacion.getMonto(), date , oficina , producto.getId());
+        return "redirect:/";
+    }
+
+    @GetMapping("/transferencia")
+    public String transferenciaForm(Model model) {
+        model.addAttribute("operacion", new Operacion());
+        model.addAttribute("producto", new Producto());
+        model.addAttribute("datos", new Object[2]);
+        return "pagoCuota";
+    }
+
+    @GetMapping("/transferencia/save")
+    public String hacerTransferencia(@ModelAttribute Operacion operacion, @ModelAttribute Producto producto, @ModelAttribute Object[] datos) {
+        Long oficina = Long.parseLong(datos[0].toString());
+        Date date  = new Date(System.currentTimeMillis());
+        // operacionRepository.insertOperacion(operacion.getTipo().name(), operacion.getMonto(), date , oficina , producto.getId());
+        return "redirect:/";
+    }
     
     @GetMapping("/cuenta/{id}/cerrar")
     public String cerrarPrestamo(@PathVariable Long id) {

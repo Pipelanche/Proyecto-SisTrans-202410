@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Lista de cuentas</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+
+</head>
+
+<body>
+    <div class="text-center">
+    <h1>Lista de cuentas</h1>
+        <table class="table table-hover table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Numero</th>
+                    <th>id</th>
+                    <th>Tipo</th>
+                    <th>Estado</th>
+                    <th>Saldo</th>
+                    <th>Fecha</th>
+                </tr>
+            </thead>
+            <th:block th:each="cuenta : ${cuentas}">
+                <tr>
+                    <td th:text="${cuenta.numero}"></td>
+                    <td th:text="${cuenta.id}"></td>
+                    <td th:text="${cuenta.tipoCuenta}"></td>
+                    <td th:text="${cuenta.estado}"></td>
+                    <td th:text="${cuenta.saldo}"></td>
+                    <td th:text="${cuenta.fechaUltimaTransaccion}"></td>
+
+
+                </tr>
+            </th:block>
+
+        </table>
+        <div>
+            <a th:href='@{/gerente}' class="btn btn-primary">Volver Atrás</a>
+        </div>
+        <br />
+
+    </div>
+</body>
+
+</html>

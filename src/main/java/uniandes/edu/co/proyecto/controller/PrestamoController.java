@@ -10,11 +10,15 @@ import uniandes.edu.co.proyecto.repositorios.PrestamoRepository;
 import uniandes.edu.co.proyecto.repositorios.ProductoRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import java.util.Date;
+
+import java.util.Collection;
+import java.sql.Date;
 import java.util.List;
 
 @Controller
@@ -39,6 +43,22 @@ public class PrestamoController {
     public String getPrestamos(Model model) {
         model.addAttribute("prestamos", prestamoRepository.darPrestamos());
         return "prestamos";
+    }
+
+    @GetMapping("/pago")
+    public String PagoOrdinarioForm(Model model) {
+        model.addAttribute("operacion", new Operacion());
+        model.addAttribute("producto", new Producto());
+        model.addAttribute("datos", new Object[2]);
+        return "pagoCuota";
+    }
+
+    @GetMapping("/pago/save")
+    public String hacerPagoOrdinario(@ModelAttribute Operacion operacion, @ModelAttribute Producto producto, @ModelAttribute Object[] datos) {
+        Long oficina = Long.parseLong(datos[0].toString());
+        Date date  = new Date(System.currentTimeMillis());
+        operacionRepository.insertOperacion(operacion.getTipo().name(), operacion.getMonto(), date , oficina , producto.getId());
+        return "redirect:/";
     }
 
     @GetMapping("/prestamo/{id}/cerrar")

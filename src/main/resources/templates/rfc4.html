@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de operaciones</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+    <div class="container border border-2 w-25">
+        <h1>Consulta de operaciones</h1>
+        <form th:action="@{/cuentas/new/save}" method="post">
+
+            <label class="col-form-label" >Numero de cuenta:</label>
+            <input class="form-control" type="text" id="saldo" placeholder="saldo" name="saldo" required th:value="${cuenta.saldo}"/>
+
+
+            <input type="submit" value="Guardar" class="btn btn-primary">
+        </form>
+    </div>
+</body>
+</html>

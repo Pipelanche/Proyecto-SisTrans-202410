@@ -23,6 +23,9 @@ public interface CuentaRepository extends JpaRepository<Cuenta, Long> {
     @Query(value = "Select * from cuentas", nativeQuery = true)
     Collection<Cuenta> darCuentas();
 
+    @Query(value = "Select * from cuentas where cuentas.id = :cuentaId", nativeQuery = true)
+    Cuenta darCuentaPorId(@Param("cuentaId") Long cuentaId);
+
     @Modifying
     @Transactional
     @Query(value = "UPDATE cuentas SET cuentas.estado = :estado WHERE cuentas.id = :cuentaId", nativeQuery = true)
@@ -56,7 +59,7 @@ public interface CuentaRepository extends JpaRepository<Cuenta, Long> {
 
 
     // RFC1 - Consultar las cuentas en BancAndes
-    @Query("SELECT c FROM Cuenta c WHERE c.tipo = :tipo AND c.saldo BETWEEN :saldoMin AND :saldoMax AND c.fechaUltimaTransaccion BETWEEN :fechaInicio AND :fechaFin")
+    @Query(value = "SELECT * FROM Cuentas WHERE Cuentas.tipo = :tipo AND Cuentas.saldo BETWEEN :saldoMin AND :saldoMax AND Cuentas.fechaUltimaTransaccion BETWEEN :fechaInicio AND :fechaFin", nativeQuery = true)
     List<Cuenta> findByTipoAndSaldoRangeAndFechaMovimiento(@Param("tipo") String tipo, @Param("saldoMin") BigDecimal saldoMin, @Param("saldoMax") BigDecimal saldoMax, @Param("fechaInicio") LocalDate fechaInicio, @Param("fechaFin") LocalDate fechaFin);
     
 }

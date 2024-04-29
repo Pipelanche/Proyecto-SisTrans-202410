@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Lista de operaciones</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+
+</head>
+
+<body>
+    <div class="text-center">
+    <h1>Lista de operaciones</h1>
+        <table class="table table-hover table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>id</th>
+                    <th>Tipo</th>
+                    <th>Monto</th>
+                    <th>Fecha hora</th>
+                    <th>Punto de atencion</th>
+                    <th>Producto</th>
+                </tr>
+            </thead>
+            <th:block th:each="operacion : ${operaciones}">
+                <tr>
+                    <td th:text="${operacion.id}"></td>
+                    <td th:text="${operacion.tipo}"></td>
+                    <td th:text="${operacion.monto}"></td>
+                    <td th:text="${operacion.fechaHora}"></td>
+                    <td th:text="${operacion.puntoDeAtencion.id}"></td>
+                    <td th:text="${operacion.producto.id}"></td>
+                </tr>
+            </th:block>
+
+        </table>
+        <div>
+            <a th:href='@{/gerente}' class="btn btn-primary">Volver Atrás</a>
+        </div>
+        <br />
+
+    </div>
+</body>
+
+</html>

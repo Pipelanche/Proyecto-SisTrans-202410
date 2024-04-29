@@ -3,6 +3,8 @@ package uniandes.edu.co.proyecto.repositorios;
 import uniandes.edu.co.proyecto.modelo.Usuario;
 import uniandes.edu.co.proyecto.modelo.UsuarioPK;
 
+import java.util.Collection;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -25,9 +27,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, UsuarioPK> {
     @Param("nacionalidad") String nacionalidad, @Param("direccionFisica") String direccionFisica, @Param("correo") String correo, @Param("telefono") String telefono,
     @Param("login") String login, @Param("palabraClave") String palabraClave, @Param("tipoPersona") String tipoPersona, @Param("rol") String rol);
     
-
     // RFC2 - Consultar un Cliente con sus productos
     @Query(value = "SELECT * FROM usuarios inner join productos on usuarios.TIPODEDOCUMENTO = productos.clientetipodedocumento and usuarios.NUMERODEDOCUMENTO = productos.clientenumerodedocumento where usuarios.TIPODEDOCUMENTO = :tipoDeDocumento and usuarios.NUMERODEDOCUMENTO = :numeroDeDocumento", nativeQuery = true)
-    Usuario findUsuarioWithProductos(@Param("tipoDeDocumento") String tipoDeDocumento, @Param("numeroDeDocumento") String numeroDeDocumento);
+    Collection<Object[]> findUsuarioWithProductos(@Param("tipoDeDocumento") String tipoDeDocumento, @Param("numeroDeDocumento") String numeroDeDocumento);
 
 }
