@@ -1,6 +1,6 @@
 package uniandes.edu.co.proyecto.modelo;
 
-import java.util.Date;
+import java.sql.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
@@ -8,27 +8,38 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
 @Entity
-@DiscriminatorValue("CUENTA")
-public class Cuenta extends Producto {
+@Table(name = "cuentas")
+public class Cuenta{
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-    
+    @OneToOne
+    @PrimaryKeyJoinColumn
+    private Producto producto;
+
+
     @Column(unique = true)
     @GeneratedValue 
     private String numero;
 
     @Enumerated(EnumType.STRING)
-    private TipoCuenta tipoCuenta;
+    private TipoCuenta tipo;
 
     @Enumerated(EnumType.STRING)
     private EstadoCuenta estado;
 
     private Double saldo;
 
-    @Temporal(TemporalType.TIMESTAMP)
     private Date fechaUltimaTransaccion;
 
     public enum TipoCuenta {
@@ -43,7 +54,7 @@ public class Cuenta extends Producto {
 
     public Cuenta(String numero, TipoCuenta tipoCuenta, EstadoCuenta estado, Double saldo, Date fechaUltimaTransaccion) {
         this.numero = numero;
-        this.tipoCuenta = tipoCuenta;
+        this.tipo = tipoCuenta;
         this.estado = estado;
         this.saldo = saldo;
         this.fechaUltimaTransaccion = fechaUltimaTransaccion;
@@ -55,7 +66,7 @@ public class Cuenta extends Producto {
 
    
     public TipoCuenta getTipoCuenta() {
-        return tipoCuenta; 
+        return tipo; 
     }
 
     public EstadoCuenta getEstado() {
@@ -75,7 +86,23 @@ public class Cuenta extends Producto {
     }
 
     public void setTipoCuenta(TipoCuenta tipoCuenta) {
-        this.tipoCuenta = tipoCuenta; 
+        this.tipo = tipoCuenta; 
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Producto getProducto() {
+        return producto;
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
     }
 
     public void setEstado(EstadoCuenta estado) {

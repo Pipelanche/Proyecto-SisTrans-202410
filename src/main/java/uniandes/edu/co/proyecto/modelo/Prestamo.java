@@ -4,24 +4,37 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.Table;
 
 
 @Entity
-@DiscriminatorValue("PRESTAMO")
-public class Prestamo extends Producto {
+@Table(name = "prestamos")
+public class Prestamo {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @OneToOne
+    @PrimaryKeyJoinColumn
+    private Producto producto;
 
     @Enumerated(EnumType.STRING)
-    private TipoPrestamo tipoPrestamo;
+    private TipoPrestamo tipoProducto;
 
     @Enumerated(EnumType.STRING)
-    private EstadoPrestamo estadoPrestamo;
+    private EstadoPrestamo estado;
 
     private Double monto;
     private Double interes;
     private Integer cantidadCuotas;
     private Integer diaPagoDeCuotas;
     private Double valorCuota;
-    private Double saldoPendiente;
+
 
     public enum TipoPrestamo {
         vivienda, estudio, automovil, libre_inversion
@@ -31,31 +44,34 @@ public class Prestamo extends Producto {
         solicitado, aprobado, rechazado, pagado, cerrado
     }
 
-    public Prestamo( TipoPrestamo tipoPrestamo, EstadoPrestamo estadoPrestamo, Double monto, Double interes, Integer cantidadCuotas, Integer diaPagoDeCuotas, Double valorCuota, Double saldoPendiente) {
-        this.tipoPrestamo = tipoPrestamo;
-        this.estadoPrestamo = estadoPrestamo;
+    public Prestamo() {
+    }
+    
+
+    public Prestamo( TipoPrestamo tipoPrestamo, EstadoPrestamo estadoPrestamo, Double monto, Double interes, Integer cantidadCuotas, Integer diaPagoDeCuotas, Double valorCuota) {
+        this.tipoProducto = tipoPrestamo;
+        this.estado = estadoPrestamo;
         this.monto = monto;
         this.interes = interes;
         this.cantidadCuotas = cantidadCuotas;
         this.diaPagoDeCuotas = diaPagoDeCuotas;
         this.valorCuota = valorCuota;
-        this.saldoPendiente = saldoPendiente;
     }
 
     public TipoPrestamo getTipoPrestamo() {
-        return tipoPrestamo;
+        return tipoProducto;
     }
 
     public void setTipoPrestamo(TipoPrestamo tipoPrestamo) {
-        this.tipoPrestamo = tipoPrestamo;
+        this.tipoProducto = tipoPrestamo;
     }
 
     public EstadoPrestamo getEstadoPrestamo() {
-        return estadoPrestamo;
+        return estado;
     }
 
     public void setEstadoPrestamo(EstadoPrestamo estadoPrestamo) {
-        this.estadoPrestamo = estadoPrestamo;
+        this.estado = estadoPrestamo;
     }
 
     public Double getMonto() {
@@ -98,12 +114,45 @@ public class Prestamo extends Producto {
         this.valorCuota = valorCuota;
     }
 
-    public Double getSaldoPendiente() {
-        return saldoPendiente;
+
+    public Long getId() {
+        return id;
     }
 
-    public void setSaldoPendiente(Double saldoPendiente) {
-        this.saldoPendiente = saldoPendiente;
+
+    public void setId(Long id) {
+        this.id = id;
     }
+
+
+    public Producto getProducto() {
+        return producto;
+    }
+
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
+    }
+
+
+    public TipoPrestamo getTipoProducto() {
+        return tipoProducto;
+    }
+
+
+    public void setTipoProducto(TipoPrestamo tipoProducto) {
+        this.tipoProducto = tipoProducto;
+    }
+
+
+    public EstadoPrestamo getEstado() {
+        return estado;
+    }
+
+
+    public void setEstado(EstadoPrestamo estado) {
+        this.estado = estado;
+    }
+
 
 }

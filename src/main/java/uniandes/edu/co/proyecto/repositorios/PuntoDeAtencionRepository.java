@@ -14,12 +14,12 @@ import org.springframework.data.repository.query.Param;
 @Repository
 public interface PuntoDeAtencionRepository extends JpaRepository<PuntoDeAtencion, Long> {
 
-    @Query(value = "SELECT tipo FROM puntosdeatencion", nativeQuery = true)
+    @Query(value = "SELECT * FROM puntosdeatencion", nativeQuery = true)
     Collection<PuntoDeAtencion> darPuntos();
 
     @Modifying
     @Transactional
-    @Query(value = "INSERT INTO puntos_de_atencion (tipo) VALUES (:tipo)", nativeQuery = true)
+    @Query(value = "INSERT INTO puntosdeatencion (id, tipo) VALUES ( idPuntosDeAtencion.nextval,:tipo)", nativeQuery = true)
     void createPuntoDeAtencion(@Param("tipo") String tipo);
 
     @Modifying

@@ -3,6 +3,8 @@ package uniandes.edu.co.proyecto.repositorios;
 import uniandes.edu.co.proyecto.modelo.PuntoFisico;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.Collection;
 import java.util.List;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -13,16 +15,19 @@ import org.springframework.data.repository.query.Param;
 @Repository
 public interface PuntoFisicoRepository extends JpaRepository<PuntoFisico, Long> {
 
-    // Encontrar los puntos fisicos asociados a una oficina.
-    List<PuntoFisico> findByOficinaId(Long oficinaId);
+    // Obtener todos los puntos fisicos
+    @Query(value = "SELECT * FROM puntosfisicos", nativeQuery = true)
+    Collection<PuntoFisico> darPuntosFisicos();
+
+
+    // RFM3 - Crear punto fisico
+    @Modifying
+    @Transactional
+    @Query(value = "INSERT INTO puntosfisicos (id, localizaciongeografica, oficina) VALUES (:id, :localizacionGeografica, :oficina)", nativeQuery = true)
+    void crearPuntoFisico(@Param("id") Long id, @Param("localizacionGeografica") String localizacionGeografica, @Param("oficina") Long oficina);
 
     @Modifying
     @Transactional
-    @Query(value = "INSERT INTO puntos_fisicos (tipo, localizacion_geografica, oficina_id) VALUES (:tipo, :localizacionGeografica, :oficinaId)", nativeQuery = true)
-    void createPuntoFisico(@Param("tipo") String tipo, @Param("localizacionGeografica") String localizacionGeografica, @Param("oficinaId") Long oficinaId);
-
-    @Modifying
-    @Transactional
-    @Query(value = "DELETE FROM puntos_fisicos WHERE id = :id", nativeQuery = true)
+    @Query(value = "DELETE FROM puntosfisicos WHERE id = :id", nativeQuery = true)
     void deletePuntoFisico(@Param("id") Long id);
 }

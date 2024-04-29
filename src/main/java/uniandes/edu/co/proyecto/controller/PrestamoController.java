@@ -1,11 +1,14 @@
 package uniandes.edu.co.proyecto.controller;
-
+import uniandes.edu.co.proyecto.modelo.Usuario;
 import uniandes.edu.co.proyecto.modelo.Operacion;
 import uniandes.edu.co.proyecto.modelo.Operacion.TipoOperacion;
 import uniandes.edu.co.proyecto.modelo.Prestamo;
+import uniandes.edu.co.proyecto.modelo.Producto;
 import uniandes.edu.co.proyecto.modelo.Prestamo.EstadoPrestamo;
 import uniandes.edu.co.proyecto.repositorios.OperacionRepository;
 import uniandes.edu.co.proyecto.repositorios.PrestamoRepository;
+import uniandes.edu.co.proyecto.repositorios.ProductoRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,6 +25,9 @@ public class PrestamoController {
     private PrestamoRepository prestamoRepository;
 
     @Autowired
+    private ProductoRepository productoRepository;
+
+    @Autowired
     private OperacionRepository operacionRepository;
 
     @GetMapping
@@ -35,21 +41,31 @@ public class PrestamoController {
         return "prestamos";
     }
 
+    @GetMapping("/prestamo/{id}/cerrar")
+    public String cerrarPrestamo(@PathVariable Long id) {
+        prestamoRepository.cerrarPrestamoSiSaldoEsCero(id);
+        return "redirect:/prestamos/prestamo";
+    }
+
+    
+    @GetMapping("/new")
+    public String cuentaForm(Model model) {
+        model.addAttribute("prestamo", new Prestamo());
+        model.addAttribute("usuario", new Usuario());
+        return "prestamoNuevo";
+    }
+    @PostMapping("/new/save")
+    public String cuentaGuardar(@ModelAttribute Prestamo prestamo, @ModelAttribute Usuario usuario) {
+        productoRepository.crearProducto("cuenta",usuario.getTipoDeDocumento(), usuario.getNumeroDeDocumento());
+        prestamoRepository.crearPrestamo(prestamo.getTipoPrestamo().name(), "solicitado", prestamo.getMonto(), prestamo.getInteres(), prestamo.getCantidadCuotas(), prestamo.getDiaPagoDeCuotas(), prestamo.getValorCuota());
+        return "redirect:/";
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Prestamo> getPrestamoById(@PathVariable Long id) {
         return prestamoRepository.findById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    @PostMapping
-    public ResponseEntity<Prestamo> createPrestamo(@RequestBody Prestamo prestamo) {
-        Prestamo savedPrestamo = prestamoRepository.save(prestamo);
-        
-        Operacion operacion = new Operacion(TipoOperacion.solicitar_prestamo, prestamo.getMonto(), new Date(), null, prestamo);
-        operacionRepository.save(operacion);
-        
-        return ResponseEntity.ok(savedPrestamo);
     }
 
     @PutMapping("/{id}")
@@ -76,25 +92,7 @@ public class PrestamoController {
                 }).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/{id}/cerrar")
-    public ResponseEntity<?> cerrarPrestamo(@PathVariable Long id) {
-        Prestamo prestamo = prestamoRepository.findById(id).orElse(null);
-        if (prestamo == null) {
-            return ResponseEntity.notFound().build();
-        }
-    
-        if (prestamo.getSaldoPendiente() != 0) {
-            return ResponseEntity.badRequest().body("El prestamo tiene un saldo pendiente y no puede ser cerrado.");
-        }
-    
-        prestamo.setEstadoPrestamo(EstadoPrestamo.cerrado);
-        prestamoRepository.save(prestamo);
 
-        Operacion operacion = new Operacion(TipoOperacion.cerrar_prestamo, 0.0, new Date(), null, prestamo);
-        operacionRepository.save(operacion);
-    
-        return ResponseEntity.ok().body("El prestamo ha sido cerrado exitosamente.");
-    }
 
 
 }

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prestamos</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+    <div class="container border border-2 w-25">
+        <h1>Prestamos</h1>
+
+        <form th:action="@{/prestamos/new/save}" method="post">
+
+            <label class="col-form-label" >Tipo de prestamo:</label>
+            <select class="form-control" id="tipoPrestamo" name="tipoPrestamo" required>
+                <option value="vivienda" th:selected="${prestamo.tipoPrestamo eq 'vivienda'}">vivienda</option>
+                <option value="estudio" th:selected="${prestamo.tipoPrestamo eq 'estudio'}">estudio</option>
+                <option value="automovil" th:selected="${prestamo.tipoPrestamo eq 'automovil'}">automovil</option>
+                <option value="libre_inversion" th:selected="${prestamo.tipoPrestamo eq 'libre_inversion'}">libre_inversion</option>
+            </select>
+
+            <label class="col-form-label" >Monto:</label>
+            <input class="form-control" type="text" id="monto" placeholder="monto" name="monto" required th:value="${prestamo.monto}"/>
+
+            <label class="col-form-label" >Interes:</label>
+            <input class="form-control" type="text" id="interes" name="interes" placeholder="interes" required th:value="${prestamo.interes}"/>
+
+
+            <label class="col-form-label" >Cantidad cuotas:</label>
+            <input class="form-control" type="text" id="cantidadCuotas" placeholder="cantidadCuotas" name="cantidadCuotas" required th:value="${prestamo.cantidadCuotas}"/>
+
+            <label class="col-form-label" >Dia pago:</label>
+            <input class="form-control" type="text" id="diaPagoDeCuotas" name="diaPagoDeCuotas" placeholder="diaPagoDeCuotas" required th:value="${prestamo.diaPagoDeCuotas}"/>
+
+
+            <label class="col-form-label" >Valor cuota:</label>
+            <input class="form-control" type="text" id="valorCuota" placeholder="valorCuota" name="valorCuota" required th:value="${prestamo.valorCuota}"/>
+
+
+            <label class="col-form-label" >Tipo documento:</label>
+            <input class="form-control" type="text" id="tipoDeDocumento" name="tipoDeDocumento" placeholder="Tipo de Documento" required th:value="${usuario.tipoDeDocumento}" />
+
+            <label class="col-form-label" >Numero documento:</label>
+            <input class="form-control" type="text" id="numeroDeDocumento" name="numeroDeDocumento" placeholder="Número de Documento" required th:value="${usuario.numeroDeDocumento}"/>
+
+            <input type="submit" value="Guardar" class="btn btn-primary">
+        </form>
+    </div>
+</body>
+</html>

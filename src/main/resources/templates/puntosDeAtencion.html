@@ -9,7 +9,8 @@
 
 <body>
     <div class="text-center">
-    <h1>Lista de puntos de atencion</h1>
+        <h1>Puntos de atencion sin operaciones</h1>
+        <h3>Lista de puntos de atencion</h3>
         <table class="table table-hover table-bordered">
             <thead class="thead-dark">
                 <tr>
@@ -33,9 +34,42 @@
 
         </table>
         <div>
-            <a th:href='@{/administrador/tiposUsuario/new}' class="btn btn-primary">Añadir tipo de usuario</a>
-            <a th:href='@{/administrador}' class="btn btn-primary">Volver Atrás</a>
+            <a th:href='@{/puntosDeAtencion/new}' class="btn btn-primary">Añadir punto de atencion</a>
         </div>
+
+        <h3>Lista de puntos fisicos</h3>
+        <table class="table table-hover table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>id</th>
+                    <th>localizacion</th>
+                    <th>Id oficina</th>
+                    <th>Nombre oficina</th>
+                    <th>acciones</th>
+                </tr>
+            </thead>
+            
+            <th:block th:each="puntoDeAtencion : ${puntosFisicos}">
+                <tr>
+                    <td th:text="${puntoDeAtencion.id}"></td>
+                    <td th:text="${puntoDeAtencion.localizacionGeografica}"></td>
+                    <td th:text="${puntoDeAtencion.oficina.id}"></td>
+                    <td th:text="${puntoDeAtencion.oficina.nombre}"></td>
+
+                    <td>
+                        <a th:href="@{puntosDeAtencion/{id}/delete(id=${puntoDeAtencion.id})}"
+                            onclick="return confirm('¿Estás seguro de borrar este punto de atención?')">Borrar</a>
+                    </td>
+                </tr>
+            </th:block>
+
+        </table>
+        
+        <div>
+            <a th:href='@{/puntosFisicos/new}' class="btn btn-primary">Añadir punto fisico</a>
+        </div>
+        <br />
+        <a th:href='@{/administrador}' class="btn btn-primary">Volver Atrás</a>
         <br />
 
     </div>

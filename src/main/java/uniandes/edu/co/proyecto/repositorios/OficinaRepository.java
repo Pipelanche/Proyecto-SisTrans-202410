@@ -15,6 +15,7 @@ public interface OficinaRepository extends JpaRepository<Oficina, Long> {
     // RFM2 - Crear oficina
     @Modifying
     @Transactional 
-    @Query(value = "INSERT INTO oficinas (nombre, direccion, numero_puntos_atencion, gerente_id) VALUES (:nombre, :direccion, :numeroPuntosAtencion, (SELECT id FROM usuarios WHERE tipo_de_documento = :gerenteTipoDeDocumento AND numero_de_documento = :gerenteNumeroDeDocumento))", nativeQuery = true)
+    @Query(value = "INSERT INTO oficinas (id, nombre, direccion, cantidadpuntosdeatencion, horaabre, horacierre, gerentetipodedocumento, gerentenumerodedocumento) VALUES (idOficinas.nextval,:nombre, :direccion, :numeroPuntosAtencion,INTERVAL '8' HOUR, INTERVAL '17' HOUR, :gerenteTipoDeDocumento, :gerenteNumeroDeDocumento)", nativeQuery = true)
     void crearOficina(@Param("nombre") String nombre, @Param("direccion") String direccion, @Param("numeroPuntosAtencion") Integer numeroPuntosAtencion, @Param("gerenteTipoDeDocumento") String gerenteTipoDeDocumento, @Param("gerenteNumeroDeDocumento") String gerenteNumeroDeDocumento);
+
 }

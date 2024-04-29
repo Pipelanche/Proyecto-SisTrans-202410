@@ -14,7 +14,7 @@ import jakarta.persistence.Table;
 public class Oficina {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String nombre;
@@ -28,11 +28,11 @@ public class Oficina {
         @JoinColumn(name = "gerenteTipoDeDocumento", referencedColumnName = "tipoDeDocumento"),
         @JoinColumn(name = "gerenteNumeroDeDocumento", referencedColumnName = "numeroDeDocumento")
     })
-    private Usuario gerente;
+    private GerenteOficina gerente;
 
     public Oficina() {;}
 
-    public Oficina(String nombre, String direccion, Integer cantidadPuntosDeAtencion, String horaAbre, String horaCierre, Usuario gerente) {
+    public Oficina(String nombre, String direccion, Integer cantidadPuntosDeAtencion, String horaAbre, String horaCierre, GerenteOficina gerente) {
         this.nombre = nombre;
         this.direccion = direccion;
         this.cantidadPuntosDeAtencion = cantidadPuntosDeAtencion;
@@ -66,7 +66,7 @@ public class Oficina {
         this.horaCierre = horaCierre;
     }
 
-    public void setGerente(Usuario gerente) {
+    public void setGerente(GerenteOficina gerente) {
         this.gerente = gerente;
     }
 

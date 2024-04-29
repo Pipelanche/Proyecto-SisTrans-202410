@@ -3,6 +3,8 @@ package uniandes.edu.co.proyecto.controller;
 import uniandes.edu.co.proyecto.modelo.PuntoDeAtencion;
 import uniandes.edu.co.proyecto.repositorios.OperacionRepository;
 import uniandes.edu.co.proyecto.repositorios.PuntoDeAtencionRepository;
+import uniandes.edu.co.proyecto.repositorios.PuntoFisicoRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,6 +24,9 @@ public class PuntoDeAtencionController {
     @Autowired
     private OperacionRepository operacionRepository;
 
+    @Autowired
+    private PuntoFisicoRepository puntoFisicoRepository;
+
     @GetMapping
     public List<PuntoDeAtencion> getAllPuntosDeAtencion() {
         return puntoDeAtencionRepository.findAll();
@@ -30,7 +35,20 @@ public class PuntoDeAtencionController {
     @GetMapping("/puntoDeAtencion")
     public String puntosDeAtencion(Model model) {
         model.addAttribute("puntosDeAtencion", puntoDeAtencionRepository.darPuntos());
+        model.addAttribute("puntosFisicos", puntoFisicoRepository.darPuntosFisicos());
         return "puntosDeAtencion";
+    }
+
+    
+    @GetMapping("new")
+    public String puntoDeAtencionForm(Model model) {
+        model.addAttribute("puntoDeAtencion", new PuntoDeAtencion());
+        return "puntoDeAtencionNuevo";
+    }
+    @PostMapping("new/save")
+    public String puntoDeAtencionGuardar(@ModelAttribute PuntoDeAtencion puntoDeAtencion) {
+        puntoDeAtencionRepository.createPuntoDeAtencion(puntoDeAtencion.getTipo().name());
+        return "redirect:/administrador";
     }
 
 

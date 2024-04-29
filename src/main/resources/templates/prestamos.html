@@ -13,6 +13,7 @@
         <table class="table table-hover table-bordered">
             <thead class="thead-dark">
                 <tr>
+                    <th>id</th>
                     <th>TipoProducto</th>
                     <th>Estado</th>
                     <th>Monto</th>
@@ -25,6 +26,7 @@
             </thead>
             <th:block th:each="prestamo : ${prestamos}">
                 <tr>
+                    <td th:text="${prestamo.id}"></td>
                     <td th:text="${prestamo.tipoPrestamo}"></td>
                     <td th:text="${prestamo.estadoPrestamo}"></td>
                     <td th:text="${prestamo.monto}"></td>
@@ -34,7 +36,7 @@
                     <td th:text="${prestamo.valorCuota}"></td>
 
                     <td>
-                        <a th:href="@{prestamo/{id}/delete(id=${prestamo.interes})}"
+                        <a th:href="@{prestamo/{id}/cerrar(id=${prestamo.id})}"
                         onclick="return confirm('¿Estás seguro de cerrarlo?')">Cerrar</a>
                     </td>
                 </tr>

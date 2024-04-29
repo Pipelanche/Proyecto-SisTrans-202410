@@ -12,8 +12,9 @@ import jakarta.persistence.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "tipo_usuario", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorColumn(name = "rol", discriminatorType = DiscriminatorType.STRING)
 @IdClass(UsuarioPK.class)
+@Table(name = "usuarios")
 public class Usuario {
 
     @Id
@@ -33,6 +34,7 @@ public class Usuario {
     private TipoPersona tipoPersona;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "rol", insertable = false, updatable = false)
     private Rol rol;
 
     public enum TipoPersona {

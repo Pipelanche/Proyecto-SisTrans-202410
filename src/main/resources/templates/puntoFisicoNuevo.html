@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fisico Management</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+    
+    <div class="container border border-2 w-25">
+        <h1>Puntos Fisicos</h1>
+
+        <form th:action="@{/puntosFisicos/new/save}" method="post">
+
+            <label class="col-form-label" >Id Punto de atencion :</label>
+            <input class="form-control" type="text" id="id" name="id" placeholder="id" required th:value="${puntoFisico.id}" />
+    
+            <label class="col-form-label" >Localizacion Geografica:</label>
+            <input class="form-control" type="text" id="localizacionGeografica" name="localizacionGeografica" placeholder="localizacionGeografica" required th:value="${puntoFisico.localizacionGeografica}"/>
+    
+            <label class="col-form-label" >Oficina:</label>
+            <input class="form-control" type="text" id="oficina" name="oficina" placeholder="oficina" required th:value="${puntoFisico.oficina.id}" />
+    
+        
+    
+            <input type="submit" value="Guardar" class="btn btn-primary">
+        </form>
+    </div>
+</body>
+</html>

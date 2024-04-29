@@ -7,11 +7,13 @@ import uniandes.edu.co.proyecto.repositorios.OficinaRepository;
 import uniandes.edu.co.proyecto.repositorios.PuntoFisicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/puntosFisicos")
 public class PuntoFisicoController {
 
@@ -21,9 +23,27 @@ public class PuntoFisicoController {
     @Autowired
     private OficinaRepository oficinaRepository;
 
+
     @GetMapping
     public List<PuntoFisico> getAllPuntosFisicos() {
         return puntoFisicoRepository.findAll();
+    }
+
+    @GetMapping("new")
+    public String puntoFisicoForm(Model model) {
+        PuntoFisico punto = new PuntoFisico();
+        punto.setOficina(new Oficina());
+        model.addAttribute("puntoFisico", punto);
+        return "puntoFisicoNuevo";
+    }
+    @PostMapping("new/save")
+    public String puntoFisicoGuardar(@ModelAttribute PuntoFisico puntoFisico) {
+        System.out.println(puntoFisico.getId());
+        System.out.println(puntoFisico.getLocalizacionGeografica());
+        System.out.println(puntoFisico.getOficina().getId());
+
+        puntoFisicoRepository.crearPuntoFisico(puntoFisico.getId(),puntoFisico.getLocalizacionGeografica(), puntoFisico.getOficina().getId());
+        return "redirect:/administrador";
     }
 
     @GetMapping("/{id}")
@@ -57,21 +77,7 @@ public class PuntoFisicoController {
                 }).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    //punto fisico req2
-    @PostMapping("/fisico")
-    public ResponseEntity<?> createPuntoFisico(@RequestBody PuntoFisico puntoFisico, @RequestParam Long oficinaId) {
-        if (puntoFisico.getTipo() == PuntoDeAtencion.TipoPuntoDeAtencion.digital) {
-            return ResponseEntity.badRequest().body("Puntos digitales no se relacionan con una oficina");
-        }
+  
 
-        Oficina oficina = oficinaRepository.findById(oficinaId).orElse(null);
-        if (oficina == null) {
-            return ResponseEntity.badRequest().body("Ninguna oficina se encontro con el id: " + oficinaId);
-        }
-
-        puntoFisico.setOficina(oficina);
-        PuntoFisico savedPuntoFisico = puntoFisicoRepository.save(puntoFisico);
-        return ResponseEntity.ok(savedPuntoFisico);
-    }
 
 }

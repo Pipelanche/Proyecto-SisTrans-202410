@@ -11,7 +11,7 @@ import jakarta.persistence.Id;
 public class PuntoDeAtencion {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Enumerated(EnumType.STRING)
@@ -19,6 +19,12 @@ public class PuntoDeAtencion {
 
     public enum TipoPuntoDeAtencion {
         atencion_personalizada, cajero_automatico, digital
+    }
+
+    public PuntoDeAtencion() {}
+
+    public PuntoDeAtencion(TipoPuntoDeAtencion tipo) {
+        this.tipo = tipo;
     }
 
     public Long getId() {

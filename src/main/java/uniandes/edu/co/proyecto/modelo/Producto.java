@@ -3,9 +3,8 @@ package uniandes.edu.co.proyecto.modelo;
 import jakarta.persistence.*;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "tipoProducto", discriminatorType = DiscriminatorType.STRING)
-public abstract class Producto {
+@Table(name = "productos")
+public class Producto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +22,14 @@ public abstract class Producto {
 
     public enum TipoProducto {
         cuenta, prestamo, cdt
+    }
+
+    public Producto() {
+    }
+
+    public Producto(TipoProducto tipo, Usuario cliente) {
+        this.tipo = tipo;
+        this.cliente = cliente;
     }
 
     public Long getId() {

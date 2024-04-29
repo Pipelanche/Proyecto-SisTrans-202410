@@ -2,17 +2,19 @@ package uniandes.edu.co.proyecto.controller;
 
 import uniandes.edu.co.proyecto.modelo.Oficina;
 import uniandes.edu.co.proyecto.modelo.Usuario;
+import uniandes.edu.co.proyecto.repositorios.GerenteOficinaRepository;
 import uniandes.edu.co.proyecto.repositorios.OficinaRepository;
 import uniandes.edu.co.proyecto.repositorios.UsuarioRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/oficinas")
 public class OficinaController {
 
@@ -21,6 +23,9 @@ public class OficinaController {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private GerenteOficinaRepository gerenteOficinaRepository;
 
     @GetMapping
     public List<Oficina> getAllOficinas() {
@@ -35,9 +40,22 @@ public class OficinaController {
     }
     @PostMapping("oficina/new/save")
     public String oficinaGuardar(@ModelAttribute Oficina oficina, @ModelAttribute Usuario usuario) {
-        if (!usuarioRepository.findByTipoDeDocumentoAndNumeroDeDocumento(usuario.getTipoDeDocumento(), usuario.getNumeroDeDocumento()).getRol().name().equals("gerente_oficina")) {
+
+        try {
+            gerenteOficinaRepository.darUsuarioPorDocumento(usuario.getTipoDeDocumento(), usuario.getNumeroDeDocumento());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println(e.getStackTrace());
             return "redirect:/oficinas/oficina/new";
         }
+        System.out.println("Creando oficina");System.out.println("Creando oficina");System.out.println("Creando oficina");System.out.println("Creando oficina");
+
+        System.out.println(oficina.getNombre());
+        System.out.println(oficina.getDireccion());
+        System.out.println(oficina.getCantidadPuntosDeAtencion());
+        System.out.println(usuario.getTipoDeDocumento());
+        System.out.println(usuario.getNumeroDeDocumento());
+
         oficinaRepository.crearOficina(oficina.getNombre(), oficina.getDireccion(), oficina.getCantidadPuntosDeAtencion(),  usuario.getTipoDeDocumento(), usuario.getNumeroDeDocumento());
         return "redirect:/administrador";
     }
@@ -59,7 +77,6 @@ public class OficinaController {
                     oficina.setCantidadPuntosDeAtencion(oficinaDetails.getCantidadPuntosDeAtencion());
                     oficina.setHoraAbre(oficinaDetails.getHoraAbre());
                     oficina.setHoraCierre(oficinaDetails.getHoraCierre());
-                    oficina.setGerente(oficinaDetails.getGerente());
                     return ResponseEntity.ok(oficinaRepository.save(oficina));
                 }).orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -73,28 +90,7 @@ public class OficinaController {
                 }).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping
-    public ResponseEntity<?> createOficina(@RequestBody Oficina oficina) {
-        oficina.setHoraAbre("08:00");
-        oficina.setHoraCierre("17:00");
 
-        if (oficina.getGerente() == null || oficina.getGerente().getTipoDeDocumento() == null || oficina.getGerente().getNumeroDeDocumento() == null) {
-            return ResponseEntity.badRequest().body("Informacion del gerente incompleta.");
-        }
-        String tipoDeDocumento = oficina.getGerente().getTipoDeDocumento();
-        String numeroDeDocumento = oficina.getGerente().getNumeroDeDocumento();
-
-        Usuario gerenteUsuario = usuarioRepository.findByTipoDeDocumentoAndNumeroDeDocumento(tipoDeDocumento, numeroDeDocumento);
-        if (gerenteUsuario == null) {
-            return ResponseEntity.badRequest().body("El gerente especificado no existe en el sistema.");
-        }
-        if (gerenteUsuario.getRol() != Usuario.Rol.gerente_oficina) {
-            return ResponseEntity.badRequest().body("El usuario especificado no es un gerente de oficina.");
-        }
-        oficina.setGerente(gerenteUsuario); 
-        Oficina savedOficina = oficinaRepository.save(oficina);
-        return ResponseEntity.ok(savedOficina);
-    }
 
 
 }

@@ -17,6 +17,10 @@ public interface PrestamoRepository extends JpaRepository<Prestamo, Long> {
     @Query(value = "SELECT * FROM prestamos", nativeQuery = true)
     Collection<Prestamo> darPrestamos();
 
+    @Modifying
+    @Transactional
+    @Query(value = "INSERT INTO prestamos (id, tipoproducto, estado, monto, interes, cantidadCuotas, diapagodecuotas, valorcuota) VALUES (idProductos.currval, :tipoproducto, :estado, :monto, :interes, :cantidadCuotas, :diapagodecuotas, :valorcuota)", nativeQuery = true)
+    void crearPrestamo(@Param("tipoproducto") String tipoproducto, @Param("estado") String estado, @Param("monto") Double monto, @Param("interes") Double interes, @Param("cantidadCuotas") Integer cantidadCuotas, @Param("diapagodecuotas") Integer diapagodecuotas, @Param("valorcuota") Double valorcuota);
     // RFM5 - Crear Prestamo 
     
     
@@ -40,7 +44,7 @@ public interface PrestamoRepository extends JpaRepository<Prestamo, Long> {
     // RFM6 - Actualizar prestamo a cerrado
     @Modifying
     @Transactional
-    @Query(value = "UPDATE Prestamo p SET p.estadoPrestamo = 'cerrado' WHERE p.id = :prestamoId AND p.saldoPendiente = 0", nativeQuery = true)
+    @Query(value = "UPDATE Prestamos SET Prestamos.estado = 'pagado' WHERE Prestamos.id = :prestamoId", nativeQuery = true)
     void cerrarPrestamoSiSaldoEsCero(@Param("prestamoId") Long prestamoId);
 
 
