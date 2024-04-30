@@ -52,6 +52,20 @@ public class CuentaController {
         return "rfc1";
     }
 
+    @GetMapping("/rfc3")
+    public String rf3(Model model) {
+        model.addAttribute("cuenta", new Cuenta());
+        model.addAttribute("datos", new SpringHelper());
+        return "rfc3";
+    }
+
+    
+    @PostMapping("/extracto")
+    public String rf3Lista(@ModelAttribute Cuenta cuenta, @ModelAttribute SpringHelper datos, Model model) {
+        //model.addAttribute("operaciones", operacionRepository.findOperacionesByProductoAndMes(cuenta.getId(), datos.getFecha1Helper(), datos.getFecha2Helper()));
+        return "extractos";
+    }
+
     @GetMapping("/saldo")
     public String rf1Saldo(Model model) {
         model.addAttribute("cuenta", new Cuenta());

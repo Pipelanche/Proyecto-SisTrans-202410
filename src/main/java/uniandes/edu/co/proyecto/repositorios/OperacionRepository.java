@@ -23,7 +23,7 @@ public interface OperacionRepository extends JpaRepository<Operacion, Long> {
     @Query(value = "INSERT INTO operaciones (id, tipo, monto, fechahora, puntodeatencion, producto) VALUES (idOperaciones.nextval,:tipo, :monto, :fechaHora, :puntoDeAtencion, :producto)", nativeQuery = true)
     void insertOperacion(@Param("tipo") String tipo, @Param("monto") Double monto, @Param("fechaHora") Date fechaHora, @Param("puntoDeAtencion") Long puntoDeAtencionId, @Param("producto") Long productoId);
 
-        // RFC3 - Extracto Bancario para una Cuenta
+    // RFC3 - Extracto Bancario para una Cuenta
     @Query(value = "SELECT c.*, o.tipo," + 
     "(SELECT op.monto FROM Operaciones op, Cuentas cu, Productos pr WHERE op.producto = pr.id AND pr.id = cu.id" +
     "AND op.fechaHora = TO_DATE(':fechaInicio') AS saldo_inicial," +

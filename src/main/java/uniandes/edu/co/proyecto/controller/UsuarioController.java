@@ -26,6 +26,19 @@ public class UsuarioController {
         model.addAttribute("usuario", new Usuario());
         return "clienteNuevo";
     }
+
+    @GetMapping("rfc2")
+    public String rfc2(Model model) {
+        model.addAttribute("usuario", new Usuario());
+        return "rfc2";
+    }
+
+    @PostMapping("rfc2Lista")
+    public String rfc2Lista(@ModelAttribute Usuario usuario,Model model) {
+        model.addAttribute("usuarios", usuarioRepository.findUsuarioWithProductos(usuario.getTipoDeDocumento(), usuario.getNumeroDeDocumento()));
+        return "rfc2Lista";
+    }
+
     @PostMapping("cliente/new/save")
     public String clienteGuardar(@ModelAttribute Usuario usuario) {
         usuarioRepository.crearUsuario(usuario.getTipoDeDocumento(), usuario.getNumeroDeDocumento(), usuario.getNombre(), usuario.getNacionalidad(), usuario.getDireccionFisica(), usuario.getCorreo(), usuario.getTelefono(), usuario.getLogin(), usuario.getPalabraClave(), usuario.getTipoPersona().name(), "cliente");

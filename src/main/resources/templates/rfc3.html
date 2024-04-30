@@ -3,21 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fisico Management</title>
+    <title>Extracto Management</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
 </head>
 <body>
     
     <div class="container border border-2 w-25">
-        <h1>Puntos Fisicos</h1>
+        <h1>Extractos</h1>
 
-        <form th:action="@{/operaciones/extracto/ver}" method="post">
+        <form th:action="@{/cuentas/extracto}" method="post">
 
             <label class="col-form-label" >Numero cuenta:</label>
-            <input class="form-control" type="text" id="id" name="id" placeholder="id" required th:value="${puntoFisico.id}" />
+            <input class="form-control" type="text" id="id" name="id" placeholder="id" required th:value="${cuenta.numero}" />
     
-            <label class="col-form-label" >Mes:</label>
-            <input class="form-control" type="text" id="localizacionGeografica" name="localizacionGeografica" placeholder="localizacionGeografica" required th:value="${puntoFisico.localizacionGeografica}"/>
+            <label class="col-form-label" >Fecha inicio:</label>
+            <input class="form-control" type="date" id="fecha1Helper" name="fecha1Helper" placeholder="mes" required th:value="${datos.fecha1Helper}"/>
+
+            <label class="col-form-label" >Fecha Fin:</label>
+            <input class="form-control" type="date" id="fecha2Helper" name="fecha2Helper" placeholder="mes" required th:value="${datos.fecha2Helper}"/>
 
             <input type="submit" value="Guardar" class="btn btn-primary">
         </form>

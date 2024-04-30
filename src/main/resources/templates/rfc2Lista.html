@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Lista de cuentas</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+
+</head>
+
+<body>
+    <div class="text-center">
+    <h1>Lista de clientes</h1>
+        <table class="table table-hover table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Tipo de documentos</th>
+                    <th>Numero de documento</th>
+                    <th>Nombre</th>
+                    <th>Nacionalidad</th>
+                    <th>Direccion Fisica</th>
+                    <th>Correo</th>
+                    <th>Telefono</th>
+                    <th>Login</th>
+                    <th>Palabra clave</th>
+                    <th>Tipo persona</th>
+                    <th>Rol</th>
+                    <th>Producto id</th>
+                    <th>Producto nombre</th>
+                    <th>Producto tipo</th>
+                    <th>Operacion id</th>
+                    <th>Operacion tipo</th>
+                    <th>Operacion monto</th>
+                </tr>
+            </thead>
+            <th:block th:each="usuario : ${usuarios}">
+                <tr>
+                    <td th:text="${usuario[0]}"></td>
+                    <td th:text="${usuario[1]}"></td>
+                    <td th:text="${usuario[2]}"></td>
+                    <td th:text="${usuario[3]}"></td>
+                    <td th:text="${usuario[4]}"></td>
+                    <td th:text="${usuario[5]}"></td>
+                    <td th:text="${usuario[6]}"></td>
+                    <td th:text="${usuario[7]}"></td>
+                    <td th:text="${usuario[8]}"></td>
+                    <td th:text="${usuario[9]}"></td>
+                    <td th:text="${usuario[10]}"></td>
+                    <td th:text="${usuario[11]}"></td>
+                    <td th:text="${usuario[12]}"></td>
+                    <td th:text="${usuario[13]}"></td>
+                    <td th:text="${usuario[14]}"></td>
+                    <td th:text="${usuario[15]}"></td>
+                    <td th:text="${usuario[16]}"></td>
+
+
+                </tr>
+            </th:block>
+
+        </table>
+        <div>
+            <a th:href='@{/gerente}' class="btn btn-primary">Volver Atrás</a>
+        </div>
+        <br />
+
+    </div>
+</body>
+
+</html>
