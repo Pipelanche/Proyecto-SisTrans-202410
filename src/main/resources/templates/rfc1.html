@@ -2,39 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cuentas consulta</title>
+    <title>- CONSULTAR LAS CUENTAS EN BANCANDES</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
 </head>
 <body>
-    
-    <div class="container border border-2 w-25">
-        <h1>Cuentas</h1>
-
-        <form th:action="@{/cuentas/usuario/ver}" method="post">
-            <label class="col-form-label" >Tipo documento:</label>
-            <input class="form-control" type="text" id="tipoDeDocumento" name="tipoDeDocumento" placeholder="Tipo de Documento" required th:value="${usuario.tipoDeDocumento}" />
-    
-            <label class="col-form-label" >Numero documento:</label>
-            <input class="form-control" type="text" id="numeroDeDocumento" name="numeroDeDocumento" placeholder="Número de Documento" required th:value="${usuario.numeroDeDocumento}"/>
-
-            <label class="col-form-label" >Tipo cuenta:</label>
-            <input class="form-control" type="text" id="numeroDeDocumento" name="numeroDeDocumento" placeholder="Número de Documento" required th:value="${usuario.numeroDeDocumento}"/>
-
-            <label class="col-form-label" >Saldo minimo:</label>
-            <input class="form-control" type="text" id="numeroDeDocumento" name="numeroDeDocumento" placeholder="Número de Documento" required th:value="${usuario.numeroDeDocumento}"/>
-
-            <label class="col-form-label" >Saldo maximo:</label>
-            <input class="form-control" type="text" id="numeroDeDocumento" name="numeroDeDocumento" placeholder="Número de Documento" required th:value="${usuario.numeroDeDocumento}"/>
-
-            <label class="col-form-label" >Fecha inicial:</label>
-            <input class="form-control" type="text" id="numeroDeDocumento" name="numeroDeDocumento" placeholder="Número de Documento" required th:value="${usuario.numeroDeDocumento}"/>
-
-            <label class="col-form-label" >Fecha final:</label>
-            <input class="form-control" type="text" id="numeroDeDocumento" name="numeroDeDocumento" placeholder="Número de Documento" required th:value="${usuario.numeroDeDocumento}"/>
-
-            <input type="submit" value="Guardar" class="btn btn-primary">
-        </form>
+    <div class="container mx-auto w-25">
+    <h1>CONSULTAR LAS CUENTAS EN BANCANDES</h1>
+    <div>
+        <a th:href="@{/cuentas/fecha}" class="btn btn-primary d-block mb-2">Por fecha</a>
+        <a th:href="@{/cuentas/saldo}" class="btn btn-primary d-block mb-2">Por saldo</a>
+        <a th:href="@{/cuentas/tipo}" class="btn btn-primary d-block mb-2">Por tipo</a>
+    </div>
     </div>
 </body>
 </html>

@@ -62,14 +62,14 @@ public interface CuentaRepository extends JpaRepository<Cuenta, Long> {
 
 
     // RFC1 - Consultar las cuentas en BancAndes
-    @Query(value = "SELECT c.tipo FROM Cuentas c WHERE c.tipo = :tipo GROUP BY c.tipo;", nativeQuery = true)
+    @Query(value = "SELECT * FROM Cuentas c WHERE c.tipo = :tipo", nativeQuery = true)
     List<Cuenta> findByTipo(@Param("tipo") String tipo);
 
-    @Query(value = "SELECT c.saldo FROM Cuentas c WHERE c.saldo = :saldo GROUP BY c.saldo;", nativeQuery = true)
-    List<Cuenta> findBySaldo(@Param("saldo") int tipo);
+    @Query(value = "SELECT * FROM Cuentas c WHERE c.saldo = :saldo", nativeQuery = true)
+    List<Cuenta> findBySaldo(@Param("saldo") Double saldo);
 
-    @Query(value = "SELECT c.fechaUltimaTransaccion FROM Cuentas c WHERE c.fechaUltimaTransaccion = TO_DATE(':fechaUltimaTransaccion','YYYY-MM-DD') GROUP BY c.fechaUltimaTransaccion;", nativeQuery = true)
-    List<Cuenta> findByFechaUltimaTransaccion(@Param("fechaUltimaTransaccion") int fechaUltimaTransaccion);
+    @Query(value = "SELECT * FROM Cuentas c WHERE c.fechaUltimaTransaccion = :fechaUltimaTransaccion", nativeQuery = true)
+    List<Cuenta> findByFechaUltimaTransaccion(@Param("fechaUltimaTransaccion") Date fechaUltimaTransaccion);
 
     //Transacciones 
 

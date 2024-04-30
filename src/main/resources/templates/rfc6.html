@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Inicio - cajero</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+    <div class="container mx-auto w-25">
+    <h1>Bienvenido cajero</h1>
+    <div>
+        <a th:href="@{/cuentas/rfc6Consignacion}" class="btn btn-primary d-block mb-2">Consignacion</a>
+        <a th:href="@{/cuentas/rfc6Transferencia}" class="btn btn-primary d-block mb-2">Transferencia</a>
+        <a th:href="@{/cuentas/rfc6Retiro}" class="btn btn-primary d-block mb-2">Retiro</a>
+    </div>
+    </div>
+</body>
+</html>

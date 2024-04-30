@@ -47,6 +47,56 @@ public class CuentaController {
         return cuentaRepository.findAll();
     }
 
+    @GetMapping("/rfc1")
+    public String rf1(Model model) {
+        return "rfc1";
+    }
+
+    @GetMapping("/saldo")
+    public String rf1Saldo(Model model) {
+        model.addAttribute("cuenta", new Cuenta());
+        model.addAttribute("usuario", new Usuario());
+        model.addAttribute("datos", new SpringHelper());
+        return "rfc1Saldo";
+    }
+
+    @PostMapping("/saldo/ver")
+    public String rf1SaldoVer(@ModelAttribute Cuenta cuenta, Model model) {
+        model.addAttribute("cuentas", cuentaRepository.findBySaldo(cuenta.getSaldo()));
+        return "rfc1Lista";
+    }
+
+    
+    @GetMapping("/tipo")
+    public String rf1Tipo(Model model) {
+        model.addAttribute("cuenta", new Cuenta());
+        model.addAttribute("usuario", new Usuario());
+        model.addAttribute("datos", new SpringHelper());
+        return "rfc1Tipo";
+    }
+
+    @PostMapping("/tipo/ver")
+    public String rf1TipoVer(@ModelAttribute Cuenta cuenta, @ModelAttribute SpringHelper datos, Model model) {
+        model.addAttribute("cuentas", cuentaRepository.findByTipo(datos.getTipoHelper()));
+        return "rfc1Lista";
+    }
+
+    @GetMapping("/fecha")
+    public String rf1Fecha(Model model) {
+        model.addAttribute("cuenta", new Cuenta());
+        model.addAttribute("usuario", new Usuario());
+        model.addAttribute("datos", new SpringHelper());
+        return "rfc1Fecha";
+    }
+
+    @PostMapping("/fecha/ver")
+    public String rf1FechaVer(@ModelAttribute Cuenta cuenta, Model model) {
+        model.addAttribute("cuentas", cuentaRepository.findByFechaUltimaTransaccion(cuenta.getFechaUltimaTransaccion()));
+        return "rfc1Lista";
+    }
+
+
+
 
     @GetMapping("/rfc4")
     public String rf4(Model model) {
@@ -71,6 +121,58 @@ public class CuentaController {
     public String rfc5Lista(@ModelAttribute Cuenta cuenta, Model model) {
         model.addAttribute("operaciones", CuentaService.consultarOperacionesReadCommitted(Integer.parseInt(cuenta.getNumero())));
         return "rfc5Lista";
+    }
+
+    @GetMapping("/rfc6")
+    public String rf6(Model model) {
+        return "rfc6";
+    }
+
+    @GetMapping("/rfc6Consignacion")
+    public String rfc6Consignacion(Model model) {
+        model.addAttribute("cuenta", new Cuenta());
+        model.addAttribute("operacion", new Operacion());
+        model.addAttribute("datos", new SpringHelper());
+        return "rfc6Consignacion";
+    }
+
+    @PostMapping("/rfc6Consignacion/save")
+    public String hacerConsignacionRfc6(@ModelAttribute Cuenta cuenta, @ModelAttribute Operacion operacion, @ModelAttribute SpringHelper datos) {
+        Cuenta cuenta1 = cuentaRepository.darCuentaPorNumero(cuenta.getNumero());
+        CuentaService.consignarDinero(cuenta1.getId(), operacion.getMonto());
+        return "redirect:/";
+    }
+
+    @GetMapping("/rfc6Retiro")
+    public String rfc6Retiro(Model model) {
+        model.addAttribute("cuenta", new Cuenta());
+        model.addAttribute("operacion", new Operacion());
+        model.addAttribute("datos", new SpringHelper());
+        return "rfc6Retiro";
+    }
+
+    @PostMapping("/rfc6Retiro/save")
+    public String hacerRetiroRfc6(@ModelAttribute Cuenta cuenta, @ModelAttribute Operacion operacion, @ModelAttribute SpringHelper datos) {
+        Cuenta cuenta1 = cuentaRepository.darCuentaPorNumero(cuenta.getNumero());
+        CuentaService.retirarDinero(cuenta1.getId(), 1L, operacion.getMonto());
+        return "redirect:/";
+    }
+
+    @GetMapping("/rfc6Transferencia")
+    public String rfc6Transferencia(Model model) {
+        model.addAttribute("cuenta", new Cuenta());
+        model.addAttribute("operacion", new Operacion());
+        model.addAttribute("datos", new SpringHelper());
+        return "rfc6Transferencia";
+    }
+
+    @PostMapping("/rfc6Transferencia/save")
+    public String hacerTransferianciaRfc6(@ModelAttribute Cuenta cuenta, @ModelAttribute Operacion operacion, @ModelAttribute SpringHelper datos) {
+        Cuenta cuenta1 = cuentaRepository.darCuentaPorNumero(cuenta.getNumero());
+        Cuenta cuenta2 = cuentaRepository.darCuentaPorNumero(datos.getNumeroHelper().toString());
+
+        CuentaService.transferirDinero(cuenta1.getId(), cuenta2.getId(), 1L, operacion.getMonto());
+        return "redirect:/";
     }
 
     @GetMapping("/cuenta")

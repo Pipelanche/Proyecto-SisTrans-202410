@@ -2,14 +2,14 @@
 <html>
 
 <head>
-    <title>Lista de cuentas</title>
+    <title>Lista de prestamos</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
 
 </head>
 
 <body>
     <div class="text-center">
-    <h1>Lista de prestamos</h1>
+    <h1>Lista de cuentas</h1>
         <table class="table table-hover table-bordered">
             <thead class="thead-dark">
                 <tr>
@@ -19,7 +19,6 @@
                     <th>Estado</th>
                     <th>Saldo</th>
                     <th>Fecha</th>
-                    <th>Acciones</th>
                 </tr>
             </thead>
             <th:block th:each="cuenta : ${cuentas}">
@@ -30,18 +29,12 @@
                     <td th:text="${cuenta.estado}"></td>
                     <td th:text="${cuenta.saldo}"></td>
                     <td th:text="${cuenta.fechaUltimaTransaccion}"></td>
-
-
-                    <td>
-                        <a th:href="@{cuenta/{id}/cerrar(id=${cuenta.id})}" onclick="return confirm('¿Estás seguro de cerrarla?')">Cerrar</a>
-                        <a th:href="@{cuenta/{id}/desactivar(id=${cuenta.id})}" onclick="return confirm('¿Estás seguro de desactivarla?')">Desactivar</a>
-                    </td>
                 </tr>
             </th:block>
 
         </table>
         <div>
-            <a th:href='@{/gerente}' class="btn btn-primary">Volver Atrás</a>
+            <a th:href='@{/}' class="btn btn-primary">Volver Atrás</a>
         </div>
         <br />
 
