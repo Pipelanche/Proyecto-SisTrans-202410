@@ -3,7 +3,9 @@ package uniandes.edu.co.proyecto.repositorios;
 import uniandes.edu.co.proyecto.modelo.Cuenta;
 import uniandes.edu.co.proyecto.modelo.Cuenta.EstadoCuenta;
 
+import java.math.BigDecimal;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
@@ -20,6 +22,9 @@ public interface CuentaRepository extends JpaRepository<Cuenta, Long> {
 
     @Query(value = "Select * from cuentas", nativeQuery = true)
     Collection<Cuenta> darCuentas();
+
+    @Query(value = "Select * from cuentas where cuentas.numero = :numero", nativeQuery = true)
+    Cuenta darCuentaPorNumero(@Param("numero") String numero);
 
     @Query(value = "Select * from cuentas where cuentas.id = :cuentaId", nativeQuery = true)
     Cuenta darCuentaPorId(@Param("cuentaId") Long cuentaId);
@@ -53,6 +58,8 @@ public interface CuentaRepository extends JpaRepository<Cuenta, Long> {
     @Transactional
     @Query("UPDATE Cuenta c SET c.estado = 'desactivada' WHERE c.numero = :numero AND c.estado = 'activa'")
     int deactivateCuenta(@Param("numero") String numero);
+
+
 
     // RFC1 - Consultar las cuentas en BancAndes
     @Query(value = "SELECT c.tipo FROM Cuentas c WHERE c.tipo = :tipo GROUP BY c.tipo;", nativeQuery = true)

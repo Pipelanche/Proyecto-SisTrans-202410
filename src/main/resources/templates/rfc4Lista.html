@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Lista de prestamos</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+
+</head>
+
+<body>
+    <div class="text-center">
+    <h1>Lista de prestamos</h1>
+        <table class="table table-hover table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>id</th>
+                    <th>TipoProducto</th>
+                    <th>Estado</th>
+                    <th>Monto</th>
+                    <th>Interes</th>
+                    <th>cantidadCuotas</th>
+                    <th>Dia pago de cuotas</th>
+                    <th>valor cuotas</th>
+                    <th>Accion</th>
+                </tr>
+            </thead>
+            <th:block th:each="operacion : ${operaciones}">
+                <tr>
+                    <td th:text="${operacion.id}"></td>
+                    <td th:text="${operacion.tipoPrestamo}"></td>
+                    <td th:text="${operacion.estadoPrestamo}"></td>
+                    <td th:text="${operacion.monto}"></td>
+                    <td th:text="${prestamo.interes}"></td>
+                    <td th:text="${prestamo.cantidadCuotas}"></td>
+                    <td th:text="${prestamo.diaPagoDeCuotas}"></td>
+                    <td th:text="${prestamo.valorCuota}"></td>
+
+                    <td>
+                        <a th:href="@{prestamo/{id}/cerrar(id=${prestamo.id})}"
+                        onclick="return confirm('¿Estás seguro de cerrarlo?')">Cerrar</a>
+                    </td>
+                </tr>
+            </th:block>
+
+        </table>
+        <div>
+            <a th:href='@{/gerente}' class="btn btn-primary">Volver Atrás</a>
+        </div>
+        <br />
+
+    </div>
+</body>
+
+</html>

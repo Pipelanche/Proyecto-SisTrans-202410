@@ -1,9 +1,12 @@
 package uniandes.edu.co.proyecto.controller;
 import uniandes.edu.co.proyecto.modelo.Usuario;
+import uniandes.edu.co.proyecto.modelo.Cuenta;
 import uniandes.edu.co.proyecto.modelo.Operacion;
 import uniandes.edu.co.proyecto.modelo.Operacion.TipoOperacion;
 import uniandes.edu.co.proyecto.modelo.Prestamo;
 import uniandes.edu.co.proyecto.modelo.Producto;
+import uniandes.edu.co.proyecto.modelo.PuntoDeAtencion;
+import uniandes.edu.co.proyecto.modelo.SpringHelper;
 import uniandes.edu.co.proyecto.modelo.Prestamo.EstadoPrestamo;
 import uniandes.edu.co.proyecto.repositorios.OperacionRepository;
 import uniandes.edu.co.proyecto.repositorios.PrestamoRepository;
@@ -49,15 +52,14 @@ public class PrestamoController {
     public String PagoOrdinarioForm(Model model) {
         model.addAttribute("operacion", new Operacion());
         model.addAttribute("producto", new Producto());
-        model.addAttribute("datos", new Object[2]);
+        model.addAttribute("datos", new SpringHelper());
         return "pagoCuota";
     }
 
-    @GetMapping("/pago/save")
-    public String hacerPagoOrdinario(@ModelAttribute Operacion operacion, @ModelAttribute Producto producto, @ModelAttribute Object[] datos) {
-        Long oficina = Long.parseLong(datos[0].toString());
+    @PostMapping("/pago/save")
+    public String hacerPagoOrdinario(@ModelAttribute Operacion operacion, @ModelAttribute Producto producto, @ModelAttribute SpringHelper datos) {
         Date date  = new Date(System.currentTimeMillis());
-        operacionRepository.insertOperacion(operacion.getTipo().name(), operacion.getMonto(), date , oficina , producto.getId());
+        operacionRepository.insertOperacion(datos.getTipoHelper(), operacion.getMonto(), date , datos.getNumeroHelper() , producto.getId());
         return "redirect:/";
     }
 

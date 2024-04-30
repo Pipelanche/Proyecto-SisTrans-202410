@@ -3,25 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consignacion</title>
+    <title>Transferir consulta</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
 </head>
 <body>
     
     <div class="container border border-2 w-25">
-        <h1>Consignacion</h1>
+        <h1>Transferir</h1>
 
-        <form th:action="@{/cuentas/consignacion/save}" method="post">
+        <form th:action="@{/cuentas/transferencia/save}" method="post">
             <label class="col-form-label" >Numero de cuenta:</label>
             <input class="form-control" type="text" id="numero" name="numero" placeholder="numero" required th:value="${cuenta.numero}" />
     
+            <label class="col-form-label" >Numero de cuenta destino:</label>
+            <input class="form-control" type="text" id="numeroHelper" name="numeroHelper" placeholder="numeroHelper" required th:value="${datos.numeroHelper}" />
+
             <label class="col-form-label" >Monto:</label>
             <input class="form-control" type="text" id="monto" name="monto" placeholder="monto" required th:value="${operacion.monto}"/>
 
             <label class="col-form-label" >Tipo:</label>
             <select class="form-control" id="tipoHelper" name="tipoHelper" required>
-                <option value="consignacion_cuenta" th:selected="${datos.tipoHelper eq 'consignacion_cuenta'}"> consignacion_cuenta</option>
-                <option value="retiro_cuenta" th:selected="${datos.tipoHelper eq 'retiro_cuenta'}">retiro_cuenta</option>
+                <option value="consignacion_cuenta" th:selected="${datos.tipoHelper eq 'transferencia_cuenta'}"> consignacion_cuenta</option>
             </select>
 
             <input type="submit" value="Guardar" class="btn btn-primary">
