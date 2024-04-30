@@ -3,9 +3,7 @@ package uniandes.edu.co.proyecto.repositorios;
 import uniandes.edu.co.proyecto.modelo.Cuenta;
 import uniandes.edu.co.proyecto.modelo.Cuenta.EstadoCuenta;
 
-import java.math.BigDecimal;
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
@@ -56,12 +54,15 @@ public interface CuentaRepository extends JpaRepository<Cuenta, Long> {
     @Query("UPDATE Cuenta c SET c.estado = 'desactivada' WHERE c.numero = :numero AND c.estado = 'activa'")
     int deactivateCuenta(@Param("numero") String numero);
 
-
-
     // RFC1 - Consultar las cuentas en BancAndes
-    @Query(value = "SELECT * FROM Cuentas WHERE Cuentas.tipo = :tipo AND Cuentas.saldo BETWEEN :saldoMin AND :saldoMax AND Cuentas.fechaUltimaTransaccion BETWEEN :fechaInicio AND :fechaFin", nativeQuery = true)
-    List<Cuenta> findByTipoAndSaldoRangeAndFechaMovimiento(@Param("tipo") String tipo, @Param("saldoMin") BigDecimal saldoMin, @Param("saldoMax") BigDecimal saldoMax, @Param("fechaInicio") LocalDate fechaInicio, @Param("fechaFin") LocalDate fechaFin);
-    
+    @Query(value = "SELECT c.tipo FROM Cuentas c WHERE c.tipo = :tipo GROUP BY c.tipo;", nativeQuery = true)
+    List<Cuenta> findByTipo(@Param("tipo") String tipo);
+
+    @Query(value = "SELECT c.saldo FROM Cuentas c WHERE c.saldo = :saldo GROUP BY c.saldo;", nativeQuery = true)
+    List<Cuenta> findBySaldo(@Param("saldo") int tipo);
+
+    @Query(value = "SELECT c.fechaUltimaTransaccion FROM Cuentas c WHERE c.fechaUltimaTransaccion = TO_DATE(':fechaUltimaTransaccion','YYYY-MM-DD') GROUP BY c.fechaUltimaTransaccion;", nativeQuery = true)
+    List<Cuenta> findByFechaUltimaTransaccion(@Param("fechaUltimaTransaccion") int fechaUltimaTransaccion);
 
     //Transacciones 
 
