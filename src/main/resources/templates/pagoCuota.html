@@ -10,24 +10,22 @@
     <div class="container border border-2 w-25">
         <h1>Prestamos</h1>
 
-        <form th:action="@{/prestamos/new/save}" method="post">
-
-            <label class="col-form-label" >Punto de atencion:</label>
-            <input class="form-control" type="text" id="monto" placeholder="monto" name="monto" required th:value="${prestamo.monto}"/>
-
-            <label class="col-form-label" >Producto:</label>
-            <input class="form-control" type="text" id="monto" placeholder="monto" name="monto" required th:value="${prestamo.monto}"/>
+        <form th:action="@{/prestamos/pago/save}" method="post">
 
             <label class="col-form-label" >Numero prestamo:</label>
-            <input class="form-control" type="text" id="monto" placeholder="monto" name="monto" required th:value="${prestamo.monto}"/>
+            <input class="form-control" type="text" id="id" placeholder="id" name="id" required th:value="${producto.id}"/>
+
+            <label class="col-form-label" >Punto de atencion:</label>
+            <input class="form-control" type="text" id="numeroHelper" placeholder="numeroHelper" name="numeroHelper" required th:value="${datos.numeroHelper}"/>
 
             <label class="col-form-label" >Monto:</label>
-            <input class="form-control" type="text" id="interes" name="interes" placeholder="interes" required th:value="${prestamo.interes}"/>
+            <input class="form-control" type="text" id="monto" name="monto" placeholder="monto" required th:value="${operacion.monto}"/>
+
 
             <label class="col-form-label" >Tipo de operacion:</label>
-            <select class="form-control" id="rol" name="rol" required>
-                <option value="pago_cuota_ordinaria" th:selected="${usuario.rol eq 'pago_cuota_ordinaria'}"> pago_cuota_ordinaria</option>
-                <option value="pago_cuota_extraordinaria" th:selected="${usuario.rol eq 'pago_cuota_extraordinaria'}">pago_cuota_extraordinaria</option>
+            <select class="form-control" id="tipoHelper" name="tipoHelper" required>
+                <option value="pago_cuota_ordinaria" th:selected="${datos.tipoHelper eq 'pago_cuota_ordinaria'}">pago_cuota_ordinaria</option>
+                <option value=" pago_cuota_extraordinaria" th:selected="${datos.tipoHelper eq ' pago_cuota_extraordinaria'}"> pago_cuota_extraordinaria</option>
             </select>
 
             <input type="submit" value="Guardar" class="btn btn-primary">

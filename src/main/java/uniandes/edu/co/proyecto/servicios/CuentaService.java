@@ -16,6 +16,7 @@ import uniandes.edu.co.proyecto.repositorios.OperacionRepository;
 import uniandes.edu.co.proyecto.repositorios.PuntoDeAtencionRepository;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -51,20 +52,35 @@ public class CuentaService {
 
     @Transactional(isolation = Isolation.SERIALIZABLE, timeout = 30) // segundos
     public List<Operacion> consultarOperacionesSerializable(int numeroCuenta) {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String fechaFinTexto = "2023-02-15 13:00:00"; // Fecha final fija
         try {
-            return operacionRepository.findByCuentaAndFecha(numeroCuenta, new Date(System.currentTimeMillis() - 30L * 24 * 3600 * 1000), new Date(numeroCuenta));
+            Date fechaFin = new java.sql.Date(sdf.parse(fechaFinTexto).getTime());
+            long treintaDiasMilis = 30L * 24 * 3600 * 1000; // 30 días en milisegundos
+            Date fechaInicio = new java.sql.Date(fechaFin.getTime() - treintaDiasMilis); // Fecha de inicio hace 30 días
+            
+            return operacionRepository.findByCuentaAndFecha(numeroCuenta, fechaInicio, fechaFin);
         } catch (Exception e) {
             System.out.println("No se pudo completar la consulta: " + e.getMessage());
+            e.printStackTrace();
             throw new RuntimeException("Consulta fallida.");
         }
     }
 
     @Transactional(isolation = Isolation.READ_COMMITTED, timeout = 30) // segundos
     public List<Operacion> consultarOperacionesReadCommitted(int numeroCuenta) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String fechaFinTexto = "2023-02-15 13:00:00"; // Fecha final fija
         try {
-            return operacionRepository.findByCuentaAndFecha(numeroCuenta, new Date(System.currentTimeMillis() - 30L * 24 * 3600 * 1000), new Date(numeroCuenta));
+            Date fechaFin = new java.sql.Date(sdf.parse(fechaFinTexto).getTime());
+            long treintaDiasMilis = 30L * 24 * 3600 * 1000; // 30 días en milisegundos
+            Date fechaInicio = new java.sql.Date(fechaFin.getTime() - treintaDiasMilis); // Fecha de inicio hace 30 días
+            
+            return operacionRepository.findByCuentaAndFecha(numeroCuenta, fechaInicio, fechaFin);
         } catch (Exception e) {
             System.out.println("No se pudo completar la consulta: " + e.getMessage());
+            e.printStackTrace();
             throw new RuntimeException("Consulta fallida.");
         }
     } 

@@ -3,20 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clientes consulta</title>
+    <title>Cuentas consulta</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
 </head>
 <body>
     
     <div class="container border border-2 w-25">
-        <h1>Clientes</h1>
+        <h1>Cuentas</h1>
 
-        <form th:action="@{/cuentas/usuario/ver}" method="post">
+        <form th:action="@{/cuentas/tipo/ver}" method="post">
             <label class="col-form-label" >Tipo documento:</label>
             <input class="form-control" type="text" id="tipoDeDocumento" name="tipoDeDocumento" placeholder="Tipo de Documento" required th:value="${usuario.tipoDeDocumento}" />
     
             <label class="col-form-label" >Numero documento:</label>
             <input class="form-control" type="text" id="numeroDeDocumento" name="numeroDeDocumento" placeholder="Número de Documento" required th:value="${usuario.numeroDeDocumento}"/>
+
+            <label class="col-form-label" >Tipo cuenta:</label>
+            <input class="form-control" type="text" id="tipoHelper" name="tipoHelper" placeholder="Tipo" required th:value="${datos.tipoHelper}"/>
 
             <input type="submit" value="Guardar" class="btn btn-primary">
         </form>

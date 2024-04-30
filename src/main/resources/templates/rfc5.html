@@ -9,7 +9,7 @@
 <body>
     <div class="container border border-2 w-25">
         <h1>Consulta de operaciones</h1>
-        <form th:action="@{/cuentas/rfc4Lista}" method="post">
+        <form th:action="@{/cuentas/rfc5Lista}" method="post">
 
             <label class="col-form-label" >Numero de cuenta:</label>
             <input class="form-control" type="text" id="numero" placeholder="numero" name="numero" required th:value="${cuenta.numero}"/>

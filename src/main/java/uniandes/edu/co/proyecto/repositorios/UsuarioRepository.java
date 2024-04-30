@@ -28,7 +28,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, UsuarioPK> {
     @Param("login") String login, @Param("palabraClave") String palabraClave, @Param("tipoPersona") String tipoPersona, @Param("rol") String rol);
     
     // RFC2 - Consultar un Cliente con sus productos
-    @Query(value = "SELECT * FROM usuarios inner join productos on usuarios.TIPODEDOCUMENTO = productos.clientetipodedocumento and usuarios.NUMERODEDOCUMENTO = productos.clientenumerodedocumento where usuarios.TIPODEDOCUMENTO = :tipoDeDocumento and usuarios.NUMERODEDOCUMENTO = :numeroDeDocumento", nativeQuery = true)
+    @Query(value = "SELECT * FROM Usuarios u, Productos p WHERE u.tipodedocumento = :tipoDeDocumento AND u.tipodedocumento = p.clientetipodedocumento AND u.numerodedocumento = :numeroDeDocumento AND u.numerodedocumento = p.clientenumerodedocumento;", nativeQuery = true)
     Collection<Object[]> findUsuarioWithProductos(@Param("tipoDeDocumento") String tipoDeDocumento, @Param("numeroDeDocumento") String numeroDeDocumento);
 
 }
