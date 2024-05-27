@@ -46,7 +46,4 @@ public interface PrestamoRepository extends JpaRepository<Prestamo, Long> {
     @Transactional
     @Query(value = "UPDATE Prestamos SET Prestamos.estado = 'pagado' WHERE Prestamos.id = :prestamoId", nativeQuery = true)
     void cerrarPrestamoSiSaldoEsCero(@Param("prestamoId") Long prestamoId);
-
-
-
 }

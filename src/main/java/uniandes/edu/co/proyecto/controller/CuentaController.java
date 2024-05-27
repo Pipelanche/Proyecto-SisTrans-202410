@@ -185,7 +185,7 @@ public class CuentaController {
         Cuenta cuenta1 = cuentaRepository.darCuentaPorNumero(cuenta.getNumero());
         Cuenta cuenta2 = cuentaRepository.darCuentaPorNumero(datos.getNumeroHelper().toString());
 
-        CuentaService.transferirDinero(cuenta1.getId(), cuenta2.getId(), 1L, operacion.getMonto());
+        CuentaService.transferirDinero(cuenta1.getId(), cuenta2.getId(), String.valueOf((Long)2L), operacion.getMonto());
         return "redirect:/";
     }
 
@@ -209,7 +209,7 @@ public class CuentaController {
     public String hacerConsignacion(@ModelAttribute Cuenta cuenta, @ModelAttribute Operacion operacion, @ModelAttribute SpringHelper datos) {
         Date date  = new Date(System.currentTimeMillis());
         Cuenta cuenta1 = cuentaRepository.darCuentaPorNumero(cuenta.getNumero());
-        operacionRepository.insertOperacion(datos.getTipoHelper(), operacion.getMonto(), date , (Long)2L, cuenta1.getId());
+        operacionRepository.insertOperacion(datos.getTipoHelper(), operacion.getMonto(), date , String.valueOf((Long)2L), cuenta1.getId());
         return "redirect:/";
     }
 
@@ -226,8 +226,8 @@ public class CuentaController {
         Date date  = new Date(System.currentTimeMillis());
         Cuenta cuenta1 = cuentaRepository.darCuentaPorNumero(cuenta.getNumero());
         Cuenta cuenta2 = cuentaRepository.darCuentaPorNumero(datos.getNumeroHelper().toString());
-        operacionRepository.insertOperacion(datos.getTipoHelper(), operacion.getMonto(), date , (Long)2L, Long.valueOf(cuenta1.getId()));
-        operacionRepository.insertOperacion(datos.getTipoHelper(), operacion.getMonto(), date , (Long)2L, cuenta2.getId());
+        operacionRepository.insertOperacion(datos.getTipoHelper(), operacion.getMonto(), date , String.valueOf((Long)2L), cuenta1.getId());
+        operacionRepository.insertOperacion(datos.getTipoHelper(), operacion.getMonto(), date , String.valueOf((Long)2L), cuenta2.getId());
         return "redirect:/";
     }
     
@@ -245,7 +245,7 @@ public class CuentaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Cuenta> getCuentaById(@PathVariable Long id) {
+    public ResponseEntity<Cuenta> getCuentaById(@PathVariable String id) {
         return cuentaRepository.findById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -269,7 +269,7 @@ public class CuentaController {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<Cuenta> updateCuenta(@PathVariable Long id, @RequestBody Cuenta cuentaDetails) {
+    public ResponseEntity<Cuenta> updateCuenta(@PathVariable String id, @RequestBody Cuenta cuentaDetails) {
         return cuentaRepository.findById(id)
                 .map(cuenta -> {
                     cuenta.setTipoCuenta(cuentaDetails.getTipoCuenta());
@@ -281,7 +281,7 @@ public class CuentaController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteCuenta(@PathVariable Long id) {
+    public ResponseEntity<?> deleteCuenta(@PathVariable String id) {
         return cuentaRepository.findById(id)
                 .map(cuenta -> {
                     cuentaRepository.delete(cuenta);

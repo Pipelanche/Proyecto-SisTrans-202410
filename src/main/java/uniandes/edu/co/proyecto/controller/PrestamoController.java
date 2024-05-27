@@ -1,4 +1,5 @@
 package uniandes.edu.co.proyecto.controller;
+
 import uniandes.edu.co.proyecto.modelo.Usuario;
 import uniandes.edu.co.proyecto.modelo.Cuenta;
 import uniandes.edu.co.proyecto.modelo.Operacion;
@@ -11,15 +12,12 @@ import uniandes.edu.co.proyecto.modelo.Prestamo.EstadoPrestamo;
 import uniandes.edu.co.proyecto.repositorios.OperacionRepository;
 import uniandes.edu.co.proyecto.repositorios.PrestamoRepository;
 import uniandes.edu.co.proyecto.repositorios.ProductoRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Collection;
 import java.sql.Date;
 import java.util.List;
@@ -113,10 +111,4 @@ public class PrestamoController {
                     return ResponseEntity.ok().build();
                 }).orElseGet(() -> ResponseEntity.notFound().build());
     }
-
-
-
-
 }
-
-

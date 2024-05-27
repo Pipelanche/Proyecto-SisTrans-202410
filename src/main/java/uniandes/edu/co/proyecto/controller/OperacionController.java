@@ -1,13 +1,10 @@
 package uniandes.edu.co.proyecto.controller;
 
 import uniandes.edu.co.proyecto.modelo.Cuenta;
-import uniandes.edu.co.proyecto.modelo.Cuenta.EstadoCuenta;
 import uniandes.edu.co.proyecto.modelo.Operacion;
 import uniandes.edu.co.proyecto.modelo.Operacion.TipoOperacion;
-import uniandes.edu.co.proyecto.modelo.Prestamo;
 import uniandes.edu.co.proyecto.modelo.PuntoDeAtencion;
 import uniandes.edu.co.proyecto.modelo.PuntoDeAtencion.TipoPuntoDeAtencion;
-import uniandes.edu.co.proyecto.modelo.Usuario;
 import uniandes.edu.co.proyecto.repositorios.CuentaRepository;
 import uniandes.edu.co.proyecto.repositorios.OperacionRepository;
 import uniandes.edu.co.proyecto.repositorios.PuntoDeAtencionRepository;
@@ -15,7 +12,6 @@ import uniandes.edu.co.proyecto.repositorios.PuntoDeAtencionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import java.util.Calendar;
@@ -65,7 +61,7 @@ public class OperacionController {
     public String cuentaGuardar(@ModelAttribute Object[] datos, Model model) {
         System.out.println(datos[0]);
         System.out.println(datos[1]);
-        Long cuentaId = Long.parseLong(datos[0].toString());
+        String cuentaId = datos[0].toString();
         Date fecha = (Date) datos[1];
 
         Cuenta cuenta = cuentaRepository.darCuentaPorId(cuentaId);
@@ -75,7 +71,7 @@ public class OperacionController {
 
         Calendar calendario = Calendar.getInstance();
         calendario.setTime(fecha);
-        
+
         calendario.set(Calendar.DAY_OF_MONTH, 1);
         Date primerDiaDelMes = new Date(calendario.getTimeInMillis());
         

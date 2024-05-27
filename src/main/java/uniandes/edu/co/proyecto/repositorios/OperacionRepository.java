@@ -3,23 +3,23 @@ package uniandes.edu.co.proyecto.repositorios;
 import uniandes.edu.co.proyecto.modelo.Operacion;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Date;
 import java.util.List;
-import uniandes.edu.co.proyecto.modelo.PuntoDeAtencion; // Import the PuntoDeAtencion class
-import uniandes.edu.co.proyecto.modelo.Producto; // Import the Producto class
+import uniandes.edu.co.proyecto.modelo.PuntoDeAtencion;
+import uniandes.edu.co.proyecto.modelo.Producto;
 
 @Repository
 public interface OperacionRepository extends MongoRepository<Operacion, String> {
 
     // RFC6 - Registrar operacion sobre Cuenta
-    default Operacion insertOperacion(String tipo, Double monto, Date fechaHora, String puntoDeAtencionId, String productoId) {
-        Operacion operacion = new Operacion(
-            Operacion.TipoOperacion.valueOf(tipo), monto, fechaHora, 
-            new PuntoDeAtencion(puntoDeAtencionId), new Producto(productoId)
-        );
-        return save(operacion);
-    }
+    @Modifying
+    @Transactional
+    @Query(value = "INSERT INTO operaciones (id, tipo, monto, fechahora, puntodeatencion, producto) VALUES (idOperaciones.nextval,:tipo, :monto, :fechaHora, :puntoDeAtencion, :producto)", nativeQuery = true)
+    void insertOperacion(@Param("tipo") String tipo, @Param("monto") Double monto, @Param("fechaHora") Date fechaHora, @Param("puntoDeAtencion") Long puntoDeAtencionId, @Param("producto") Long productoId);
 
     // RFC3 - Extracto Bancario para una Cuenta
     @Query("{ 'producto.id': ?0, 'fechaHora': { $gte: ?1, $lte: ?2 } }")
