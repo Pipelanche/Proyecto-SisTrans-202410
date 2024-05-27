@@ -1,25 +1,21 @@
 package uniandes.edu.co.proyecto.modelo;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
 import java.util.Set;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.*;
-
-@Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "rol", discriminatorType = DiscriminatorType.STRING)
-@IdClass(UsuarioPK.class)
-@Table(name = "usuarios")
+@Document(collection = "usuarios")
 public class Usuario {
 
     @Id
+    private String id;
+
+    @Field("tipoDeDocumento")
     private String tipoDeDocumento;
-    @Id
+
+    @Field("numeroDeDocumento")
     private String numeroDeDocumento;
 
     private String nombre;
@@ -30,11 +26,8 @@ public class Usuario {
     private String login;
     private String palabraClave;
 
-    @Enumerated(EnumType.STRING)
     private TipoPersona tipoPersona;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "rol", insertable = false, updatable = false)
     private Rol rol;
 
     public enum TipoPersona {
@@ -60,95 +53,99 @@ public class Usuario {
         this.tipoPersona = tipoPersona;
         this.rol = rol;
     }
+    
+    public String getId() {
+        return id;
+    }
 
-    @OneToMany(mappedBy = "cliente")
-    private Set<Producto> productos;
-
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getTipoDeDocumento() {
         return tipoDeDocumento; 
+    }
+
+    public void setTipoDeDocumento(String tipoDeDocumento) {
+        this.tipoDeDocumento = tipoDeDocumento; 
     }
 
     public String getNumeroDeDocumento() {
         return numeroDeDocumento; 
     }
 
-    public String getNombre() {
-        return nombre; 
-    }
-    
-    public String getNacionalidad() {
-        return nacionalidad; 
-    }
-
-    public String getDireccionFisica() {
-        return direccionFisica; 
-    }
-    
-    public String getCorreo() {
-        return correo; 
-    }
-    
-    public String getTelefono() {
-        return telefono; 
-    }
-    
-    public String getLogin() {
-        return login; 
-    }
-
-    public String getPalabraClave() {
-        return palabraClave; 
-    }
-    
-    public TipoPersona getTipoPersona() {
-        return tipoPersona; 
-    }
-
-    public Rol getRol() {
-        return rol; 
-    }
-    
-    public void setTipoDeDocumento(String tipoDeDocumento) {
-        this.tipoDeDocumento = tipoDeDocumento; 
-    }
-
     public void setNumeroDeDocumento(String numeroDeDocumento) {
         this.numeroDeDocumento = numeroDeDocumento; 
     }
-    
+
+    public String getNombre() {
+        return nombre; 
+    }
+
     public void setNombre(String nombre) {
         this.nombre = nombre; 
+    }
+
+    public String getNacionalidad() {
+        return nacionalidad; 
     }
 
     public void setNacionalidad(String nacionalidad) {
         this.nacionalidad = nacionalidad;
     }
 
+    public String getDireccionFisica() {
+        return direccionFisica; 
+    }
+
     public void setDireccionFisica(String direccionFisica) {
         this.direccionFisica = direccionFisica; 
     }
-    
+
+    public String getCorreo() {
+        return correo;
+    }
+
     public void setCorreo(String correo) {
         this.correo = correo;
+    }
+
+    public String getTelefono() {
+        return telefono; 
     }
 
     public void setTelefono(String telefono) {
         this.telefono = telefono; 
     }
 
+    public String getLogin() {
+        return login; 
+    }
+
     public void setLogin(String login) {
         this.login = login; 
+    }
+
+    public String getPalabraClave() {
+        return palabraClave; 
     }
 
     public void setPalabraClave(String palabraClave) {
         this.palabraClave = palabraClave; 
     }
-    
+
+    public TipoPersona getTipoPersona() {
+        return tipoPersona; 
+    }
+
     public void setTipoPersona(TipoPersona tipoPersona) {
         this.tipoPersona = tipoPersona; 
     }
-    
+
+    public Rol getRol() {
+        return rol; 
+    }
+
     public void setRol(Rol rol) {
         this.rol = rol; 
     }
