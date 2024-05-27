@@ -1,7 +1,6 @@
 package uniandes.edu.co.proyecto.controller;
 
 import uniandes.edu.co.proyecto.modelo.Oficina;
-import uniandes.edu.co.proyecto.modelo.PuntoDeAtencion;
 import uniandes.edu.co.proyecto.modelo.PuntoFisico;
 import uniandes.edu.co.proyecto.repositorios.OficinaRepository;
 import uniandes.edu.co.proyecto.repositorios.PuntoFisicoRepository;
@@ -23,7 +22,6 @@ public class PuntoFisicoController {
     @Autowired
     private OficinaRepository oficinaRepository;
 
-
     @GetMapping
     public List<PuntoFisico> getAllPuntosFisicos() {
         return puntoFisicoRepository.findAll();
@@ -36,30 +34,27 @@ public class PuntoFisicoController {
         model.addAttribute("puntoFisico", punto);
         return "puntoFisicoNuevo";
     }
+
     @PostMapping("new/save")
     public String puntoFisicoGuardar(@ModelAttribute PuntoFisico puntoFisico) {
-        System.out.println(puntoFisico.getId());
-        System.out.println(puntoFisico.getLocalizacionGeografica());
-        System.out.println(puntoFisico.getOficina().getId());
-
-        puntoFisicoRepository.crearPuntoFisico(puntoFisico.getId(),puntoFisico.getLocalizacionGeografica(), puntoFisico.getOficina().getId());
+        Oficina oficina = oficinaRepository.findById(puntoFisico.getOficina().getId()).orElse(null);
+        if (oficina == null) {
+            return "redirect:/puntosFisicos/new";
+        }
+        puntoFisico.setOficina(oficina);
+        puntoFisicoRepository.save(puntoFisico);
         return "redirect:/administrador";
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PuntoFisico> getPuntoFisicoById(@PathVariable Long id) {
+    public ResponseEntity<PuntoFisico> getPuntoFisicoById(@PathVariable String id) {
         return puntoFisicoRepository.findById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping
-    public PuntoFisico createPuntoFisico(@RequestBody PuntoFisico puntoFisico) {
-        return puntoFisicoRepository.save(puntoFisico);
-    }
-
     @PutMapping("/{id}")
-    public ResponseEntity<PuntoFisico> updatePuntoFisico(@PathVariable Long id, @RequestBody PuntoFisico puntoFisicoDetails) {
+    public ResponseEntity<PuntoFisico> updatePuntoFisico(@PathVariable String id, @RequestBody PuntoFisico puntoFisicoDetails) {
         return puntoFisicoRepository.findById(id)
                 .map(puntoFisico -> {
                     puntoFisico.setLocalizacionGeografica(puntoFisicoDetails.getLocalizacionGeografica());
@@ -69,15 +64,11 @@ public class PuntoFisicoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletePuntoFisico(@PathVariable Long id) {
+    public ResponseEntity<?> deletePuntoFisico(@PathVariable String id) {
         return puntoFisicoRepository.findById(id)
                 .map(puntoFisico -> {
                     puntoFisicoRepository.delete(puntoFisico);
                     return ResponseEntity.ok().build();
                 }).orElseGet(() -> ResponseEntity.notFound().build());
     }
-
-  
-
-
 }

@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-
 import java.util.List;
 
 @Controller
@@ -34,38 +33,32 @@ public class PuntoDeAtencionController {
 
     @GetMapping("/puntoDeAtencion")
     public String puntosDeAtencion(Model model) {
-        model.addAttribute("puntosDeAtencion", puntoDeAtencionRepository.darPuntos());
-        model.addAttribute("puntosFisicos", puntoFisicoRepository.darPuntosFisicos());
+        model.addAttribute("puntosDeAtencion", puntoDeAtencionRepository.findBy());
+        model.addAttribute("puntosFisicos", puntoFisicoRepository.findBy());
         return "puntosDeAtencion";
     }
 
-    
     @GetMapping("new")
     public String puntoDeAtencionForm(Model model) {
         model.addAttribute("puntoDeAtencion", new PuntoDeAtencion());
         return "puntoDeAtencionNuevo";
     }
+
     @PostMapping("new/save")
     public String puntoDeAtencionGuardar(@ModelAttribute PuntoDeAtencion puntoDeAtencion) {
-        puntoDeAtencionRepository.createPuntoDeAtencion(puntoDeAtencion.getTipo().name());
+        puntoDeAtencionRepository.save(puntoDeAtencion);
         return "redirect:/administrador";
     }
 
-
     @GetMapping("/{id}")
-    public ResponseEntity<PuntoDeAtencion> getPuntoDeAtencionById(@PathVariable Long id) {
+    public ResponseEntity<PuntoDeAtencion> getPuntoDeAtencionById(@PathVariable String id) {
         return puntoDeAtencionRepository.findById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping
-    public PuntoDeAtencion createPuntoDeAtencion(@RequestBody PuntoDeAtencion puntoDeAtencion) {
-        return puntoDeAtencionRepository.save(puntoDeAtencion);
-    }
-
     @PutMapping("/{id}")
-    public ResponseEntity<PuntoDeAtencion> updatePuntoDeAtencion(@PathVariable Long id, @RequestBody PuntoDeAtencion puntoDeAtencionDetails) {
+    public ResponseEntity<PuntoDeAtencion> updatePuntoDeAtencion(@PathVariable String id, @RequestBody PuntoDeAtencion puntoDeAtencionDetails) {
         return puntoDeAtencionRepository.findById(id)
                 .map(puntoDeAtencion -> {
                     puntoDeAtencion.setTipo(puntoDeAtencionDetails.getTipo());
@@ -74,16 +67,16 @@ public class PuntoDeAtencionController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletePuntoDeAtencion(@PathVariable Long id) {
+    public ResponseEntity<?> deletePuntoDeAtencion(@PathVariable String id) {
         if (operacionRepository.hasOperations(id)) {
             return ResponseEntity.badRequest().body("No se puede borrar: Se han hecho operaciones en este punto de atencion.");
         }
-    
+
         PuntoDeAtencion puntoDeAtencion = puntoDeAtencionRepository.findById(id).orElse(null);
         if (puntoDeAtencion == null) {
             return ResponseEntity.notFound().build();
         }
-    
+
         puntoDeAtencionRepository.delete(puntoDeAtencion);
         return ResponseEntity.ok().build();
     }

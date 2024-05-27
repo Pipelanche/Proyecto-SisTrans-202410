@@ -1,32 +1,21 @@
 package uniandes.edu.co.proyecto.modelo;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.PrimaryKeyJoinColumn;
-import jakarta.persistence.Table;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
+@Document(collection = "puntosFisicos")
+public class PuntoFisico {
 
-@Entity
-@Table(name = "puntosfisicos")
-public class PuntoFisico{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private String id;
 
-    @OneToOne
-    @PrimaryKeyJoinColumn
+    @DBRef
     private PuntoDeAtencion puntoDeAtencion;
 
     private String localizacionGeografica;
 
-    @ManyToOne
-    @JoinColumn(name = "oficina", referencedColumnName = "id")
+    @DBRef
     private Oficina oficina;
 
     public PuntoFisico() {}
@@ -43,18 +32,20 @@ public class PuntoFisico{
     public void setLocalizacionGeografica(String localizacionGeografica) {
         this.localizacionGeografica = localizacionGeografica;
     }
-    
+
     public Oficina getOficina() {
         return oficina;
     }
 
-    
+    public void setOficina(Oficina oficina) {
+        this.oficina = oficina;
+    }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -65,9 +56,4 @@ public class PuntoFisico{
     public void setPuntoDeAtencion(PuntoDeAtencion puntoDeAtencion) {
         this.puntoDeAtencion = puntoDeAtencion;
     }
-
-    public void setOficina(Oficina oficina) {
-        this.oficina = oficina;
-    }
-
 }

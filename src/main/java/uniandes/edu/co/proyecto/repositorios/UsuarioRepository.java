@@ -17,5 +17,7 @@ public interface UsuarioRepository extends MongoRepository<Usuario, String> {
     Collection<Usuario> findUsuarioWithProductos(String tipoDeDocumento, String numeroDeDocumento);
 
     @Query(value = "{ 'tipoDeDocumento' : ?0, 'numeroDeDocumento' : ?1 }", exists = true)
-    boolean existsByTipoDeDocumentoAndNumeroDeDocumento(String tipoDeDocumento, String numeroDeDocumento);
+    Usuario findByTipoDeDocumentoAndNumeroDeDocumento(String tipoDeDocumento, String numeroDeDocumento);
+
+    
 }

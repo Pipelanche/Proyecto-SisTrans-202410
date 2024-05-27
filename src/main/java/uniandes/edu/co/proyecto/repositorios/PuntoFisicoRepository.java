@@ -1,33 +1,20 @@
 package uniandes.edu.co.proyecto.repositorios;
 
 import uniandes.edu.co.proyecto.modelo.PuntoFisico;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
-import java.util.List;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.data.repository.query.Param;
-
 
 @Repository
-public interface PuntoFisicoRepository extends JpaRepository<PuntoFisico, Long> {
+public interface PuntoFisicoRepository extends MongoRepository<PuntoFisico, String> {
 
-    // Obtener todos los puntos fisicos
-    @Query(value = "SELECT * FROM puntosfisicos", nativeQuery = true)
-    Collection<PuntoFisico> darPuntosFisicos();
+    // Obtener todos los puntos físicos
+    Collection<PuntoFisico> findBy();
 
+    // Crear un punto físico (esto se maneja automáticamente por MongoRepository)
+    // void save(PuntoFisico puntoFisico);
 
-    // RFM3 - Crear punto fisico
-    @Modifying
-    @Transactional
-    @Query(value = "INSERT INTO puntosfisicos (id, localizaciongeografica, oficina) VALUES (:id, :localizacionGeografica, :oficina)", nativeQuery = true)
-    void crearPuntoFisico(@Param("id") Long id, @Param("localizacionGeografica") String localizacionGeografica, @Param("oficina") Long oficina);
-
-    @Modifying
-    @Transactional
-    @Query(value = "DELETE FROM puntosfisicos WHERE id = :id", nativeQuery = true)
-    void deletePuntoFisico(@Param("id") Long id);
+    // Eliminar un punto físico
+    void deleteById(String id);
 }

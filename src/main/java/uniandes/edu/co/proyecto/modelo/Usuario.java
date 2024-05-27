@@ -2,22 +2,14 @@ package uniandes.edu.co.proyecto.modelo;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
-
-import java.util.Set;
 
 @Document(collection = "usuarios")
 public class Usuario {
 
     @Id
     private String id;
-
-    @Field("tipoDeDocumento")
     private String tipoDeDocumento;
-
-    @Field("numeroDeDocumento")
     private String numeroDeDocumento;
-
     private String nombre;
     private String nacionalidad;
     private String direccionFisica;
@@ -25,9 +17,7 @@ public class Usuario {
     private String telefono;
     private String login;
     private String palabraClave;
-
     private TipoPersona tipoPersona;
-
     private Rol rol;
 
     public enum TipoPersona {
@@ -53,7 +43,7 @@ public class Usuario {
         this.tipoPersona = tipoPersona;
         this.rol = rol;
     }
-    
+
     public String getId() {
         return id;
     }
@@ -63,31 +53,31 @@ public class Usuario {
     }
 
     public String getTipoDeDocumento() {
-        return tipoDeDocumento; 
+        return tipoDeDocumento;
     }
 
     public void setTipoDeDocumento(String tipoDeDocumento) {
-        this.tipoDeDocumento = tipoDeDocumento; 
+        this.tipoDeDocumento = tipoDeDocumento;
     }
 
     public String getNumeroDeDocumento() {
-        return numeroDeDocumento; 
+        return numeroDeDocumento;
     }
 
     public void setNumeroDeDocumento(String numeroDeDocumento) {
-        this.numeroDeDocumento = numeroDeDocumento; 
+        this.numeroDeDocumento = numeroDeDocumento;
     }
 
     public String getNombre() {
-        return nombre; 
+        return nombre;
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre; 
+        this.nombre = nombre;
     }
 
     public String getNacionalidad() {
-        return nacionalidad; 
+        return nacionalidad;
     }
 
     public void setNacionalidad(String nacionalidad) {
@@ -95,11 +85,11 @@ public class Usuario {
     }
 
     public String getDireccionFisica() {
-        return direccionFisica; 
+        return direccionFisica;
     }
 
     public void setDireccionFisica(String direccionFisica) {
-        this.direccionFisica = direccionFisica; 
+        this.direccionFisica = direccionFisica;
     }
 
     public String getCorreo() {
@@ -111,42 +101,42 @@ public class Usuario {
     }
 
     public String getTelefono() {
-        return telefono; 
+        return telefono;
     }
 
     public void setTelefono(String telefono) {
-        this.telefono = telefono; 
+        this.telefono = telefono;
     }
 
     public String getLogin() {
-        return login; 
+        return login;
     }
 
     public void setLogin(String login) {
-        this.login = login; 
+        this.login = login;
     }
 
     public String getPalabraClave() {
-        return palabraClave; 
+        return palabraClave;
     }
 
     public void setPalabraClave(String palabraClave) {
-        this.palabraClave = palabraClave; 
+        this.palabraClave = palabraClave;
     }
 
     public TipoPersona getTipoPersona() {
-        return tipoPersona; 
+        return tipoPersona;
     }
 
     public void setTipoPersona(TipoPersona tipoPersona) {
-        this.tipoPersona = tipoPersona; 
+        this.tipoPersona = tipoPersona;
     }
 
     public Rol getRol() {
-        return rol; 
+        return rol;
     }
 
     public void setRol(Rol rol) {
-        this.rol = rol; 
+        this.rol = rol;
     }
 }

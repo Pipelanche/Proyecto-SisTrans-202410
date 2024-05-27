@@ -1,27 +1,18 @@
 package uniandes.edu.co.proyecto.modelo;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinColumns;
-import jakarta.persistence.ManyToOne;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
-@Entity
-@IdClass(UbicacionPK.class)
+@Document(collection = "ubicaciones")
 public class Ubicacion {
 
     @Id
+    private String id;
     private String clienteTipoDeDocumento;
-
-    @Id
     private String clienteNumeroDeDocumento;
 
-    @ManyToOne
-    @JoinColumns({
-        @JoinColumn(name="clienteTipoDeDocumento", referencedColumnName="tipoDeDocumento", insertable = false, updatable = false),
-        @JoinColumn(name="clienteNumeroDeDocumento", referencedColumnName="numeroDeDocumento", insertable = false, updatable = false)
-    })
+    @DBRef
     private Usuario usuario;
 
     private String ciudad;
@@ -37,6 +28,10 @@ public class Ubicacion {
         this.ciudad = ciudad;
         this.departamento = departamento;
         this.codigoPostal = codigoPostal;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getClienteTipoDeDocumento() {
@@ -63,6 +58,10 @@ public class Ubicacion {
         return codigoPostal;
     }
     
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public void setClienteTipoDeDocumento(String clienteTipoDeDocumento) {
         this.clienteTipoDeDocumento = clienteTipoDeDocumento;
     }
