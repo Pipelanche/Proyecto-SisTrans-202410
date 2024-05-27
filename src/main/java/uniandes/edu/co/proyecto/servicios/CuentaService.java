@@ -89,7 +89,7 @@ public class CuentaService {
     //Manejo transaccional de RFM6 - Como las validaciones se quitaron del controller se haran acá.
 
     @Transactional
-    public String consignarDinero(Long cuentaId, Double monto) {
+    public String consignarDinero(String cuentaId, Double monto) {
         
         Cuenta cuenta = cuentaRepository.findById(cuentaId).orElse(null);
         if (cuenta == null) return "La cuenta no existe.";
@@ -106,9 +106,9 @@ public class CuentaService {
     }
 
     @Transactional
-    public String retirarDinero(Long cuentaId, Long puntoDeAtencionId, Double monto) {
+    public String retirarDinero(String cuentaId, String puntoDeAtencionId, Double monto) {
         Cuenta cuenta = cuentaRepository.findById(cuentaId).orElse(null);
-        PuntoDeAtencion puntoDeAtencion = puntoDeAtencionRepository.findById(puntoDeAtencionId).orElse(null);
+        PuntoDeAtencion puntoDeAtencion = puntoDeAtencionRepository.findById(String.valueOf(puntoDeAtencionId)).orElse(null);
     
         if (cuenta == null) return "La cuenta no existe.";
         if (monto <= 0) return "El monto debe ser mayor que cero.";
@@ -130,7 +130,7 @@ public class CuentaService {
 
 
     @Transactional
-    public String transferirDinero(Long cuentaOrigenId, Long cuentaDestinoId, Long puntoDeAtencionId, Double monto) {
+    public String transferirDinero(String cuentaOrigenId, String cuentaDestinoId, String puntoDeAtencionId, Double monto) {
         Cuenta cuentaOrigen = cuentaRepository.findById(cuentaOrigenId).orElse(null);
         Cuenta cuentaDestino = cuentaRepository.findById(cuentaDestinoId).orElse(null);
         PuntoDeAtencion puntoDeAtencion = puntoDeAtencionRepository.findById(puntoDeAtencionId).orElse(null);

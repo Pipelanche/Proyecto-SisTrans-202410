@@ -1,41 +1,23 @@
 package uniandes.edu.co.proyecto.modelo;
 
-import java.sql.Date;
+import java.util.Date;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.PrimaryKeyJoinColumn;
-import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+@Document(collection = "cuentas")
+public class Cuenta {
 
-@Entity
-@Table(name = "cuentas")
-public class Cuenta{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private String id;
 
-    @OneToOne
-    @PrimaryKeyJoinColumn
+    @DBRef
     private Producto producto;
 
-
-    @Column(unique = true)
-    @GeneratedValue 
     private String numero;
 
-    @Enumerated(EnumType.STRING)
     private TipoCuenta tipo;
 
-    @Enumerated(EnumType.STRING)
     private EstadoCuenta estado;
 
     private Double saldo;
@@ -64,7 +46,6 @@ public class Cuenta{
         return numero; 
     }
 
-   
     public TipoCuenta getTipoCuenta() {
         return tipo; 
     }
@@ -89,11 +70,11 @@ public class Cuenta{
         this.tipo = tipoCuenta; 
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -115,6 +96,5 @@ public class Cuenta{
 
     public void setFechaUltimaTransaccion(Date fechaUltimaTransaccion) {
          this.fechaUltimaTransaccion = fechaUltimaTransaccion; 
-        }
-
+    }
 }

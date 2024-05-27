@@ -1,49 +1,40 @@
 package uniandes.edu.co.proyecto.repositorios;
 
 import uniandes.edu.co.proyecto.modelo.Operacion;
-
-import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.List;
-import java.sql.Date;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.data.jpa.repository.Modifying;
+import java.util.Date;
+import java.util.List;
+import uniandes.edu.co.proyecto.modelo.PuntoDeAtencion; // Import the PuntoDeAtencion class
+import uniandes.edu.co.proyecto.modelo.Producto; // Import the Producto class
 
 @Repository
-public interface OperacionRepository extends JpaRepository<Operacion, Long> {
+public interface OperacionRepository extends MongoRepository<Operacion, String> {
 
     // RFC6 - Registrar operacion sobre Cuenta
-    @Modifying
-    @Transactional
-    @Query(value = "INSERT INTO operaciones (id, tipo, monto, fechahora, puntodeatencion, producto) VALUES (idOperaciones.nextval,:tipo, :monto, :fechaHora, :puntoDeAtencion, :producto)", nativeQuery = true)
-    void insertOperacion(@Param("tipo") String tipo, @Param("monto") Double monto, @Param("fechaHora") Date fechaHora, @Param("puntoDeAtencion") Long puntoDeAtencionId, @Param("producto") Long productoId);
+    default Operacion insertOperacion(String tipo, Double monto, Date fechaHora, String puntoDeAtencionId, String productoId) {
+        Operacion operacion = new Operacion(
+            Operacion.TipoOperacion.valueOf(tipo), monto, fechaHora, 
+            new PuntoDeAtencion(puntoDeAtencionId), new Producto(productoId)
+        );
+        return save(operacion);
+    }
 
     // RFC3 - Extracto Bancario para una Cuenta
-    @Query(value = "SELECT c.*, o.tipo," + 
-    "(SELECT op.monto FROM Operaciones op, Cuentas cu, Productos pr WHERE op.producto = pr.id AND pr.id = cu.id" +
-    "AND op.fechaHora = TO_DATE(':fechaInicio') AS saldo_inicial," +
-    "(SELECT ope.monto FROM Operaciones ope, Cuentas cue, Productos pro WHERE ope.producto = pro.id AND pro.id = cue.id" +
-    "AND ope.fechaHora = TO_DATE(':fechaFin') AS saldo_final" +
-    "FROM Operaciones o, Cuentas c, Productos p WHERE o.producto = p.id AND p.id = c.id" +
-    "AND o.fechaHora BETWEEN TO_DATE(':fechaInicio', 'YYYY-MM-DD HH24:MI:SS') AND TO_DATE(':fechaFin', 'YYYY-MM-DD HH24:MI:SS')", nativeQuery = true)
-    Collection<Operacion> findOperacionesByProductoAndMes(@Param("productoId") Long productoId, @Param("fechaInicio") Date fechaInicio, @Param("fechaFin") Date fechaFin);
+    @Query("{ 'producto.id': ?0, 'fechaHora': { $gte: ?1, $lte: ?2 } }")
+    List<Operacion> findOperacionesByProductoAndMes(String productoId, Date fechaInicio, Date fechaFin);
 
     //Count para requerimento 2 (crear oficina)
-    @Query("SELECT COUNT(o) FROM Operacion o WHERE o.puntoDeAtencion.id = :puntoDeAtencionId")
-    Long countByPuntoDeAtencionId(@Param("puntoDeAtencionId") Long puntoDeAtencionId);
+    @Query(value = "{ 'puntoDeAtencion.id': ?0 }", count = true)
+    Long countByPuntoDeAtencionId(String puntoDeAtencionId);
 
-    default boolean hasOperations(Long puntoDeAtencionId) {
+    default boolean hasOperations(String puntoDeAtencionId) {
         return countByPuntoDeAtencionId(puntoDeAtencionId) > 0;
     }
 
     // RFC4 – Consulta de operaciones realizadas sobre una cuenta - SERIALIZABLE
     // RFC5 – Consulta de operaciones realizadas sobre una cuenta – READ COMMITTED
-    @Query(value = "SELECT o.* FROM Operaciones o, Productos p, Cuentas c WHERE o.producto = p.id AND p.id = c.id AND c.numero = :numeroCuenta AND o.fechaHora BETWEEN :fechaInicio AND :fechaFin AND o.tipo IN ('consignacion_cuenta', 'retiro_cuenta', 'transferencia_cuenta')", nativeQuery = true)
-    List<Operacion> findByCuentaAndFecha(@Param("numeroCuenta") int numeroCuenta, @Param("fechaInicio") Date fechaInicio, @Param("fechaFin") Date fechaFin);
- 
+    @Query("{ 'producto.cuenta.numero': ?0, 'fechaHora': { $gte: ?1, $lte: ?2 }, 'tipo': { $in: ['consignacion_cuenta', 'retiro_cuenta', 'transferencia_cuenta'] } }")
+    List<Operacion> findByCuentaAndFecha(int numeroCuenta, Date fechaInicio, Date fechaFin);
 }

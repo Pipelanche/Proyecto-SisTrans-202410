@@ -11,24 +11,25 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.mongodb.repository.Query;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public interface CuentaRepository extends JpaRepository<Cuenta, Long> {
+public interface CuentaRepository extends MongoRepository<Cuenta, String> {
     Cuenta findByNumero(String numero);
 
-    @Query(value = "Select * from cuentas", nativeQuery = true)
-    Collection<Cuenta> darCuentas();
+    @Query("{}")
+    List<Cuenta> darCuentas();
 
-    @Query(value = "Select * from cuentas where cuentas.numero = :numero", nativeQuery = true)
-    Cuenta darCuentaPorNumero(@Param("numero") String numero);
+    @Query("{ 'numero' : ?0 }")
+    Cuenta darCuentaPorNumero(String numero);
 
-    @Query(value = "Select * from cuentas where cuentas.id = :cuentaId", nativeQuery = true)
-    Cuenta darCuentaPorId(@Param("cuentaId") Long cuentaId);
-
+    @Query("{ 'id' : ?0 }")
+    Cuenta darCuentaPorId(String cuentaId);
+    
     @Modifying
     @Transactional
     @Query(value = "UPDATE cuentas SET cuentas.estado = :estado WHERE cuentas.id = :cuentaId", nativeQuery = true)
@@ -62,14 +63,11 @@ public interface CuentaRepository extends JpaRepository<Cuenta, Long> {
 
 
     // RFC1 - Consultar las cuentas en BancAndes
-    @Query(value = "SELECT * FROM Cuentas c WHERE c.tipo = :tipo", nativeQuery = true)
-    List<Cuenta> findByTipo(@Param("tipo") String tipo);
+    List<Cuenta> findByTipo(String tipo);
 
-    @Query(value = "SELECT * FROM Cuentas c WHERE c.saldo = :saldo", nativeQuery = true)
-    List<Cuenta> findBySaldo(@Param("saldo") Double saldo);
+    List<Cuenta> findBySaldo(Double saldo);
 
-    @Query(value = "SELECT * FROM Cuentas c WHERE c.fechaUltimaTransaccion = :fechaUltimaTransaccion", nativeQuery = true)
-    List<Cuenta> findByFechaUltimaTransaccion(@Param("fechaUltimaTransaccion") Date fechaUltimaTransaccion);
+    List<Cuenta> findByFechaUltimaTransaccion(Date fechaUltimaTransaccion);
 
     //Transacciones 
 

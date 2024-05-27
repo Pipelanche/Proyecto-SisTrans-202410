@@ -1,39 +1,26 @@
 package uniandes.edu.co.proyecto.modelo;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import java.util.Date;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
-
-@Entity
+@Document(collection = "operaciones")
 public class Operacion {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @Enumerated(EnumType.STRING)
     private TipoOperacion tipo;
 
     private Double monto;
 
-    @Temporal(TemporalType.TIMESTAMP)
     private Date fechaHora;
 
-    @ManyToOne
-    @JoinColumn(name = "puntoDeAtencion", referencedColumnName = "id")
+    @DBRef
     private PuntoDeAtencion puntoDeAtencion;
 
-    @ManyToOne
-    @JoinColumn(name = "producto", referencedColumnName = "id")
+    @DBRef
     private Producto producto;
 
     public enum TipoOperacion {
@@ -52,7 +39,7 @@ public class Operacion {
         this.producto = producto;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -76,7 +63,7 @@ public class Operacion {
         this.producto = producto;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
@@ -99,5 +86,4 @@ public class Operacion {
     public Producto getProducto() {
         return producto;
     }
-    
 }

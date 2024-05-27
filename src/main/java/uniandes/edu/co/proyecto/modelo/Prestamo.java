@@ -1,32 +1,20 @@
 package uniandes.edu.co.proyecto.modelo;
 
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.PrimaryKeyJoinColumn;
-import jakarta.persistence.Table;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-
-@Entity
-@Table(name = "prestamos")
+@Document(collection = "prestamos")
 public class Prestamo {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
 
-    @OneToOne
-    @PrimaryKeyJoinColumn
+    @Id
+    private String id;
+
+    @DBRef
     private Producto producto;
 
-    @Enumerated(EnumType.STRING)
     private TipoPrestamo tipoProducto;
 
-    @Enumerated(EnumType.STRING)
     private EstadoPrestamo estado;
 
     private Double monto;
@@ -34,7 +22,6 @@ public class Prestamo {
     private Integer cantidadCuotas;
     private Integer diaPagoDeCuotas;
     private Double valorCuota;
-
 
     public enum TipoPrestamo {
         vivienda, estudio, automovil, libre_inversion
@@ -46,9 +33,8 @@ public class Prestamo {
 
     public Prestamo() {
     }
-    
 
-    public Prestamo( TipoPrestamo tipoPrestamo, EstadoPrestamo estadoPrestamo, Double monto, Double interes, Integer cantidadCuotas, Integer diaPagoDeCuotas, Double valorCuota) {
+    public Prestamo(TipoPrestamo tipoPrestamo, EstadoPrestamo estadoPrestamo, Double monto, Double interes, Integer cantidadCuotas, Integer diaPagoDeCuotas, Double valorCuota) {
         this.tipoProducto = tipoPrestamo;
         this.estado = estadoPrestamo;
         this.monto = monto;
@@ -114,45 +100,35 @@ public class Prestamo {
         this.valorCuota = valorCuota;
     }
 
-
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
-
 
     public Producto getProducto() {
         return producto;
     }
 
-
     public void setProducto(Producto producto) {
         this.producto = producto;
     }
-
 
     public TipoPrestamo getTipoProducto() {
         return tipoProducto;
     }
 
-
     public void setTipoProducto(TipoPrestamo tipoProducto) {
         this.tipoProducto = tipoProducto;
     }
-
 
     public EstadoPrestamo getEstado() {
         return estado;
     }
 
-
     public void setEstado(EstadoPrestamo estado) {
         this.estado = estado;
     }
-
-
 }

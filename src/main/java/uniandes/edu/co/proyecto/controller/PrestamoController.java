@@ -64,7 +64,7 @@ public class PrestamoController {
     }
 
     @GetMapping("/prestamo/{id}/cerrar")
-    public String cerrarPrestamo(@PathVariable Long id) {
+    public String cerrarPrestamo(@PathVariable String id) {
         prestamoRepository.cerrarPrestamoSiSaldoEsCero(id);
         return "redirect:/prestamos/prestamo";
     }
@@ -84,14 +84,14 @@ public class PrestamoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Prestamo> getPrestamoById(@PathVariable Long id) {
+    public ResponseEntity<Prestamo> getPrestamoById(@PathVariable String id) {
         return prestamoRepository.findById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Prestamo> updatePrestamo(@PathVariable Long id, @RequestBody Prestamo prestamoDetails) {
+    public ResponseEntity<Prestamo> updatePrestamo(@PathVariable String id, @RequestBody Prestamo prestamoDetails) {
         return prestamoRepository.findById(id)
                 .map(prestamo -> {
                     prestamo.setTipoPrestamo(prestamoDetails.getTipoPrestamo());
@@ -106,7 +106,7 @@ public class PrestamoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletePrestamo(@PathVariable Long id) {
+    public ResponseEntity<?> deletePrestamo(@PathVariable String id) {
         return prestamoRepository.findById(id)
                 .map(prestamo -> {
                     prestamoRepository.delete(prestamo);

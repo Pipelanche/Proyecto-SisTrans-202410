@@ -88,7 +88,7 @@ public class OperacionController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Operacion> getOperacionById(@PathVariable Long id) {
+    public ResponseEntity<Operacion> getOperacionById(@PathVariable String id) {
         return operacionRepository.findById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -100,7 +100,7 @@ public class OperacionController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Operacion> updateOperacion(@PathVariable Long id, @RequestBody Operacion operacionDetails) {
+    public ResponseEntity<Operacion> updateOperacion(@PathVariable String id, @RequestBody Operacion operacionDetails) {
         return operacionRepository.findById(id)
                 .map(operacion -> {
                     operacion.setTipo(operacionDetails.getTipo());
@@ -113,7 +113,7 @@ public class OperacionController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteOperacion(@PathVariable Long id) {
+    public ResponseEntity<?> deleteOperacion(@PathVariable String id) {
         return operacionRepository.findById(id)
                 .map(operacion -> {
                     operacionRepository.delete(operacion);
@@ -140,7 +140,7 @@ public class OperacionController {
     }
 
     @PostMapping("/{tipoOperacion}/{puntoDeAtencionId}")
-    public ResponseEntity<?> performOperation(@PathVariable TipoOperacion tipoOperacion, @PathVariable Long puntoDeAtencionId) {
+    public ResponseEntity<?> performOperation(@PathVariable TipoOperacion tipoOperacion, @PathVariable String puntoDeAtencionId) {
         PuntoDeAtencion puntoDeAtencion = puntoDeAtencionRepository.findById(puntoDeAtencionId).orElse(null);
         if (puntoDeAtencion == null) {
             return ResponseEntity.notFound().build();

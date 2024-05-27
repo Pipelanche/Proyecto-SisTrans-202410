@@ -226,7 +226,7 @@ public class CuentaController {
         Date date  = new Date(System.currentTimeMillis());
         Cuenta cuenta1 = cuentaRepository.darCuentaPorNumero(cuenta.getNumero());
         Cuenta cuenta2 = cuentaRepository.darCuentaPorNumero(datos.getNumeroHelper().toString());
-        operacionRepository.insertOperacion(datos.getTipoHelper(), operacion.getMonto(), date , (Long)2L, cuenta1.getId());
+        operacionRepository.insertOperacion(datos.getTipoHelper(), operacion.getMonto(), date , (Long)2L, Long.valueOf(cuenta1.getId()));
         operacionRepository.insertOperacion(datos.getTipoHelper(), operacion.getMonto(), date , (Long)2L, cuenta2.getId());
         return "redirect:/";
     }

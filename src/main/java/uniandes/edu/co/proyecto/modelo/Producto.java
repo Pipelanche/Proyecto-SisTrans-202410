@@ -1,23 +1,18 @@
 package uniandes.edu.co.proyecto.modelo;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
-@Table(name = "productos")
+@Document(collection = "productos")
 public class Producto {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @Enumerated(EnumType.STRING)
     private TipoProducto tipo;
 
-    @ManyToOne
-    @JoinColumns({
-        @JoinColumn(name = "clienteTipoDeDocumento", referencedColumnName = "tipoDeDocumento"),
-        @JoinColumn(name = "clienteNumeroDeDocumento", referencedColumnName = "numeroDeDocumento")
-    })
+    @DBRef
     private Usuario cliente;
 
     public enum TipoProducto {
@@ -32,11 +27,11 @@ public class Producto {
         this.cliente = cliente;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
