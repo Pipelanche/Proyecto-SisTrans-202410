@@ -25,7 +25,7 @@ public class CuentaService {
     private OperacionRepository operacionRepository;
 
     private CuentaRepository cuentaRepository;
-    
+
     private PuntoDeAtencionRepository puntoDeAtencionRepository;
 
     public CuentaService(OperacionRepository operacionRepository) {
@@ -37,10 +37,8 @@ public class CuentaService {
             case atencion_personalizada:
                 return true; //todos sirven.
             case cajero_automatico:
-            
                 return EnumSet.of(TipoOperacion.consignacion_cuenta, TipoOperacion.retiro_cuenta).contains(tipoOperacion);
             case digital:
-                
                 return EnumSet.of(TipoOperacion.transferencia_cuenta, TipoOperacion.abrir_cuenta, TipoOperacion.desactivar_cuenta,
                                   TipoOperacion.actualizar_cuenta, TipoOperacion.solicitar_prestamo, TipoOperacion.aprobar_prestamo,
                                   TipoOperacion.rechazar_prestamo, TipoOperacion.pago_cuota_ordinaria, 
@@ -51,8 +49,7 @@ public class CuentaService {
     }
 
     @Transactional(isolation = Isolation.SERIALIZABLE, timeout = 30) // segundos
-    public List<Operacion> consultarOperacionesSerializable(int numeroCuenta) {
-
+    public List<Operacion> consultarOperacionesSerializable(String numeroCuenta) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String fechaFinTexto = "2023-02-15 13:00:00"; // Fecha final fija
         try {
@@ -69,7 +66,7 @@ public class CuentaService {
     }
 
     @Transactional(isolation = Isolation.READ_COMMITTED, timeout = 30) // segundos
-    public List<Operacion> consultarOperacionesReadCommitted(int numeroCuenta) {
+    public List<Operacion> consultarOperacionesReadCommitted(String numeroCuenta) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String fechaFinTexto = "2023-02-15 13:00:00"; // Fecha final fija
         try {
@@ -83,19 +80,15 @@ public class CuentaService {
             e.printStackTrace();
             throw new RuntimeException("Consulta fallida.");
         }
-    } 
-
-    
-    //Manejo transaccional de RFM6 - Como las validaciones se quitaron del controller se haran acá.
+    }
 
     @Transactional
     public String consignarDinero(String cuentaId, Double monto) {
-        
         Cuenta cuenta = cuentaRepository.findById(cuentaId).orElse(null);
         if (cuenta == null) return "La cuenta no existe.";
         if (monto <= 0) return "El monto debe ser mayor que cero.";
         if (cuenta.getEstado() != EstadoCuenta.activa) return "La cuenta no esta activa.";
-        
+
         try {
             cuentaRepository.consignarEnCuenta(cuentaId, monto);
             return "Consignacion realizada con exito.";
@@ -108,8 +101,8 @@ public class CuentaService {
     @Transactional
     public String retirarDinero(String cuentaId, String puntoDeAtencionId, Double monto) {
         Cuenta cuenta = cuentaRepository.findById(cuentaId).orElse(null);
-        PuntoDeAtencion puntoDeAtencion = puntoDeAtencionRepository.findById(String.valueOf(puntoDeAtencionId)).orElse(null);
-    
+        PuntoDeAtencion puntoDeAtencion = puntoDeAtencionRepository.findById(puntoDeAtencionId).orElse(null);
+
         if (cuenta == null) return "La cuenta no existe.";
         if (monto <= 0) return "El monto debe ser mayor que cero.";
         if (cuenta.getSaldo() < monto) return "Fondos insuficientes para retirar.";
@@ -127,7 +120,6 @@ public class CuentaService {
             return "Error al realizar el retiro.";
         }
     }
-
 
     @Transactional
     public String transferirDinero(String cuentaOrigenId, String cuentaDestinoId, String puntoDeAtencionId, Double monto) {
@@ -154,5 +146,4 @@ public class CuentaService {
             return "Error al realizar la transferencia.";
         }
     }
-
 }

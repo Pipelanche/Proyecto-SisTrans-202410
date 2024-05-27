@@ -2,20 +2,13 @@ package uniandes.edu.co.proyecto.repositorios;
 
 import uniandes.edu.co.proyecto.modelo.Cuenta;
 import uniandes.edu.co.proyecto.modelo.Cuenta.EstadoCuenta;
-
-import java.math.BigDecimal;
-import java.sql.Date;
-import java.time.LocalDate;
-import java.util.Collection;
-import java.util.List;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.data.mongodb.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
+import java.util.Date;
 
 @Repository
 public interface CuentaRepository extends MongoRepository<Cuenta, String> {
@@ -29,68 +22,43 @@ public interface CuentaRepository extends MongoRepository<Cuenta, String> {
 
     @Query("{ 'id' : ?0 }")
     Cuenta darCuentaPorId(String cuentaId);
-    
-    @Modifying
+
     @Transactional
-    @Query(value = "UPDATE cuentas SET cuentas.estado = :estado WHERE cuentas.id = :cuentaId", nativeQuery = true)
-    void cambiarEstadoCuenta(@Param("cuentaId") Long cuentaId, @Param("estado") String estado);
+    @Query("{ '_id' : ?0 }")
+    void cambiarEstadoCuenta(@Param("cuentaId") String cuentaId, @Param("estado") EstadoCuenta estado);
 
-
-    @Modifying
     @Transactional
-    @Query(value = "INSERT INTO cuentas (id,numero, tipo, estado, saldo, fechaultimatransaccion) VALUES (idProductos.currval,numeroCuentas.nextval, :tipo, :estado, :saldo, :fechaUltimaTransaccion)", nativeQuery = true)
-    void crearCuenta(@Param("tipo") String tipo, @Param("estado") String estado, @Param("saldo") Double saldo, @Param("fechaUltimaTransaccion") Date fechaUltimaTransaccion);
+    @Query("{ 'tipo' : ?0, 'estado' : ?1, 'saldo' : ?2, 'fechaUltimaTransaccion' : ?3 }")
+    void crearCuenta(String tipo, String estado, Double saldo, Date fechaUltimaTransaccion);
 
-    //Crear Cuenta con inicialización de estado y registro de operacion
-    @Modifying
     @Transactional
-    @Query(value = "INSERT INTO producto (tipo_producto, cliente_id, tipo_cuenta, estado, saldo, fecha_ultima_transaccion) " + 
-                   "VALUES ('CUENTA', :clienteId, :tipo, 'activa', :saldo, CURRENT_TIMESTAMP)", nativeQuery = true)
-    void insertCuenta(@Param("clienteId") Long clienteId, @Param("tipo") String tipo, @Param("saldo") Double saldo);
+    @Query("{ '_id' : ?0 }")
+    Cuenta insertCuenta(String clienteId, String tipo, Double saldo);
 
-    //Cambiar estado de cuenta a cerrada saldo cero y estado activo
-    @Modifying
     @Transactional
-    @Query("UPDATE Cuenta c SET c.estado = :estado WHERE c.numero = :numero AND c.saldo = 0 AND c.estado = 'activa'")
-    int closeCuenta(@Param("numero") String numero, @Param("estado") EstadoCuenta estado);
+    @Query("{ 'numero' : ?0, 'saldo' : 0, 'estado' : 'activa' }")
+    int closeCuenta(String numero, EstadoCuenta estado);
 
-    //Cambiar estado de cuenta a desactivada estado activo
-    @Modifying
     @Transactional
-    @Query("UPDATE Cuenta c SET c.estado = 'desactivada' WHERE c.numero = :numero AND c.estado = 'activa'")
-    int deactivateCuenta(@Param("numero") String numero);
+    @Query("{ 'numero' : ?0, 'estado' : 'activa' }")
+    int deactivateCuenta(String numero);
 
-
-
-    // RFC1 - Consultar las cuentas en BancAndes
     List<Cuenta> findByTipo(String tipo);
 
     List<Cuenta> findBySaldo(Double saldo);
 
     List<Cuenta> findByFechaUltimaTransaccion(Date fechaUltimaTransaccion);
 
-    //Transacciones 
-
-    @Modifying
     @Transactional
-    @Query(value = "INSERT INTO operaciones (tipo, monto, fecha_hora, cuenta_id) VALUES ('CONSIGNACION', :monto, NOW(), :cuentaId); " +
-                   "UPDATE cuentas SET saldo = saldo + :monto, fecha_ultima_transaccion = NOW() WHERE id = :cuentaId;", nativeQuery = true)
-    void consignarEnCuenta(@Param("cuentaId") Long cuentaId, @Param("monto") Double monto);
+    @Query(value = "UPDATE { 'id' : ?0 } SET { 'saldo' : ?1, 'fechaUltimaTransaccion' : ?2 }")
+    void consignarEnCuenta(String cuentaId, Double monto);
 
-    @Modifying
     @Transactional
-    @Query(value = "INSERT INTO operaciones (tipo, monto, fecha_hora, cuenta_id) VALUES ('RETIRO', :monto, NOW(), :cuentaId); " +
-                   "UPDATE cuentas SET saldo = saldo - :monto, fecha_ultima_transaccion = NOW() WHERE id = :cuentaId AND saldo >= :monto;", nativeQuery = true)
-    void retirarDeCuenta(@Param("cuentaId") Long cuentaId, @Param("monto") Double monto);
+    @Query(value = "UPDATE { 'id' : ?0, 'saldo' : { $gte : ?1 } } SET { 'saldo' : { $subtract : [ 'saldo', ?1 ] }, 'fechaUltimaTransaccion' : ?2 }")
+    void retirarDeCuenta(String cuentaId, Double monto);
 
-    @Modifying
     @Transactional
-    @Query(value = "INSERT INTO operaciones (tipo, monto, fecha_hora, cuenta_id) VALUES ('TRANSFERENCIA', -1 * :monto, NOW(), :cuentaOrigenId); " +
-                   "UPDATE cuentas SET saldo = saldo - :monto WHERE id = :cuentaOrigenId AND saldo >= :monto; " +
-                   "INSERT INTO operaciones (tipo, monto, fecha_hora, cuenta_id) VALUES ('CONSIGNACION', :monto, NOW(), :cuentaDestinoId); " +
-                   "UPDATE cuentas SET saldo = saldo + :monto WHERE id = :cuentaDestinoId;", nativeQuery = true)
-    void transferirEntreCuentas(@Param("cuentaOrigenId") Long cuentaOrigenId, 
-                                @Param("cuentaDestinoId") Long cuentaDestinoId, 
-                                @Param("monto") Double monto);
+    @Query(value = "UPDATE { 'id' : ?0, 'saldo' : { $gte : ?1 } } SET { 'saldo' : { $subtract : [ 'saldo', ?1 ] } }; " +
+                   "UPDATE { 'id' : ?2 } SET { 'saldo' : { $add : [ 'saldo', ?1 ] } }")
+    void transferirEntreCuentas(String cuentaOrigenId, String cuentaDestinoId, Double monto);
 }
-

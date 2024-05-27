@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 
 import java.util.Calendar;
-import java.sql.Date;
+import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -37,19 +37,17 @@ public class OperacionController {
 
     private static final Map<TipoPuntoDeAtencion, Set<TipoOperacion>> permissions = new HashMap<>();
 
-        //permisos
-        static {
-            permissions.put(TipoPuntoDeAtencion.atencion_personalizada, EnumSet.allOf(TipoOperacion.class));
-            permissions.put(TipoPuntoDeAtencion.cajero_automatico, EnumSet.of(TipoOperacion.consignacion_cuenta, TipoOperacion.retiro_cuenta));
-            permissions.put(TipoPuntoDeAtencion.digital, EnumSet.of(TipoOperacion.transferencia_cuenta));
-        }
+    // permisos
+    static {
+        permissions.put(TipoPuntoDeAtencion.atencion_personalizada, EnumSet.allOf(TipoOperacion.class));
+        permissions.put(TipoPuntoDeAtencion.cajero_automatico, EnumSet.of(TipoOperacion.consignacion_cuenta, TipoOperacion.retiro_cuenta));
+        permissions.put(TipoPuntoDeAtencion.digital, EnumSet.of(TipoOperacion.transferencia_cuenta));
+    }
 
     @GetMapping
     public List<Operacion> getAllOperaciones() {
         return operacionRepository.findAll();
     }
-
-    
 
     @GetMapping("/extracto")
     public String cuentaForm(Model model) {
@@ -57,6 +55,7 @@ public class OperacionController {
         model.addAttribute("datos", datos);
         return "rfc3";
     }
+
     @PostMapping("/extracto/ver")
     public String cuentaGuardar(@ModelAttribute Object[] datos, Model model) {
         System.out.println(datos[0]);
@@ -74,12 +73,12 @@ public class OperacionController {
 
         calendario.set(Calendar.DAY_OF_MONTH, 1);
         Date primerDiaDelMes = new Date(calendario.getTimeInMillis());
-        
+
         calendario.set(Calendar.DAY_OF_MONTH, calendario.getActualMaximum(Calendar.DAY_OF_MONTH));
         Date ultimoDiaDelMes = new Date(calendario.getTimeInMillis());
 
         model.addAttribute("operaciones", operacionRepository.findOperacionesByProductoAndMes(cuenta.getId(), primerDiaDelMes, ultimoDiaDelMes));
-        
+
         return "redirect:/";
     }
 
@@ -120,12 +119,10 @@ public class OperacionController {
     private boolean isOperationAllowed(TipoPuntoDeAtencion tipoPunto, TipoOperacion tipoOperacion) {
         switch (tipoPunto) {
             case atencion_personalizada:
-                return true; //todos sirven.
+                return true; // todos sirven.
             case cajero_automatico:
-            
                 return EnumSet.of(TipoOperacion.consignacion_cuenta, TipoOperacion.retiro_cuenta).contains(tipoOperacion);
             case digital:
-                
                 return EnumSet.of(TipoOperacion.transferencia_cuenta, TipoOperacion.abrir_cuenta, TipoOperacion.desactivar_cuenta,
                                   TipoOperacion.actualizar_cuenta, TipoOperacion.solicitar_prestamo, TipoOperacion.aprobar_prestamo,
                                   TipoOperacion.rechazar_prestamo, TipoOperacion.pago_cuota_ordinaria, 
@@ -146,7 +143,5 @@ public class OperacionController {
             return ResponseEntity.badRequest().body("Esta operacion no puede hacerse en este punto de atencion.");
         }
         return ResponseEntity.ok().build();
-
     }
-
 }

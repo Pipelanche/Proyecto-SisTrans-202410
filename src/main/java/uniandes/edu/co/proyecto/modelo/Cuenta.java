@@ -32,7 +32,7 @@ public class Cuenta {
         activa, cerrada, desactivada
     }
 
-    public Cuenta() {;}
+    public Cuenta() {}
 
     public Cuenta(String numero, TipoCuenta tipoCuenta, EstadoCuenta estado, Double saldo, Date fechaUltimaTransaccion) {
         this.numero = numero;
@@ -95,6 +95,6 @@ public class Cuenta {
     }
 
     public void setFechaUltimaTransaccion(Date fechaUltimaTransaccion) {
-         this.fechaUltimaTransaccion = fechaUltimaTransaccion; 
+        this.fechaUltimaTransaccion = fechaUltimaTransaccion; 
     }
 }
